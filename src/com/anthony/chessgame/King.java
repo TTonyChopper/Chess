@@ -1,16 +1,19 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
+
 //Class representing KING
 public class King extends Piece {
-//false ; set to true after first move[condition for Castling]
+//false; set to true after first move[condition for Castling]
 private boolean immobile;
 
-//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Kw"/"Kb", it is IMMOBILE(false) on creation 
-public King(int P,int C) {
-super(P,C);
-immobile = true;
-if (C==1) setName("Kw");
-else setName("Kb");
+////1 for column a ; 2 for column h
+//private int number;
+
+//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Kw"/"Kb", it is IMMOBILE(true) on creation 
+public King(int P,colorPiece C) {
+	super(P);
+	definePiece(typePiece.K,C);
+	immobile = true;
 }
 
 //GETTER for IMMOBILE
@@ -28,11 +31,11 @@ if ((Math.abs(Dx)==1)&&(Math.abs(Dy)==1)||(Math.abs(Dx)==0)&&(Math.abs(Dy)==1)||
 	char A ;
 	if (W) A = 'w';
 	else A = 'b';	
-	if(((getPieceN(B,Px,Py)).charAt(1))!=A)	return true;
+	if(((Utils.getPieceN(B,Px,Py)).charAt(1))!=A)	return true;
 	else return false;
 }
 //Rock Right
-else if ((isImmobile())&&(Dy==0)&&(Dx==2)&&((getPiece(B,Px+1,Py)).isImmobile()))
+else if ((isImmobile())&&(Dy==0)&&(Dx==2)&&((Utils.getPiece(B,Px+1,Py)).isImmobile()))
 {
 	   
        boolean interpiecevide=true;
@@ -58,7 +61,7 @@ else if ((isImmobile())&&(Dy==0)&&(Dx==2)&&((getPiece(B,Px+1,Py)).isImmobile()))
       else return false;
 }
 //Rock Left
-else if ((isImmobile())&&(Dy==0)&&(Dx==-2)&&((getPiece(B,Px-2,Py)).isImmobile()))
+else if ((isImmobile())&&(Dy==0)&&(Dx==-2)&&((Utils.getPiece(B,Px-2,Py)).isImmobile()))
 {
        boolean interpiecevide=true;
        for (int i =-1;i<2;i++)
@@ -100,7 +103,7 @@ for (int i=0;i<8;i++)
 {
   X2 = X+Dx[i];
   Y2 = Y+Dy[i];
-  addThreatening(getPiece(B,X2,Y2));
+  addThreatening(Utils.getPiece(B,X2,Y2));
 }
 return false;
 }
@@ -119,7 +122,7 @@ public void moveKingInMind(int Pinit,int Pfinal,ArrayList <Piece> Board){
 Piece moving = getPiece(Pinit,Board);	
 	
 //Moving pieces 	
-setPiece(new Nothing(Pinit,0),Pinit,Board);
+setPiece(new Nothing(Pinit,colorPiece.NONE),Pinit,Board);
 setPiece(moving,Pfinal,Board);
 }
 }

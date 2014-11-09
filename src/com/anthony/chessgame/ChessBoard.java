@@ -1,7 +1,11 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.anthony.chessgame.Piece.colorPiece;
 public class ChessBoard
 {		
+  private Scanner sc = new Scanner(System.in);
   private Player P1;
   private Player P2;
   private static ArrayList<String> wcaptures = new ArrayList<String>();
@@ -25,9 +29,9 @@ public ChessBoard(){
  checkmate = false;
  for (int i=0;i<64;i++) 
  {
-  if (i/16==0) putPiece(i,1); 
-  else if (i/16==3)	putPiece(i,2);  
-  else putPiece(i,0); 	  
+  if (i/16==0) putPiece(i,colorPiece.WHITE); 
+  else if (i/16==3)	putPiece(i,colorPiece.BLACK);  
+  else putPiece(i,colorPiece.NONE); 	  
  }	  
  printBoard();
  
@@ -38,7 +42,7 @@ public ChessBoard(){
 	 checkmate2 = playTurn(P2);
  }
 }
-public Piece putPiece(int P, int C){
+public Piece putPiece(int P, colorPiece C){
 	Piece put = null;
 	switch (pieces[P])
 	{
@@ -73,18 +77,32 @@ public Piece putPiece(int P, int C){
    B.add(put);
    return put;
 }
-public Piece askMoveCoord(){
-System.out.println("Donner une position");
-while(((sc.nextLine()).length())==2)
-{
-  
-}	 
+public void askMoveCoord(int[]Cmove){
+System.out.println("Donner une position de départ");
+
+while(((sc.nextLine()).length())!=2) {
+	System.out.println("Position non valide, réessayez.");
+}
+	String result = sc.nextLine();
+	int L = result.charAt(0) - 'a';
+	int N = result.charAt(1) - '1';
+	Cmove[0] = L*8 + N;
+	
+System.out.println("Donner une position d'arrivée");
+
+while(((sc.nextLine()).length())!=2) {
+	System.out.println("Position non valide, réessayez.");
+}
+	String result2 = sc.nextLine();
+	int L2 = result2.charAt(0) - 'a';
+	int N2 = result2.charAt(1) - '1';
+	Cmove[1] = L2*8 + N2;
 }
 public Piece moveTo(int Pinit,int Pfinal)
 {
    Piece moving = getPiece(Pinit); 	
    Piece captured = getPiece(Pfinal); 	
-   setPiece(new Nothing(Pinit,0),Pinit);
+   setPiece(new Nothing(Pinit,colorPiece.NONE),Pinit);
    setPiece(moving,Pfinal);
    if ((captured.getName())!="  ") 
    {
@@ -93,14 +111,14 @@ public Piece moveTo(int Pinit,int Pfinal)
    }
    else
    {
-	  return new Nothing(Pfinal,0);  
+	  return new Nothing(Pfinal,colorPiece.NONE);  
    }
    
 }
 
-public void setPiece(int P,Piece p){B.set(P,p);}
+public void setPiece(Piece p, int P){B.set(P,p);}
 public Piece getPiece(int P){return B.get(P);}  
-public int getPieceC(int P){return (B.get(P)).getColor();} 	 
+public colorPiece getPieceC(int P){return (B.get(P)).getColor();} 	 
 public String getPieceN(int P){return (B.get(P)).getName();} 	
 public int getPiecePos(int P){return (B.get(P)).getPos();}
 public int getPiecePosx(int P){return (B.get(P)).getPosx();}
@@ -110,9 +128,9 @@ public char getPieceLposy(int P){return (B.get(P)).getLposy();}
 
 public boolean playTurn(Player Pl){
 int Cmove[]={0,0};
-askMoveCoord();
+askMoveCoord(Cmove);
 
-moveTo();	
+moveTo(Cmove[0],Cmove[1]);	
 return true;
 }
 

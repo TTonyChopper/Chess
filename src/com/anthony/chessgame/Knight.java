@@ -1,16 +1,13 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
+
 //Class representing KNIGHT
 public class Knight extends Piece {
 
-//1 for column a ; 2 for column h
-private int number;
-
 //CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
-public Knight(int P,int C) {
-super(P,C);
-if (C==1) setName("Nw");
-else setName("Nb");
+public Knight(int P,colorPiece C) {
+	super(P);
+	definePiece(typePiece.Kn,C);
 }
 
 //Movement allowed, 8 destination cases : L-like move 2/1 in one direction, 1/2 orthogonally
@@ -23,7 +20,7 @@ if ((Math.abs(Dx) ==1 && Math.abs(Dy) ==2)||(Math.abs(Dx) ==2 && Math.abs(Dy) ==
   char A ;
   if (W) A = 'w';
   else A = 'b';
-  if(((getPieceN(B,Px,Py)).charAt(1))!=A)
+  if(((Utils.getPieceN(B,Px,Py)).charAt(1))!=A)
   {
    return true;
   }
@@ -48,7 +45,7 @@ for (int i=0;i<8;i++)
 {
   X2 = X+Dx[i];
   Y2 = Y+Dy[i];
-  addThreatening(getPiece(B,X2,Y2));
+  addThreatening(Utils.getPiece(B,X2,Y2));
 }
 return false;
 }

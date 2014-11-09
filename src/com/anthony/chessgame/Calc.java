@@ -1,6 +1,8 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import com.anthony.chessgame.Piece.colorPiece;
 //This class tries to countain every important methods, those using System.out.print for example or Scanner
 //Has to be modified to become a graphic game
 //This class is not instanciated : everything is STATIC
@@ -131,14 +133,17 @@ for (int t=0;t<64;t++)
 //EVOLVED GETTER for accessing one given PIECE, and/or his parameters, on a given BOARD
 public static Piece getPiece(int P,ArrayList<Piece> B){return B.get(P);} 
 public static String getPieceN(int P,ArrayList<Piece> B){return (B.get(P)).getName();} 
-public static int getPieceC(int P,ArrayList<Piece> B){return (B.get(P)).getColor();} 
+public static colorPiece getPieceC(int P,ArrayList<Piece> B){return (B.get(P)).getColor();} 
 //Returns true if the PIECE at (Px,Py) is VOID[NOTHING]
 public static boolean isVoid(ArrayList<Piece> B,int Px,int Py){return (((B.get(Calc.getPos(Px,Py))).getName()).equals("  "));}
 //Returns true if the PIECE at P is of COLOR W(0 for BLACK, 1 for WHITE)
-public static boolean comparePieceC(int P,ArrayList<Piece> B,boolean W){
-if (((B.get(P)).getColor())==1) return (W);
-else if	(((B.get(P)).getColor())==2) return (!W);
-else return false;
+public static Boolean comparePieceC(int P,ArrayList<Piece> B,boolean W){
+	Boolean myW = B.get(P).isWhite();
+	if (myW == null) return false;
+	else {
+		if (myW) return W;
+		else return !W;
+	}
 } 
 
 //Clones and Returns the copy of a given BOARD, to keep a BACKUP 
@@ -151,13 +156,11 @@ return B2;
 public static boolean isThreaten(Piece P){
 ArrayList<Piece>T = P.getThreaten();
 boolean check = false;
-int oppcolor;
-if (P.getColor()==1) oppcolor = 2;
-else if (P.getColor()==2) oppcolor = 1;
-else oppcolor = 0;
+Boolean myW = P.isWhite();
+if (myW == null) return false;
 for (int i=0;i<T.size();i++)
 {
-	if ((getPieceC(i,T))==oppcolor) check = true;
+	if (comparePieceC(i,T,!myW)) check = true;
 }
 return check;
 }

@@ -1,58 +1,94 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
 //MOTHER Class for every PIECE, CHECKMOVE & SETTHREATS are OVERRIDEN
-public class Piece {
+public abstract class Piece{
 
+//enum declaration for pieces	
+public static enum typePiece{Bb("B"),Bw("B"),K("K"),Kn("N"),N(" "),O("X"),P("P"),Q("Q"),R("R");
+	private String name;
+	private typePiece(String name){
+		this.name = name;
+	}
+	public String getN(){
+		return name;
+	}
+}; 
+//enum declaration for colors
+public static enum colorPiece{WHITE(true),BLACK(false),NONE(null);
+	private Boolean W;
+	private colorPiece(Boolean W){
+		this.W = W;
+	}
+	public Boolean getW(){
+		return W;
+	}
+}; 
+ 
+
+
+//Type of this PIECE
+protected typePiece type;
+//COLOR of this PIECE
+protected colorPiece color;
+//name with color
+protected String name;
 //Contains each PIECE attacking this PIECE
-private ArrayList<Piece> threaten = new ArrayList<Piece>();
+protected ArrayList<Piece> threaten = new ArrayList<Piece>();
 //Contains each PIECE(friendly or not) attacked by this PIECE, can be OutOfBoard though 
-private ArrayList<Piece> threatening = new ArrayList<Piece>();
-//String of two char caracterizing the PIECE
-private String name;
-//COLOR of this PIECE : 0 for NEUTRAL, 1 for WHITE, 2 for BLACK
-private int color;
+protected ArrayList<Piece> threatening = new ArrayList<Piece>();
 //Position of the PIECE on the 64 cases BOARD, from 0(a1) to 63(h8) 
-private int pos;
+protected int pos;
 //Coordinates of the PIECE
-private int posx;
-private int posy;
+protected int posx;
+protected int posy;
 //Char corresponding to the coordinates ('a' for x=0,'1' for y=0)
-private char lposx;
-private char lposy;
+protected char lposx;
+protected char lposy;
 
-//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "  " 
-public Piece(int P, int C) {
+//CONSTRUCTOR : create a PIECE at POSITION P 
+public Piece(int P) {
 threaten = new ArrayList<Piece>(); 
 threatening = new ArrayList<Piece>();
-setName("  ");
 pos = P;
-color = C;
 setCoord();
 setLCoord();
 }
 
-//GETTER for some parameters, some can work with the whole BOARD
-public String getPieceN(ArrayList<Piece> B,int Px,int Py){return (B.get(Calc.getPos(Px,Py))).getName();}
-public String getPieceN(ArrayList<Piece> B,int P){return (B.get(P)).getName();}
-public boolean isImmobile(){return false;}
-public boolean isMobile(){return false;}
-public Piece getPiece(ArrayList<Piece> B,int Px,int Py){return B.get(Calc.getPos(Px,Py));}
-public String getName() {return name;}
-public int getColor() {return color;}
+
+
+//GETTERS
+//for the King castling condition, overriden by King and Rook
+public boolean isImmobile(){return false;};
+public boolean isMobile(){return false;};
 public int getPos() {return pos;}
 public int getPosx() {return posx;}
 public int getPosy() {return posy;}
 public char getLposx() {return lposx;}
 public char getLposy() {return lposy;}
+public String getName(){return name;}
+public Boolean isWhite(){return color.getW();}
+public colorPiece getColor(){return color;}
 public ArrayList<Piece> getThreaten(){return threaten;}
 public boolean isThreatenKing(int P,Player J){
-if (J.isWhite()) return (getPieceN(threaten,P).equals("Kw"));
-else if (!(J.isWhite())) return (getPieceN(threaten,P).equals("Kb"));
-else return false;
+	if (J.isWhite()) return (Utils.getPieceN(threaten,P).equals("Kw"));	
+	else if (!(J.isWhite())) return (Utils.getPieceN(threaten,P).equals("Kb"));
+	else return false;
 }
 
-//SETTER for some parameters
-public String setName(String N) {return name= new String(N);}
+
+
+//ABSTRACT SETTERS 
+public abstract boolean setThreats(ArrayList <Piece> B);
+//Calls checkMove of every PIECE of a given BOARD
+public abstract boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B);
+
+//SETTER
+public void definePiece(typePiece type, colorPiece color) {
+	this.type = type;
+	this.color = color;
+	String C = (color.getW() == null) ? " " : ((color.getW()) ? "w" : "b"); 
+	name = type.getN() + C;
+}
 public int setPos(int P) {return pos=P;}
 public void setCoord(){
 posx = pos % 8 ;
@@ -62,15 +98,13 @@ public void setLCoord(){
   lposx = (char)(posx - 1 + (int)('a'));
   lposy = (char)(posy - 1 + (int)('1'));
 }
-public void setL2PosCoord(){
+public void setLToCoord(){
 posx = ((int)lposx + 1 - (int)('a'));
 posy = ((int)lposy + 1 - (int)('1'));
 }
-//SETTER for every single PIECE on a given BOARD 
-public boolean setThreats(ArrayList <Piece> B){return false;}
 
-//Calls checkMove of every PIECE of a given BOARD
-public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){return false;} 
+
+
 //Prints each THREATEN PIECE for this one 
 public void printThreateningNames(){
  for(int i=0;i<threatening.size();i++)
@@ -93,5 +127,4 @@ public void clearThreaten(){threaten= new ArrayList<Piece>();}
 //P is added to THREATENING
 //this PIECE is added to THREATEN of P
 public void addThreatening(Piece P){threatening.add(P);(P.getThreaten()).add(this);}
-
 }

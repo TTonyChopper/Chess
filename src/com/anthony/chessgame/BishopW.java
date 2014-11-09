@@ -1,13 +1,13 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
+
 //Class representing BISHOP on WHITE case
 public class BishopW extends Piece {
 
 //CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
-public BishopW(int P,int C) {
-super(P,C);
-if (C==1) setName("Bw");
-else setName("Bb");
+public BishopW(int P,colorPiece C) {
+	super(P);
+	definePiece(typePiece.Bw,C);
 }
 
 //Movement allowed, stopping to the first obstacle[non VOID] : diagonals UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
@@ -28,8 +28,8 @@ else if (Dx==Dy)
 }
 	
 //Test final : case de destination
-if (W&&(((getPieceN(B,Px,Py)).charAt(1))=='w')) moveok=false;
-else if (!W&&(((getPieceN(B,Px,Py)).charAt(1))=='b')) moveok=false;
+if (W&&(((Utils.getPieceN(B,Px,Py)).charAt(1))=='w')) moveok=false;
+else if (!W&&(((Utils.getPieceN(B,Px,Py)).charAt(1))=='b')) moveok=false;
 
 return moveok;
 }
@@ -96,9 +96,9 @@ for (int i=0;i<8;i++)
  {
    X--;
    Y++;
-   if (!(Calc.isVoid(B,X,Y))) return getPiece(B,X,Y);
+   if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
  }
-return getPiece(B,8,8);
+return Utils.getPiece(B,8,8);
 }
 //Checks obstacle on the Up Right diagonal
 public Piece DiagUR(ArrayList <Piece> B){
@@ -108,9 +108,9 @@ for (int i=0;i<8;i++)
  {
    X++;
    Y++;
-   if (!(Calc.isVoid(B,X,Y))) return getPiece(B,X,Y);
+   if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
  }
-return getPiece(B,8,8);
+return Utils.getPiece(B,8,8);
 }
 //Checks obstacle on the Down Right diagonal
 public Piece DiagDR(ArrayList <Piece> B){
@@ -120,9 +120,9 @@ for (int i=0;i<8;i++)
  {
    X++;
    Y--;
-   if (!(Calc.isVoid(B,X,Y))) return getPiece(B,X,Y);
+   if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
  }
-return getPiece(B,8,8);
+return Utils.getPiece(B,8,8);
 }
 //Checks obstacle on the Down Left diagonal
 public Piece DiagDL(ArrayList <Piece> B){
@@ -132,9 +132,9 @@ for (int i=0;i<8;i++)
  {
    X--;
    Y--;
-   if (!(Calc.isVoid(B,X,Y))) return getPiece(B,X,Y);
+   if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
  }
-return getPiece(B,8,8);
+return Utils.getPiece(B,8,8);
 }
 
 }

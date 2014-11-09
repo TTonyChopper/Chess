@@ -1,14 +1,14 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
+
 //Class representing PAWN
 public class Pawn extends Piece {
 	
 //CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
-public Pawn(int P,int C) {
-	  super(P,C);
-	  if (C==1) setName("Pw");
-	  else setName("Pb");
-	  }
+public Pawn(int P,colorPiece C) {
+	super(P);
+	definePiece(typePiece.P,C);
+}
 
 //Movement allowed, stopping to the first obstacle[non VOID] : Up/Down[COLOR],
 //or first element Up/Down on diagonal, Left or Right if there is an opponent to capture
@@ -57,14 +57,14 @@ public boolean setThreats(ArrayList <Piece> B)
 //Looks for a PIECE on the Left diagonal
 public Piece DiagL(ArrayList <Piece> B)
 {
-      if (getColor()==1) return getPiece(B,getPosx()-1,getPosy()+1);
-      else return getPiece(B,getPosx()-1,getPosy()-1);
+      if (getColor().getW()) return Utils.getPiece(B,getPosx()-1,getPosy()+1);
+      else return Utils.getPiece(B,getPosx()-1,getPosy()-1);
 }
 //Looks for a PIECE on the Right diagonal
 public Piece DiagR(ArrayList <Piece> B)
 {
-      if (getColor()==1) return getPiece(B,getPosx()+1,getPosy()+1);
-      else return getPiece(B,getPosx()+1,getPosy()-1);
+      if (getColor().getW()) return Utils.getPiece(B,getPosx()+1,getPosy()+1);
+      else return Utils.getPiece(B,getPosx()+1,getPosy()-1);
 }
 
 }

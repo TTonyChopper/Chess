@@ -1,5 +1,7 @@
 package com.anthony.chessgame;
 import java.util.ArrayList;
+
+import com.anthony.chessgame.Piece.colorPiece;
 //Main Class for the GAMES OF CHESS
 public class ChessGame
 {
@@ -41,9 +43,9 @@ public ChessGame(){
  checkmate2 = false;
  for (int i=0;i<64;i++) 
  {
-  if (i/16==0) putPiece(i,1); 
-  else if (i/16==3)	putPiece(i,2);  
-  else putPiece(i,0); 	  
+  if (i/16==0) putPiece(i,colorPiece.WHITE); 
+  else if (i/16==3)	putPiece(i,colorPiece.BLACK);  
+  else putPiece(i,colorPiece.NONE); 	  
  }	  
  B.add(new OutOfBoard());
  Calc.printBoard(B);
@@ -61,7 +63,7 @@ public ChessGame(){
 
 //GETTER for a PIECE parameter, for a given POSITION P
 public Piece getPiece(int P,ArrayList <Piece>B){return B.get(P);}  
-public int getPieceC(int P){return (B.get(P)).getColor();} 	 
+public colorPiece getPieceC(int P){return (B.get(P)).getColor();} 	 
 public String getPieceN(int P){return (B.get(P)).getName();} 	
 public int getPiecePos(int P){return (B.get(P)).getPos();}
 public int getPiecePosx(int P){return (B.get(P)).getPosx();}
@@ -83,7 +85,7 @@ public void createPlayers()
 	 System.out.println("\n\n");
 }
 //Constructs the BOARD one PIECE at a time
-public Piece putPiece(int P, int C){
+public Piece putPiece(int P, colorPiece C){
 	Piece put = null;
 	switch (pieces[P])
 	{
@@ -169,7 +171,7 @@ public Piece moveTo(int Pinit,int Pfinal,Player P,ArrayList <Piece>Board) {
 
 //Moving pieces
    Piece captured = getPiece(Pfinal,Board); 	
-   setPiece(new Nothing(Pinit,0),Pinit,Board);
+   setPiece(new Nothing(Pinit,colorPiece.NONE),Pinit,Board);
    setPiece(moving,Pfinal,Board);
    return captured;
 }
