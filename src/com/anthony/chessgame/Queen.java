@@ -70,7 +70,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -80,7 +80,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=-1;i>Dy;i--)
 		{
-			if (!(Calc.isVoid(B,Px,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}	
@@ -90,7 +90,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=-1;i>Dx;i--)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py))) obstacle=true;
 		}
 		return !obstacle;
 	}	
@@ -100,7 +100,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dx;i++)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py))) obstacle=true;
 		}
 		return !obstacle;
 	}	
@@ -110,7 +110,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px+i,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px+i,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -120,7 +120,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -130,7 +130,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py+i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py+i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -140,7 +140,7 @@ public class Queen extends Piece {
 		boolean obstacle = false;
 		for (int i=-1;i>Dx;i--)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -150,7 +150,7 @@ public class Queen extends Piece {
 		int i;
 		for (i = getPosy()+1;i<8;i++)
 		{
-			if (!(Calc.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
@@ -159,7 +159,7 @@ public class Queen extends Piece {
 		int i;
 		for (i = getPosy()-1;i>-1;i--)
 		{ 
-			if (!(Calc.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
@@ -168,7 +168,7 @@ public class Queen extends Piece {
 		int i;
 		for (i = getPosx()-1;i>-1;i--)
 		{ 
-			if (!(Calc.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
 		}
 		return Utils.getPiece(B,i,getPosy());	
 	}
@@ -177,7 +177,7 @@ public class Queen extends Piece {
 		int i;
 		for (i = getPosx()+1;i<8;i++)
 		{ 
-			if (!(Calc.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
 		}
 		return Utils.getPiece(B,i,getPosy());
 	}
@@ -189,7 +189,7 @@ public class Queen extends Piece {
 		{
 			X--;
 			Y++;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}
@@ -201,7 +201,7 @@ public class Queen extends Piece {
 		{
 			X++;
 			Y++;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}
@@ -213,7 +213,7 @@ public class Queen extends Piece {
 		{
 			X++;
 			Y--;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}
@@ -225,7 +225,7 @@ public class Queen extends Piece {
 		{
 			X--;
 			Y--;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}

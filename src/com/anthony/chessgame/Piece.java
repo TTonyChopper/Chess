@@ -58,8 +58,8 @@ public abstract class Piece{
 
 	//GETTERS
 	//for the King castling condition, overriden by King and Rook
-	public boolean isImmobile(){return false;};
-	public boolean isMobile(){return false;};
+	public boolean hasSpecialMove(){return false;};
+	public boolean loseSpecialMove(){return false;};
 	public int getPos() {return pos;}
 	public int getPosx() {return posx;}
 	public int getPosy() {return posy;}

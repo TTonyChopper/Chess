@@ -56,7 +56,7 @@ public class BishopW extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px+i,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px+i,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -66,7 +66,7 @@ public class BishopW extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -76,7 +76,7 @@ public class BishopW extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py+i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py+i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -86,7 +86,7 @@ public class BishopW extends Piece {
 		boolean obstacle = false;
 		for (int i=-1;i>Dx;i--)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -99,7 +99,7 @@ public class BishopW extends Piece {
 		{
 			X--;
 			Y++;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}
@@ -111,7 +111,7 @@ public class BishopW extends Piece {
 		{
 			X++;
 			Y++;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}
@@ -123,7 +123,7 @@ public class BishopW extends Piece {
 		{
 			X++;
 			Y--;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}
@@ -135,7 +135,7 @@ public class BishopW extends Piece {
 		{
 			X--;
 			Y--;
-			if (!(Calc.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
 		}
 		return Utils.getPiece(B,8,8);
 	}

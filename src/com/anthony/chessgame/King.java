@@ -18,10 +18,10 @@ public class King extends Piece {
 
 	//OVERRIDE
 	@Override
-	public boolean isImmobile(){return immobile;}
+	public boolean hasSpecialMove(){return immobile;}
 	//One-way SETTER in case it moves
 	@Override
-	public boolean isMobile(){return immobile=false;}
+	public boolean loseSpecialMove(){return immobile=false;}
 
 	//Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases 
 	//RETURNS true if the move is allowed
@@ -38,25 +38,25 @@ public class King extends Piece {
 			else return false;
 		}
 		//Rock Right
-		else if ((isImmobile())&&(Dy==0)&&(Dx==2)&&((Utils.getPiece(B,Px+1,Py)).isImmobile()))
+		else if ((hasSpecialMove())&&(Dy==0)&&(Dx==2)&&((Utils.getPiece(B,Px+1,Py)).hasSpecialMove()))
 		{
 
 			boolean interpiecevide=true;
 			for (int i =-1;i<1;i++)
 			{
-				if (!(Calc.isVoid(B,Px+i,Py))) interpiecevide= false ;
+				if (!(Utils.isVoid(B,Px+i,Py))) interpiecevide= false ;
 			}
 			if (interpiecevide) 
 			{  
 				//Vérifier que les cases sont safe pour le King!
 				int pKing = getPos();
-				boolean check = Calc.isThreaten(this);
+				boolean check = Utils.isThreaten(this);
 				ArrayList<Piece> Bmind = new ArrayList<Piece>();
 				for (int i=0;i<2;i++)
 				{
-					Bmind=Calc.cloneAL(B);
+					Bmind=Utils.cloneAL(B);
 					moveKingInMind(pKing,pKing+1,Bmind);
-					if (Calc.isThreaten(this)) check=true;
+					if (Utils.isThreaten(this)) check=true;
 				}
 				if (!check) return true;
 				else return false;
@@ -64,24 +64,24 @@ public class King extends Piece {
 			else return false;
 		}
 		//Rock Left
-		else if ((isImmobile())&&(Dy==0)&&(Dx==-2)&&((Utils.getPiece(B,Px-2,Py)).isImmobile()))
+		else if ((hasSpecialMove())&&(Dy==0)&&(Dx==-2)&&((Utils.getPiece(B,Px-2,Py)).hasSpecialMove()))
 		{
 			boolean interpiecevide=true;
 			for (int i =-1;i<2;i++)
 			{
-				if (!(Calc.isVoid(B,Px-i,Py))) interpiecevide= false ;
+				if (!(Utils.isVoid(B,Px-i,Py))) interpiecevide= false ;
 			}
 			if (interpiecevide) 
 			{  
 				//Vérifier que les cases sont safe pour le King!
 				int pKing = getPos();
-				boolean check = Calc.isThreaten(this);
+				boolean check = Utils.isThreaten(this);
 				ArrayList<Piece> Bmind = new ArrayList<Piece>();
 				for (int i=0;i<2;i++)
 				{
-					Bmind=Calc.cloneAL(B);
+					Bmind=Utils.cloneAL(B);
 					moveKingInMind(pKing,pKing-1,Bmind);
-					if (Calc.isThreaten(this)) check=true;
+					if (Utils.isThreaten(this)) check=true;
 				}
 				if (!check) return true;
 				else return false;

@@ -17,9 +17,9 @@ public class Rook extends Piece {
 	}
 
 	//OVERRIDE
-	public boolean isImmobile(){return immobile;}
+	public boolean hasSpecialMove(){return immobile;}
 	//One-way SETTER in case it moves
-	public boolean isMobile(){return immobile=false;}
+	public boolean loseSpecialMove(){return immobile=false;}
 
 	//Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT
 	//RETURNS true if the move is allowed
@@ -68,7 +68,7 @@ public class Rook extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
 		{
-			if (!(Calc.isVoid(B,Px,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}
@@ -78,7 +78,7 @@ public class Rook extends Piece {
 		boolean obstacle = false;
 		for (int i=-1;i>Dy;i--)
 		{
-			if (!(Calc.isVoid(B,Px,Py-i))) obstacle=true;
+			if (!(Utils.isVoid(B,Px,Py-i))) obstacle=true;
 		}
 		return !obstacle;
 	}	
@@ -88,7 +88,7 @@ public class Rook extends Piece {
 		boolean obstacle = false;
 		for (int i=-1;i>Dx;i--)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py))) obstacle=true;
 		}
 		return !obstacle;
 	}	
@@ -98,7 +98,7 @@ public class Rook extends Piece {
 		boolean obstacle = false;
 		for (int i=1;i<Dx;i++)
 		{
-			if (!(Calc.isVoid(B,Px-i,Py))) obstacle=true;
+			if (!(Utils.isVoid(B,Px-i,Py))) obstacle=true;
 		}
 		return !obstacle;
 	}	
@@ -109,7 +109,7 @@ public class Rook extends Piece {
 		int i;
 		for (i = getPosy()+1;i<8;i++)
 		{
-			if (!(Calc.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
@@ -119,7 +119,7 @@ public class Rook extends Piece {
 		int i;
 		for (i = getPosy()-1;i>-1;i--)
 		{ 
-			if (!(Calc.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
@@ -129,7 +129,7 @@ public class Rook extends Piece {
 		int i;
 		for (i = getPosx()-1;i>-1;i--)
 		{  
-			if (!(Calc.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
 		}
 		return Utils.getPiece(B,i,getPosy());	
 	}
@@ -139,7 +139,7 @@ public class Rook extends Piece {
 		int i;
 		for (i = getPosx()+1;i<8;i++)
 		{ 
-			if (!(Calc.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
 		}
 		return Utils.getPiece(B,i,getPosy());
 	}

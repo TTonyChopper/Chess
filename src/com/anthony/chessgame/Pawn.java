@@ -27,19 +27,19 @@ public class Pawn extends Piece {
 			char A ;
 			if (W) A = 'b';
 			else A = 'w';
-			if(((B.get(Calc.getPos(Px,Py))).getName()).charAt(1)==A)
+			if(((B.get(Utils.getPos(Px,Py))).getName()).charAt(1)==A)
 			{
 				return true;
 			}
 		}
 		else if (Dx==0)
 		{
-			if (W&&(Dy == 1)&&(Calc.isVoid(B,Px,Py))) return true;
-			else if (W&&(nevermoved)&&(Dy == 2)&&((Calc.isVoid(B,Px,Py)))&&
-					((Calc.isVoid(B,Px,Py-1)))) return true;
-			else if ((!W)&&(Dy == -1)&&((Calc.isVoid(B,Px,Py)))) return true;
-			else if ((!W)&&(nevermoved)&&(Dy == -2)&&((Calc.isVoid(B,Px,Py)))&&
-					((Calc.isVoid(B,Px,Py+1)))) return true;
+			if (W&&(Dy == 1)&&(Utils.isVoid(B,Px,Py))) return true;
+			else if (W&&(nevermoved)&&(Dy == 2)&&((Utils.isVoid(B,Px,Py)))&&
+					((Utils.isVoid(B,Px,Py-1)))) return true;
+			else if ((!W)&&(Dy == -1)&&((Utils.isVoid(B,Px,Py)))) return true;
+			else if ((!W)&&(nevermoved)&&(Dy == -2)&&((Utils.isVoid(B,Px,Py)))&&
+					((Utils.isVoid(B,Px,Py+1)))) return true;
 			else return false;	 
 		}
 		return false;
