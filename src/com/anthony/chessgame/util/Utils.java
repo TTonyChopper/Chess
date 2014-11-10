@@ -1,8 +1,11 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.util;
 
 import java.util.ArrayList;
 
-import com.anthony.chessgame.Piece.colorPiece;
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.piece.Piece;
+import com.anthony.chessgame.piece.Piece.colorPiece;
+import com.anthony.chessgame.piece.Piece.typePiece;
 
 public class Utils {
 
@@ -31,8 +34,7 @@ public class Utils {
 		resetThreaten(B);
 		for (int t=0;t<64;t++)
 		{
-			String name =(B.get(t)).getName();
-			if (!(name.equals("  "))) (B.get(t)).setThreats(B);
+			if (!isVoid(B,t)) (B.get(t)).setThreats(B);
 		}
 	}
 
@@ -44,17 +46,34 @@ public class Utils {
 	}
 
 	//Returns true if the PIECE at P is of COLOR W(0 for BLACK, 1 for WHITE)
-	public static Boolean comparePieceC(int P,ArrayList<Piece> B,boolean W){
+	public static Boolean comparePieceC(ArrayList<Piece> B,int P,boolean W){
 		Boolean myW = B.get(P).isWhite();
 		if (myW == null) return false;
-		else {
-			if (myW) return W;
-			else return !W;
-		}
+		else return myW == W;
+	}
+	//Returns true if the PIECE at (Px,Py) is of COLOR W(0 for BLACK, 1 for WHITE)
+	public static Boolean comparePieceC(ArrayList<Piece> B,int Px,int Py,boolean W){
+		return comparePieceC(B,Utils.getPos(Px, Py),W);
 	}
 
+	//Returns true if the PIECE at P is VOID[NOTHING]
+	public static boolean isVoid(ArrayList<Piece> B,int P){return (((B.get(P)).getType()) == typePiece.N);}
 	//Returns true if the PIECE at (Px,Py) is VOID[NOTHING]
-	public static boolean isVoid(ArrayList<Piece> B,int Px,int Py){return (((B.get(Utils.getPos(Px,Py))).getName()).equals("  "));}
+	public static boolean isVoid(ArrayList<Piece> B,int Px,int Py){return isVoid(B,Utils.getPos(Px,Py));}
+	//Returns true if the PIECE at P is White
+	public static boolean isWhite(ArrayList<Piece> B,int P){return B.get(P).isWhite();}
+	//Returns true if the PIECE at (Px,Py) is White
+	public static boolean isWhite(ArrayList<Piece> B,int Px,int Py){return isWhite(B,Utils.getPos(Px,Py));}
+	//Returns true if the PIECE at P is King
+	public static boolean isKing(ArrayList<Piece> B,int P){return (((B.get(P)).getType()) == typePiece.K);}
+	//Returns true if the PIECE at P is White King
+	public static boolean isKingW(ArrayList<Piece> B,int P){return( (isKing(B,P)) && (B.get(P).isWhite()) );}
+	//Returns true if the PIECE at P is Black King
+	public static boolean isKingB(ArrayList<Piece> B,int P){return( (isKing(B,P)) && !(B.get(P).isWhite()) );}
+	//Returns true if the PIECE at P is Rook
+	public static boolean isRook(ArrayList<Piece> B,int P){return (((B.get(P)).getType()) == typePiece.R);}
+	//Returns true if the PIECE at P is Rook and has Special Move
+	public static boolean isRookAndSpecial(ArrayList<Piece> B,int P){return( (isRook(B,P)) && !(B.get(P).hasSpecialMove()) );}
 
 
 	//Given a PIECE, returns true if Attacked by an Foe PIECE
@@ -65,7 +84,7 @@ public class Utils {
 		if (myW == null) return false;
 		for (int i=0;i<T.size();i++)
 		{
-			if (comparePieceC(i,T,!myW)) check = true;
+			if (comparePieceC(T,i,!myW)) check = true;
 		}
 		return check;
 	}

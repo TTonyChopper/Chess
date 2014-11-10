@@ -1,5 +1,9 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 import java.util.ArrayList;
+import java.util.TreeSet;
+
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.util.Utils;
 //MOTHER Class for every PIECE, CHECKMOVE & SETTHREATS are OVERRIDEN
 public abstract class Piece{
 
@@ -36,6 +40,8 @@ public abstract class Piece{
 	protected ArrayList<Piece> threaten = new ArrayList<Piece>();
 	//Contains each PIECE(friendly or not) attacked by this PIECE, can be OutOfBoard though 
 	protected ArrayList<Piece> threatening = new ArrayList<Piece>();
+	//Contains possible Moves
+	TreeSet<Integer> possibleMoves;
 	//Position of the PIECE on the 64 cases BOARD, from 0(a1) to 63(h8) 
 	protected int pos;
 	//Coordinates of the PIECE
@@ -49,6 +55,7 @@ public abstract class Piece{
 	public Piece(int P) {
 		threaten = new ArrayList<Piece>(); 
 		threatening = new ArrayList<Piece>();
+		possibleMoves = new TreeSet<Integer>();
 		pos = P;
 		setCoord();
 		setLCoord();
@@ -67,11 +74,12 @@ public abstract class Piece{
 	public char getLposy() {return lposy;}
 	public String getName(){return name;}
 	public Boolean isWhite(){return color.getW();}
+	public typePiece getType(){return type;}
 	public colorPiece getColor(){return color;}
 	public ArrayList<Piece> getThreaten(){return threaten;}
 	public boolean isThreatenKing(int P,Player J){
-		if (J.isWhite()) return (Utils.getPieceN(threaten,P).equals("Kw"));	
-		else if (!(J.isWhite())) return (Utils.getPieceN(threaten,P).equals("Kb"));
+		if (J.isWhite()) return Utils.isKingW(threaten,P);	
+		else if (!(J.isWhite())) return Utils.isKingB(threaten,P);
 		else return false;
 	}
 
@@ -120,9 +128,11 @@ public abstract class Piece{
 		}
 	}
 	//Resets THREATENING for this PIECE : is always called before updating it by erasing previous data
-	public void clearThreatening(){threatening=new ArrayList<Piece>();}
+	public void clearThreatening(){threatening.clear();}
+	//Resets Possible Moves for this PIECE : is always called before updating it by erasing previous data
+	public void clearPossibleMoves(){possibleMoves.clear();}
 	//Resets THREATEN for this PIECE : is always called before updating it by erasing previous data
-	public void clearThreaten(){threaten= new ArrayList<Piece>();}
+	public void clearThreaten(){threaten.clear();}
 	//Means this PIECE is Attacking the PIECE P
 	//P is added to THREATENING
 	//this PIECE is added to THREATEN of P

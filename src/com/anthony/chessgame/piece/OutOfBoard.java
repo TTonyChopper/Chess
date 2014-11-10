@@ -1,6 +1,8 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 
 import java.util.ArrayList;
+
+import com.anthony.chessgame.game.Player;
 
 public class OutOfBoard extends Piece{
 

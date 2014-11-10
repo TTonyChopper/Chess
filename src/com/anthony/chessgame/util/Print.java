@@ -1,8 +1,10 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.util;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.anthony.chessgame.Piece.colorPiece;
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.piece.Piece;
+
 //This class tries to countain every important methods, those using System.out.print for example or Scanner
 //Has to be modified to become a graphic game
 //This class is not instanciated : everything is STATIC
@@ -13,19 +15,11 @@ public class Print {
 	//Char version of coordinates
 	private static int destx;
 	private static int desty;
-	//Initial POSITION of a PIECE which is being played
-	private static int pinit;
-	//Potential Final POSITION of a PIECE which is being played
-	private static int pfinal;
 
 	//FAST Print
 	public static void printTitle(){System.out.println("      Chess HumanVsHuman(By Anthony)\n\n");}	
 	public static void printIsCheck(boolean check){System.out.println("Check ????? : "+check);}
 	public static void printLine(){System.out.println("\n");}
-	
-	//GETTER for parameters
-	public static int getPinit(){ return pinit;}
-	public static int getPfinal(){ return pfinal;}
 	
 	//Transforms COORDINATES into CHAR
 	public static void setDest(String L){
@@ -53,8 +47,8 @@ public class Print {
 		}
 		return pname;
 	}
-	//Asks move proposed by PLAYER, modifying parameters destx,destx,pinit,pfinal
-	public static void askMove(Player J,ArrayList<Piece> Board){
+	//Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
+	public static void askMove(Player J,ArrayList<Piece> Board,int[] mW){
 		String L = null;
 		boolean moveisok = false;
 		boolean pieceisok = false;
@@ -70,9 +64,9 @@ public class Print {
 				}	
 				int x = (int)L.charAt(0) - (int) 'a';
 				int y = (int)L.charAt(1) - (int) '1';
-				pinit = 8*y+x; 
-				pfinal =0;
-				pieceisok=Utils.comparePieceC(pinit,Board,J.isWhite());
+				mW[0] = 8*y+x; 
+				mW[1] = 0;
+				pieceisok=Utils.comparePieceC(Board,mW[0],J.isWhite());
 				if (!pieceisok) System.out.println("Invalid piece.");
 			}
 			while(!pieceisok);
@@ -82,8 +76,8 @@ public class Print {
 			if ((L=sc.nextLine()).length()==2)
 			{
 				setDest(L);	
-				pfinal = Utils.getPos(destx, desty);
-				moveisok = Utils.getPiece(Board,pinit).checkMove(destx,desty,J.isWhite(),J,Board);
+				mW[1] = Utils.getPos(destx, desty);
+				moveisok = Utils.getPiece(Board,mW[0]).checkMove(destx,desty,J.isWhite(),J,Board);
 				if (!moveisok) System.out.println("Coup non valide.");
 			}
 			else System.out.println("Erreur.");
@@ -94,9 +88,8 @@ public class Print {
 	public static void printThreateningOnBoard(ArrayList<Piece> B){
 		for (int t=0;t<64;t++)
 		{
-			String name =(B.get(t)).getName();
-			if (!(name.equals("  ")))
-			{
+			if (!Utils.isVoid(B,t)){
+				String name =(B.get(t)).getName();
 				System.out.println(name);
 				System.out.println("x : "+(B.get(t)).getPosx()+" y : "+(B.get(t)).getPosy());
 				(B.get(t)).printThreateningNames();
@@ -107,9 +100,8 @@ public class Print {
 	public static void printThreatenOnBoard(ArrayList<Piece> B){
 		for (int t=0;t<64;t++)
 		{
-			String name =(B.get(t)).getName();
-			if (!(name.equals("  ")))
-			{
+			if (!Utils.isVoid(B,t)){
+				String name =(B.get(t)).getName();
 				System.out.println(name);
 				System.out.println("x : "+(B.get(t)).getPosx()+" y : "+(B.get(t)).getPosy());
 				(B.get(t)).printThreatenNames();

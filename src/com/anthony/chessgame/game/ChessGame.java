@@ -1,28 +1,46 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.game;
 import java.util.ArrayList;
 
-import com.anthony.chessgame.Piece.colorPiece;
+import com.anthony.chessgame.piece.Bishop;
+import com.anthony.chessgame.piece.King;
+import com.anthony.chessgame.piece.Knight;
+import com.anthony.chessgame.piece.Nothing;
+import com.anthony.chessgame.piece.OutOfBoard;
+import com.anthony.chessgame.piece.Pawn;
+import com.anthony.chessgame.piece.Piece;
+import com.anthony.chessgame.piece.Piece.typePiece;
+import com.anthony.chessgame.piece.Queen;
+import com.anthony.chessgame.piece.Rook;
+import com.anthony.chessgame.piece.Piece.colorPiece;
+import com.anthony.chessgame.util.Print;
+import com.anthony.chessgame.util.Utils;
 //Main Class for the GAMES OF CHESS
 public class ChessGame
 {
+	//players
 	private Player P1;
 	private Player P2;
+	//Boards : real and trial board
 	private ArrayList <Piece> B;
 	private ArrayList <Piece> Bfuture;
 	private boolean checkmate;
 	private boolean checkmate2;
+	//Captured pieces
 	private ArrayList<String> wcaptures;
 	private ArrayList<String> bcaptures;
+	//King positions
 	private int posK1;
 	private int posK1bu;
 	private int posK2;
 	private int posK2bu;
-	
+	//POSITIONS of a PIECE which is being played
+	private int[] mW;
+
 	private final static int pieces[]={
-		5,2,4,6,7,3,2,5,1,1,1,1,1,1,1,1,
+		4,2,3,5,6,3,2,4,1,1,1,1,1,1,1,1,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		1,1,1,1,1,1,1,1,5,2,3,6,7,4,2,5};
+		1,1,1,1,1,1,1,1,4,2,3,5,6,3,2,4};
 
 	//CONSTRUCTOR
 	public ChessGame(){
@@ -36,21 +54,17 @@ public class ChessGame
 		posK1bu= 4;
 		posK2= 60;
 		posK2bu= 60;
+		mW= new int[]{8,9};
 	}
-	
+
 	//PLAY : 
 	public void start(){
 		Print.printTitle();
 
 		createPlayers();
-		
-		for (int i=0;i<64;i++) 
-		{
-			if (i/16==0) putPiece(i,colorPiece.WHITE); 
-			else if (i/16==3)	putPiece(i,colorPiece.BLACK);  
-			else putPiece(i,colorPiece.NONE); 	  
-		}	  
-		B.add(new OutOfBoard());
+
+		createBoard();
+
 		Print.printBoard(B);
 		Utils.setThreatsOnBoard(B);
 
@@ -88,6 +102,17 @@ public class ChessGame
 		Print.printLine();
 		Print.printLine();
 	}
+	//Constructs board
+	public void createBoard()
+	{
+		for (int i=0;i<64;i++) 
+		{
+			if (i/16==0) putPiece(i,colorPiece.WHITE); 
+			else if (i/16==3)	putPiece(i,colorPiece.BLACK);  
+			else putPiece(i,colorPiece.NONE); 	  
+		}	  
+		B.add(new OutOfBoard());
+	}
 	//Constructs the BOARD one PIECE at a time
 	public Piece putPiece(int P, colorPiece C){
 		Piece put = null;
@@ -103,18 +128,15 @@ public class ChessGame
 			put = new Knight(P,C);
 			break;
 		case 3:
-			put = new BishopW(P,C);
+			put = new Bishop(P,C);
 			break;
 		case 4:
-			put = new BishopB(P,C);
-			break;
-		case 5:
 			put = new Rook(P,C);
 			break;
-		case 6:
+		case 5:
 			put = new Queen(P,C);
 			break;
-		case 7:
+		case 6:
 			put = new King(P,C);
 			break;  
 		default:
@@ -124,53 +146,58 @@ public class ChessGame
 		B.add(put);
 		return put;
 	}
+	//Try current move
+	public Piece tryMove(Player P){
+		saveMoveKings();
+		Piece captured = moveTo(P,Bfuture,mW[0],mW[1]);
+		Utils.setThreatsOnBoard(Bfuture);
+		Print.printThreateningOnBoard(Bfuture);
+		//Print.printThreatenOnBoard(Bfuture);
+		return captured;
+	}
 	//Gets moves from PLAYER and try them until they are valid, then make the move
-	public Piece askNMoveCoord(Player J){
+	public Piece askNMoveCoord(Player P){
 		Piece captured = null;
+		//		boolean losingMobility = false;
 		boolean check= false;
+
 		do
 		{
 			if (check) 
 			{
-				revertMoveP();
+				revertMoveKings();
 				Print.printCheck();
 				Print.printBoard(B);
 			}
+			//Ask coordinates
 			Bfuture = Utils.cloneAL(B);
-			Print.askMove(J,Bfuture);
-			saveMoveP();
-			captured = moveTo(Print.getPinit(),Print.getPfinal(),J,Bfuture);
-			Utils.setThreatsOnBoard(Bfuture);
-			Print.printThreateningOnBoard(Bfuture);
-			//Calc.printThreatenOnBoard(Bfuture);
-			check=Utils.isInCheck(Bfuture,J,posK1,posK2);
+			Print.askMove(P,Bfuture,mW);
+			//Test the move 
+			captured = tryMove(P);
+			//Verify if Player playing turn if is check
+			check=Utils.isInCheck(Bfuture,P,posK1,posK2);
 			Print.printIsCheck(check);
-		}
-		while(check);
-		setCaptures(captured,J);
+		}while(check);		
+		//Move is OK, Finalize it
+		setCaptures(captured,P);
 		B=Utils.cloneAL(Bfuture);
+		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B.get(mW[1]).loseSpecialMove();
 		return captured;
 	}
 	//Makes the move, supposing it is valid
-	public Piece moveTo(int Pinit,int Pfinal,Player P,ArrayList <Piece>Board) {
+	public Piece moveTo(Player P,ArrayList <Piece>Board,int Pinit,int Pfinal) {
 		Piece moving = getPiece(Pinit,Board);
 
 		//Verify Castling conditions
-		if (((moving.getName()).charAt(0))=='K')
+		if (moving.getType()==typePiece.K)
 		{
 			if (P.isWhite()) posK1 = Pfinal;
 			else if (!(P.isWhite())) posK2 = Pfinal;
 			if (moving.hasSpecialMove()) 
 			{
-				if ((Pfinal-Pinit)==2) moveTo(Pfinal+1,Pfinal-1,P,Board);
-				else if ((Pfinal-Pinit)==-2) moveTo(Pfinal-2,Pfinal+1,P,Board);
-
-				moving.loseSpecialMove();
+				if (((Pfinal-Pinit)==2)) moveTo(P,Board,Pfinal+1,Pfinal-1);
+				else if ( ((Pfinal-Pinit)==-2)) moveTo(P,Board,Pfinal-2,Pfinal+1);
 			}
-		}
-		else if (((moving.getName()).charAt(0))=='R')
-		{
-			if (moving.hasSpecialMove()) moving.loseSpecialMove();
 		}
 
 		//Moving pieces
@@ -181,10 +208,10 @@ public class ChessGame
 	}
 	//Adds a PIECE into the wcaptures/bcaptures ARRAYLIST, containing CAPTURES per COLOR
 	public Piece setCaptures(Piece captured,Player P){
-		if (!(captured.getName()).equals("  ")&& P.isWhite()) {
+		if (((captured.getType()) != typePiece.N) && P.isWhite()) {
 			wcaptures.add(captured.getName());
 			return captured;
-		}else if (!(captured.getName()).equals("  ")&& !P.isWhite()) {
+		}else if (((captured.getType()) != typePiece.N)&& !P.isWhite()) {
 			bcaptures.add(captured.getName());
 			return captured;
 		}else{
@@ -192,15 +219,14 @@ public class ChessGame
 		}
 	}
 	//Saves Coordinates of KING, in case his move is not valid
-	public void saveMoveP(){
+	public void saveMoveKings(){
 		posK1bu=posK1;
 		posK2bu=posK2;
 	}
 	//Reverts previous Coordinates of KING, when his move was not valid
-	public void revertMoveP(){
+	public void revertMoveKings(){
 		posK1=posK1bu;
 		posK2=posK2bu;
-		//variable immobile qu en est il ????
 	}
 	//Modify the BOARD composition after a move
 	public void setPiece(Piece p,int P,ArrayList<Piece> Board){

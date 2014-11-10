@@ -1,5 +1,8 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 import java.util.ArrayList;
+
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.util.Utils;
 
 //Class representing PAWN
 public class Pawn extends Piece {
@@ -24,13 +27,7 @@ public class Pawn extends Piece {
 		//System.out.println("Dx "+Dx+" Dy "+Dy);
 		if (((W)&&(Dy==1)&&Math.abs(Dx) ==1)||((!W)&&(Dy==-1)&&Math.abs(Dx) ==1))
 		{
-			char A ;
-			if (W) A = 'b';
-			else A = 'w';
-			if(((B.get(Utils.getPos(Px,Py))).getName()).charAt(1)==A)
-			{
-				return true;
-			}
+			if (!Utils.comparePieceC(B,Px,Py,W)) return true;
 		}
 		else if (Dx==0)
 		{
@@ -54,6 +51,7 @@ public class Pawn extends Piece {
 		clearThreatening();
 		addThreatening(DiagL(B));
 		addThreatening(DiagR(B));
+		clearPossibleMoves();
 		return false;
 	}
 

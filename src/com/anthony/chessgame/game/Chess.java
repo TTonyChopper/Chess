@@ -1,4 +1,4 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.game;
 public class Chess {
 
 	public static void main(String[] args){

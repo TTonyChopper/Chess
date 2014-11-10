@@ -1,11 +1,14 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 import java.util.ArrayList;
 
-//Class representing BISHOP on BLACK case
-public class BishopB extends Piece {
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.util.Utils;
+
+//Class representing BISHOP
+public class Bishop extends Piece {
 
 	//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
-	public BishopB(int P,colorPiece C){
+	public Bishop(int P,colorPiece C){
 		super(P);
 		definePiece(typePiece.Bb,C);
 	}  
@@ -30,8 +33,7 @@ public class BishopB extends Piece {
 		}
 
 		//Test final : case de destination
-		if (W&&(((Utils.getPieceN(B,Px,Py)).charAt(1))=='w')) moveok=false;
-		else if (!W&&(((Utils.getPieceN(B,Px,Py)).charAt(1))=='b')) moveok=false;
+		if (Utils.comparePieceC(B,Px,Py,W)) moveok=false;
 
 		return moveok;
 	}
@@ -47,6 +49,7 @@ public class BishopB extends Piece {
 		addThreatening(DiagUR(B));
 		addThreatening(DiagDR(B));
 		addThreatening(DiagDL(B));
+		clearPossibleMoves();
 		return false;
 	}
 

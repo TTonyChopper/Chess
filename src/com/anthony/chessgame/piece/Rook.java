@@ -1,5 +1,10 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 import java.util.ArrayList;
+
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.piece.Piece.colorPiece;
+import com.anthony.chessgame.piece.Piece.typePiece;
+import com.anthony.chessgame.util.Utils;
 
 //Class representing ROOK
 public class Rook extends Piece {
@@ -41,8 +46,7 @@ public class Rook extends Piece {
 		}  
 
 		//Test final : case de destination
-		if (W&&(((Utils.getPieceN(B,Px,Py)).charAt(1))=='w')) moveok=false;
-		else if (!W&&(((Utils.getPieceN(B,Px,Py)).charAt(1))=='b')) moveok=false;
+		if (Utils.comparePieceC(B,Px,Py,W)) moveok = false;
 
 		return moveok;
 	}
@@ -57,7 +61,8 @@ public class Rook extends Piece {
 		addThreatening(LineL(B));
 		addThreatening(ColumnU(B));
 		addThreatening(LineR(B));
-		addThreatening(ColumnD(B)); 
+		addThreatening(ColumnD(B));
+		clearPossibleMoves();
 		return false;
 	}
 	

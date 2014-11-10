@@ -1,6 +1,8 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 
 import java.util.ArrayList;
+
+import com.anthony.chessgame.game.Player;
 
 //Class representing VOID case
 public class Nothing extends Piece {

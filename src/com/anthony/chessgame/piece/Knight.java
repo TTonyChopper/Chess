@@ -1,5 +1,8 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 import java.util.ArrayList;
+
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.util.Utils;
 
 //Class representing KNIGHT
 public class Knight extends Piece {
@@ -19,13 +22,7 @@ public class Knight extends Piece {
 		int Dy = Py - getPosy();
 		if ((Math.abs(Dx) ==1 && Math.abs(Dy) ==2)||(Math.abs(Dx) ==2 && Math.abs(Dy) ==1))
 		{
-			char A ;
-			if (W) A = 'w';
-			else A = 'b';
-			if(((Utils.getPieceN(B,Px,Py)).charAt(1))!=A)
-			{
-				return true;
-			}
+			if (!Utils.comparePieceC(B,Px,Py,W)) return true;
 			else return false;
 		}
 		else return false;
@@ -50,6 +47,7 @@ public class Knight extends Piece {
 			Y2 = Y+Dy[i];
 			addThreatening(Utils.getPiece(B,X2,Y2));
 		}
+		clearPossibleMoves();
 		return false;
 	}
 }

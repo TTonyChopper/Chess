@@ -1,4 +1,4 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.game;
 //Class  PLAYER
 public class Player{
 

@@ -1,5 +1,8 @@
-package com.anthony.chessgame;
+package com.anthony.chessgame.piece;
 import java.util.ArrayList;
+
+import com.anthony.chessgame.game.Player;
+import com.anthony.chessgame.util.Utils;
 
 //Class representing KING
 public class King extends Piece {
@@ -30,11 +33,8 @@ public class King extends Piece {
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();	
 		if ((Math.abs(Dx)==1)&&(Math.abs(Dy)==1)||(Math.abs(Dx)==0)&&(Math.abs(Dy)==1)||(Math.abs(Dx)==1)&&(Math.abs(Dy)==0))
-		{
-			char A ;
-			if (W) A = 'w';
-			else A = 'b';	
-			if(((Utils.getPieceN(B,Px,Py)).charAt(1))!=A)	return true;
+		{	
+			if (!Utils.comparePieceC(B,Px,Py,W)) return true;
 			else return false;
 		}
 		//Rock Right
@@ -109,6 +109,7 @@ public class King extends Piece {
 			Y2 = Y+Dy[i];
 			addThreatening(Utils.getPiece(B,X2,Y2));
 		}
+		clearPossibleMoves();
 		return false;
 	}
 
