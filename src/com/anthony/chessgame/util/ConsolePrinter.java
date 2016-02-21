@@ -5,10 +5,10 @@ import java.util.Scanner;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
 
-//This class tries to countain every important methods, those using System.out.print for example or Scanner
+//This class tries to contain every important methods, those using System.out.print for example or Scanner
 //Has to be modified to become a graphic game
-//This class is not instanciated : everything is STATIC
-public class Print {	
+//This class is not instantiated : everything is STATIC
+public class ConsolePrinter implements IPrint{	
 
 	//SCANNER for interactions with PLAYER
 	private static Scanner sc = new Scanner(System.in);
@@ -16,19 +16,31 @@ public class Print {
 	private static int destx;
 	private static int desty;
 
-	//FAST Print
-	public static void printTitle(){System.out.println("      Chess HumanVsHuman(By Anthony)\n\n");}	
-	public static void printIsCheck(boolean check){System.out.println("Check ????? : "+check);}
-	public static void printLine(){System.out.println("\n");}
+	/**
+	 * 
+	 */
+	public void printTitle(){System.out.println("      Chess HumanVsHuman(By Anthony)\n\n");}	
+	/**
+	 * 
+	 */
+	public void printIsCheck(boolean check){System.out.println("Check ????? : "+check);}
+	/**
+	 * 
+	 */
+	public void printLine(){System.out.println("\n");}
 	
-	//Transforms COORDINATES into CHAR
-	public static void setDest(String L){
+	/**
+	 * Transforms COORDINATES into CHAR
+	 */
+	public void setDest(String L){
 		destx = (int)((int)(L.charAt(0))-(int)'a');
 		desty = (int)((int)(L.charAt(1))-(int)'1');
 	}
 
-	//Asks and Returns a name for the PLAYER of COLOR W
-	public static String askName(boolean W){
+	/**
+	 * Asks and Returns a name for the PLAYER of COLOR W
+	 */
+	public String askName(boolean W){
 		String pname=null;
 		if (W)
 		{
@@ -47,8 +59,19 @@ public class Print {
 		}
 		return pname;
 	}
-	//Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
-	public static void askMove(Player J,ArrayList<Piece> Board,int[] mW){
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private Boolean isValid(int x,int y){
+		return (x>=0)&&(x<8)&&(y>=0)&&(y<8);
+	}
+	/**
+	 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
+	 */
+	public void askMove(Player J,ArrayList<Piece> Board,int[] mW){
 		String L = null;
 		boolean moveisok = false;
 		boolean pieceisok = false;
@@ -61,12 +84,17 @@ public class Print {
 				while(((L=sc.nextLine()).length())!=2)
 				{
 					System.out.println("Error.\nTry again.");
-				}	
+				}
+				L=L.toLowerCase();
 				int x = (int)L.charAt(0) - (int) 'a';
 				int y = (int)L.charAt(1) - (int) '1';
-				mW[0] = 8*y+x; 
-				mW[1] = 0;
-				pieceisok=Utils.comparePieceC(Board,mW[0],J.isWhite());
+				if (!isValid(x,y)) {
+					pieceisok = false;
+				} else {
+					mW[0] = 8*y+x; 
+					mW[1] = 0;
+					pieceisok=Utils.comparePieceC(Board,mW[0],J.isWhite());
+				}
 				if (!pieceisok) System.out.println("Invalid piece.");
 			}
 			while(!pieceisok);
@@ -75,7 +103,7 @@ public class Print {
 			System.out.println("Where to move it ?");
 			if ((L=sc.nextLine()).length()==2)
 			{
-				setDest(L);	
+				setDest(L.toLowerCase());	
 				mW[1] = Utils.getPos(destx, desty);
 				moveisok = Utils.getPiece(Board,mW[0]).checkMove(destx,desty,J.isWhite(),J,Board);
 				if (!moveisok) System.out.println("Coup non valide.");
@@ -84,8 +112,10 @@ public class Print {
 		}
 	}
 	
-	//Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
-	public static void printThreateningOnBoard(ArrayList<Piece> B){
+	/**
+	 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
+	 */
+	public void printThreateningOnBoard(ArrayList<Piece> B){
 		for (int t=0;t<64;t++)
 		{
 			if (!Utils.isVoid(B,t)){
@@ -96,8 +126,10 @@ public class Print {
 			}
 		}
 	}	
-	//Prints THREATEN[every PIECE attacking a given PIECE, one by one] of every PIECE of a given BOARD
-	public static void printThreatenOnBoard(ArrayList<Piece> B){
+	/**
+	 * Prints THREATEN[every PIECE attacking a given PIECE, one by one] of every PIECE of a given BOARD
+	 */
+	public void printThreatenOnBoard(ArrayList<Piece> B){
 		for (int t=0;t<64;t++)
 		{
 			if (!Utils.isVoid(B,t)){
@@ -109,22 +141,30 @@ public class Print {
 		}
 	}	
 	
-	//Prints and inform the PLAYER he has put his Foe in CHESS
-	public static boolean oppInCheck(ArrayList<Piece> B,Player J2){
+	/**
+	 * Prints and inform the PLAYER he has put his Foe in CHESS
+	 */
+	public boolean oppInCheck(ArrayList<Piece> B,Player J2){
 		boolean checkmate = false;
 		System.out.println("You have put your opponent in check !");
 		return checkmate;
 	}
-	//Prints and inform the PLAYER he is in CHESS
-	public static void printCheck(){
+	/**
+	 * Prints and inform the PLAYER he is in CHESS
+	 */
+	public void printCheck(){
 		System.out.println("You are in Check, look closely !");
 	}
-	//Prints whose turn it is
-	public static void printBoardState(ArrayList<Piece> B,Player J,int N){
+	/**
+	 * Prints whose turn it is
+	 */
+	public void printBoardState(ArrayList<Piece> B,Player J,int N){
 		System.out.println("Player "+N+"("+J.getPname()+") : Your turn to play!");
 	}
-	//Prints captured pieces
-	public static void printCaptures(ArrayList<String> wcaptures,ArrayList<String> bcaptures){
+	/**
+	 * Prints captured pieces
+	 */
+	public void printCaptures(ArrayList<String> wcaptures,ArrayList<String> bcaptures){
 		System.out.print("\n");
 
 		System.out.print("White : ");
@@ -146,8 +186,10 @@ public class Print {
 		System.out.print("\n");
 	}
 
-	//Prints the actual BOARD state
-	public static void printBoard(ArrayList<Piece> B){
+	/**
+	 * Prints the actual BOARD state
+	 */
+	public void printBoard(ArrayList<Piece> B){
 		System.out.println("");	
 		System.out.println("      a    b    c    d    e    f    g    h   ");	
 		System.out.println("   +----+----+----+----+----+----+----+----+");
@@ -173,8 +215,10 @@ public class Print {
 		System.out.println("   +----+----+----+----+----+----+----+----+");
 		System.out.println("     a    b    c    d    e    f    g    h  ");
 	}
-	//Shows PLAYER STATS
-	public static void printStats(){ 
+	/**
+	 * Shows PLAYER STATS
+	 */
+	public void printStats(){ 
 	}	
 
 }

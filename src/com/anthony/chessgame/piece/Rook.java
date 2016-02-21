@@ -2,8 +2,6 @@ package com.anthony.chessgame.piece;
 import java.util.ArrayList;
 
 import com.anthony.chessgame.game.Player;
-import com.anthony.chessgame.piece.Piece.colorPiece;
-import com.anthony.chessgame.piece.Piece.typePiece;
 import com.anthony.chessgame.util.Utils;
 
 //Class representing ROOK
@@ -14,21 +12,31 @@ public class Rook extends Piece {
 	////1 for column a ; 2 for column h
 	//private int number;
 
-	//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Rw"/"Rb", it is IMMOBILE(false) on creation 
+	/**
+	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Rw"/"Rb", it is IMMOBILE(false) on creation 
+	 * @param P
+	 * @param C
+	 */
 	public Rook(int P,colorPiece C) {
 		super(P);
 		definePiece(typePiece.R,C);
 		immobile = true;
 	}
 
-	//OVERRIDE
+	/**
+	 * 
+	 */
 	public boolean hasSpecialMove(){return immobile;}
-	//One-way SETTER in case it moves
+	/**
+	 * One-way SETTER in case it moves
+	 */
 	public boolean loseSpecialMove(){return immobile=false;}
 
-	//Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT
-	//RETURNS true if the move is allowed
 	@Override
+	/**
+	 * Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT
+	 * RETURNS true if the move is allowed
+	 */
 	public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
@@ -51,10 +59,12 @@ public class Rook extends Piece {
 		return moveok;
 	}
 	
-	//SETTER for THREATENING : contains the first obstacle(friendly or not)
-	//If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
-	//4 concrete PIECE threaten
 	@Override
+	/**
+	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
+	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
+	 * 4 concrete PIECE threaten 
+	 */
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
@@ -67,7 +77,16 @@ public class Rook extends Piece {
 	}
 	
 
-	//Checks move Upward  
+	/**
+	 * Checks move Upward  
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveColumnU(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==0 et Dy>0
 		boolean obstacle = false;
@@ -77,7 +96,16 @@ public class Rook extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move Downward  
+	/**
+	 * Checks move Downward  
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveColumnD(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==0 et Dy<0
 		boolean obstacle = false;
@@ -87,7 +115,16 @@ public class Rook extends Piece {
 		}
 		return !obstacle;
 	}	
-	//Checks move on the left
+	/**
+	 * Checks move on the left
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveLineL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx<0 et Dy==0
 		boolean obstacle = false;
@@ -97,7 +134,16 @@ public class Rook extends Piece {
 		}
 		return !obstacle;
 	}	
-	//Checks move on the right
+	/**
+	 * Checks move on the right
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveLineR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx>0 et Dy==0
 		boolean obstacle = false;
@@ -108,7 +154,11 @@ public class Rook extends Piece {
 		return !obstacle;
 	}	
 
-	//Checks obstacle upward
+	/**
+	 * Checks obstacle upward
+	 * @param B
+	 * @return
+	 */
 	private Piece ColumnU(ArrayList <Piece> B)
 	{
 		int i;
@@ -118,7 +168,11 @@ public class Rook extends Piece {
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
-	//Checks obstacle downward
+	/**
+	 * Checks obstacle downward
+	 * @param B
+	 * @return
+	 */
 	private Piece ColumnD(ArrayList <Piece> B)
 	{
 		int i;
@@ -128,7 +182,11 @@ public class Rook extends Piece {
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
-	//Checks obstacle on the left
+	/**
+	 * Checks obstacle on the left
+	 * @param B
+	 * @return
+	 */
 	private Piece LineL(ArrayList <Piece> B)
 	{
 		int i;
@@ -138,7 +196,11 @@ public class Rook extends Piece {
 		}
 		return Utils.getPiece(B,i,getPosy());	
 	}
-	//Checks obstacle on the right
+	/**
+	 * Checks obstacle on the right
+	 * @param B
+	 * @return
+	 */
 	private Piece LineR(ArrayList <Piece> B)
 	{
 		int i;

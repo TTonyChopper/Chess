@@ -7,16 +7,21 @@ import com.anthony.chessgame.util.Utils;
 //Class representing BISHOP
 public class Bishop extends Piece {
 
-	//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
+	/**
+	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
+	 * @param P
+	 * @param C
+	 */
 	public Bishop(int P,colorPiece C){
 		super(P);
 		definePiece(typePiece.Bb,C);
 	}  
 
-	//OVERRIDE
 	@Override
-	//Movement allowed, stopping to the first obstacle[non VOID] : diagonals UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
-	//RETURNS true if the move is allowed
+	/**
+	 * Movement allowed, stopping to the first obstacle[non VOID] : diagonals UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
+	 * RETURNS true if the move is allowed
+	 */
 	public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
@@ -32,16 +37,19 @@ public class Bishop extends Piece {
 			else if (Dx<0) moveok=checkMoveDiagDL(Px,Py,Dx,Dy,W,B);
 		}
 
-		//Test final : case de destination
+		//Finaltest: destination case
 		if (Utils.comparePieceC(B,Px,Py,W)) moveok=false;
 
 		return moveok;
 	}
 
-	//SETTER for THREATENING : contains the first obstacle(friendly or not)
-	//If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
-	//4 concrete PIECE threaten
+	
 	@Override
+	/**
+	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
+	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
+	 * 4 concrete PIECE threaten
+	 */
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
@@ -53,8 +61,16 @@ public class Bishop extends Piece {
 		return false;
 	}
 
-
-	//Checks move on the Up Left diagonal 
+	/**
+	 * Checks move on the Up Left diagonal
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagUL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==-Dy  Dy>0
 		boolean obstacle = false;
@@ -64,7 +80,16 @@ public class Bishop extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move on the Up Right diagonal
+	/**
+	 * Checks move on the Up Right diagonal
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagUR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==Dy  Dy>0
 		boolean obstacle = false;
@@ -74,7 +99,16 @@ public class Bishop extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move on the Down Right diagonal
+	/**
+	 * Checks move on the Down Right diagonal
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagDR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==-Dy  Dx>0
 		boolean obstacle = false;
@@ -84,7 +118,16 @@ public class Bishop extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move on the Down Left diagonal
+	/**
+	 * Checks move on the Down Left diagonal
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagDL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==Dy  Dx<0
 		boolean obstacle = false;
@@ -95,7 +138,11 @@ public class Bishop extends Piece {
 		return !obstacle;
 	}
 
-	//Checks obstacle on the Up Left diagonal
+	/**
+	 * Checks obstacle on the Up Left diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagUL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
@@ -107,7 +154,11 @@ public class Bishop extends Piece {
 		}
 		return Utils.getPiece(B,8,8);
 	}
-	//Checks obstacle on the Up Right diagonal
+	/**
+	 * Checks obstacle on the Up Right diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagUR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
@@ -119,7 +170,11 @@ public class Bishop extends Piece {
 		}
 		return Utils.getPiece(B,8,8);
 	}
-	//Checks obstacle on the Down Right diagonal
+	/**
+	 * Checks obstacle on the Down Right diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagDR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
@@ -131,7 +186,11 @@ public class Bishop extends Piece {
 		}
 		return Utils.getPiece(B,8,8);
 	}
-	//Checks obstacle on the Down Left diagonal
+	/**
+	 * Checks obstacle on the Down Left diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagDL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();

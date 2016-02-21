@@ -7,16 +7,21 @@ import com.anthony.chessgame.util.Utils;
 //Class representing QUEEN on WHITE case
 public class Queen extends Piece {
 
-	//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
+	/**
+	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
+	 * @param P
+	 * @param C
+	 */
 	public Queen(int P,colorPiece C) {
 		super(P);
 		definePiece(typePiece.Q,C);
 	}
 
-	//OVERRIDE
-	//Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT-UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
-	//RETURNS true if the move is allowed
 	@Override
+	/**
+	 * Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT-UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
+	 * RETURNS true if the move is allowed
+	 */
 	public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
@@ -48,10 +53,12 @@ public class Queen extends Piece {
 		return moveok;
 	}
 
-	//SETTER for THREATENING : contains the first obstacle(friendly or not)
-	//If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
-	//8 concrete PIECE threaten
 	@Override
+	/**
+	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
+	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
+	 * 8 concrete PIECE threaten
+	 */
 	public boolean setThreats(ArrayList <Piece> B){
 		clearThreatening();
 		addThreatening(LineL(B));
@@ -67,7 +74,16 @@ public class Queen extends Piece {
 	}
 
 
-	//Checks move Upward  
+	/**
+	 * Checks move Upward  
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveColumnU(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==0 et Dy>0
 		boolean obstacle = false;
@@ -77,7 +93,16 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move Downward 
+	/**
+	 * Checks move Downward 
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveColumnD(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==0 et Dy<0
 		boolean obstacle = false;
@@ -87,7 +112,16 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}	
-	//Checks move on the Left
+	/**
+	 * Checks move on the Left
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveLineL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx<0 et Dy==0
 		boolean obstacle = false;
@@ -97,7 +131,16 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}	
-	//Checks move on the Right 
+	/**
+	 * Checks move on the Right 
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveLineR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx>0 et Dy==0
 		boolean obstacle = false;
@@ -107,7 +150,16 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}	
-	//Checks move on the Up Left diagonal 
+	/**
+	 * Checks move on the Up Left diagonal 
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagUL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==-Dy  Dy>0
 		boolean obstacle = false;
@@ -117,7 +169,16 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move on the Up Right diagonal 
+	/**
+	 * Checks move on the Up Right diagonal 
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagUR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==Dy  Dy>0
 		boolean obstacle = false;
@@ -127,7 +188,16 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move on the Down Right diagonal
+	/**
+	 * Checks move on the Down Right diagonal
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagDR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==-Dy  Dx>0
 		boolean obstacle = false;
@@ -137,7 +207,16 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}
-	//Checks move on the Down Left diagonal
+	/**
+	 * Checks move on the Down Left diagonal
+	 * @param Px
+	 * @param Py
+	 * @param Dx
+	 * @param Dy
+	 * @param W
+	 * @param B
+	 * @return
+	 */
 	private boolean checkMoveDiagDL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==Dy  Dx<0
 		boolean obstacle = false;
@@ -148,7 +227,11 @@ public class Queen extends Piece {
 		return !obstacle;
 	}
 
-	//Checks obstacle Upward
+	/**
+	 * Checks obstacle Upward
+	 * @param B
+	 * @return
+	 */
 	private Piece ColumnU(ArrayList <Piece> B){
 		int i;
 		for (i = getPosy()+1;i<8;i++)
@@ -157,7 +240,11 @@ public class Queen extends Piece {
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
-	//Checks obstacle Downward
+	/**
+	 * Checks obstacle Downward
+	 * @param B
+	 * @return
+	 */
 	private Piece ColumnD(ArrayList <Piece> B){
 		int i;
 		for (i = getPosy()-1;i>-1;i--)
@@ -166,7 +253,11 @@ public class Queen extends Piece {
 		}
 		return Utils.getPiece(B,getPosx(),i);	
 	}
-	//Checks obstacle on the Left
+	/**
+	 * Checks obstacle on the Left
+	 * @param B
+	 * @return
+	 */
 	private Piece LineL(ArrayList <Piece> B){
 		int i;
 		for (i = getPosx()-1;i>-1;i--)
@@ -175,7 +266,11 @@ public class Queen extends Piece {
 		}
 		return Utils.getPiece(B,i,getPosy());	
 	}
-	//Checks obstacle on the Right
+	/**
+	 * Checks obstacle on the Right
+	 * @param B
+	 * @return
+	 */
 	private Piece LineR(ArrayList <Piece> B){
 		int i;
 		for (i = getPosx()+1;i<8;i++)
@@ -184,7 +279,11 @@ public class Queen extends Piece {
 		}
 		return Utils.getPiece(B,i,getPosy());
 	}
-	//Checks obstacle on the Up Left diagonal
+	/**
+	 * Checks obstacle on the Up Left diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagUL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
@@ -196,7 +295,11 @@ public class Queen extends Piece {
 		}
 		return Utils.getPiece(B,8,8);
 	}
-	//Checks obstacle on the Up Right diagonal
+	/**
+	 * Checks obstacle on the Up Right diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagUR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
@@ -208,7 +311,11 @@ public class Queen extends Piece {
 		}
 		return Utils.getPiece(B,8,8);
 	}
-	//Checks obstacle on the Down Right diagonal
+	/**
+	 * Checks obstacle on the Down Right diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagDR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
@@ -220,7 +327,11 @@ public class Queen extends Piece {
 		}
 		return Utils.getPiece(B,8,8);
 	}
-	//Checks obstacle on the Down Left diagonal
+	/**
+	 * Checks obstacle on the Down Left diagonal
+	 * @param B
+	 * @return
+	 */
 	private Piece DiagDL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();

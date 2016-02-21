@@ -7,28 +7,38 @@ import com.anthony.chessgame.util.Utils;
 //Class representing KING
 public class King extends Piece {
 	//true; set to false after first move[condition for Castling]
-	private boolean immobile;
+	private boolean still;
 
 	////1 for column a ; 2 for column h
 	//private int number;
 
-	//CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Kw"/"Kb", it is IMMOBILE(true) on creation 
+    /**
+	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Kw"/"Kb", it is still(true) on creation 
+	 * @param P
+	 * @param C
+	 */
 	public King(int P,colorPiece C) {
 		super(P);
 		definePiece(typePiece.K,C);
-		immobile = true;
+		still = true;
 	}
 
-	//OVERRIDE
 	@Override
-	public boolean hasSpecialMove(){return immobile;}
-	//One-way SETTER in case it moves
+	/**
+	 * King may castle as long as still is true
+	 */
+	public boolean hasSpecialMove(){return still;}
 	@Override
-	public boolean loseSpecialMove(){return immobile=false;}
+	/**
+	 * One-way SETTER in case it moves
+	 */
+	public boolean loseSpecialMove(){return still=false;}
 
-	//Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases 
-	//RETURNS true if the move is allowed
 	@Override
+	/**
+	 * Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases 
+	 * RETURNS true if the move is allowed
+	 */
 	public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();	
@@ -48,7 +58,7 @@ public class King extends Piece {
 			}
 			if (interpiecevide) 
 			{  
-				//Vérifier que les cases sont safe pour le King!
+				//Check if King route is safe!
 				int pKing = getPos();
 				boolean check = Utils.isThreaten(this);
 				ArrayList<Piece> Bmind = new ArrayList<Piece>();
@@ -66,14 +76,14 @@ public class King extends Piece {
 		//Rock Left
 		else if ((hasSpecialMove())&&(Dy==0)&&(Dx==-2)&&((Utils.getPiece(B,Px-2,Py)).hasSpecialMove()))
 		{
-			boolean interpiecevide=true;
+			boolean voidInterpiece=true;
 			for (int i =-1;i<2;i++)
 			{
-				if (!(Utils.isVoid(B,Px-i,Py))) interpiecevide= false ;
+				if (!(Utils.isVoid(B,Px-i,Py))) voidInterpiece= false ;
 			}
-			if (interpiecevide) 
+			if (voidInterpiece) 
 			{  
-				//Vérifier que les cases sont safe pour le King!
+				//Check if King route is safe!
 				int pKing = getPos();
 				boolean check = Utils.isThreaten(this);
 				ArrayList<Piece> Bmind = new ArrayList<Piece>();
@@ -90,10 +100,13 @@ public class King extends Piece {
 		else return false;
 		return false;
 	}
-	//SETTER for THREATENING : contains the first obstacle(friendly or not)
-	//If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
-	//8 concrete PIECE threaten
+	
 	@Override
+	/**
+	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
+	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
+	 * 8 concrete PIECE threaten
+	 */
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
@@ -114,16 +127,32 @@ public class King extends Piece {
 	}
 
 	
-	//Functions needed to verify KING is not in Check if Castling 
-	//Same ones taken from CLASS CHESSGAME
+	/**
+	 * Functions needed to verify KING is not in Check if Castling 
+	 * Same ones taken from CLASS CHESSGAME 
+	 * @param p
+	 * @param P
+	 * @param Board
+	 */
 	private void setPiece(Piece p,int P,ArrayList<Piece> Board){
 		Board.set(P,p);
 		(getPiece(P,Board)).setPos(P);
 		(getPiece(P,Board)).setCoord();
 		(getPiece(P,Board)).setLCoord();
 	}
+	/**
+	 * 
+	 * @param P
+	 * @param B
+	 * @return
+	 */
 	private Piece getPiece(int P,ArrayList <Piece>B){return B.get(P);} 
-	//Moves King to adjacent case, using a copy of the BOARD B, named BMIND 
+	/**
+	 * Moves King to adjacent case, using a copy of the BOARD B, named BMIND 
+	 * @param Pinit
+	 * @param Pfinal
+	 * @param Board
+	 */
 	private void moveKingInMind(int Pinit,int Pfinal,ArrayList <Piece> Board){
 		Piece moving = getPiece(Pinit,Board);	
 

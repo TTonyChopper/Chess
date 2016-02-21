@@ -12,12 +12,12 @@ import com.anthony.chessgame.piece.Piece.typePiece;
 import com.anthony.chessgame.piece.Queen;
 import com.anthony.chessgame.piece.Rook;
 import com.anthony.chessgame.piece.Piece.colorPiece;
-import com.anthony.chessgame.util.Print;
+import com.anthony.chessgame.util.IPrint;
 import com.anthony.chessgame.util.Utils;
 //Main Class for the GAMES OF CHESS
 public class ChessGame
 {
-	//players
+	//Players
 	private Player P1;
 	private Player P2;
 	//Boards : real and trial board
@@ -35,6 +35,8 @@ public class ChessGame
 	private int posK2bu;
 	//POSITIONS of a PIECE which is being played
 	private int[] mW;
+	
+	private IPrint printer;
 
 	private final static int pieces[]={
 		4,2,3,5,6,3,2,4,1,1,1,1,1,1,1,1,
@@ -42,8 +44,11 @@ public class ChessGame
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		1,1,1,1,1,1,1,1,4,2,3,5,6,3,2,4};
 
-	//CONSTRUCTOR
-	public ChessGame(){
+	/**
+	 * CONSTRUCTOR
+	 * @param p
+	 */
+	public ChessGame(IPrint p){
 		B = new ArrayList <Piece>();
 		Bfuture = new ArrayList <Piece>();
 		checkmate = false;
@@ -55,17 +60,20 @@ public class ChessGame
 		posK2= 60;
 		posK2bu= 60;
 		mW= new int[]{8,9};
+		printer = p;
 	}
 
-	//PLAY : 
+	/**
+	 * start and play the game
+	 */
 	public void start(){
-		Print.printTitle();
+		printer.printTitle();
 
 		createPlayers();
 
 		createBoard();
 
-		Print.printBoard(B);
+		printer.printBoard(B);
 		Utils.setThreatsOnBoard(B);
 
 		while (!checkmate2)
@@ -91,18 +99,22 @@ public class ChessGame
 	public int getPosK1(){return posK1;}
 	public int getPosK2(){return posK2;}
 
-	//Constructs both PLAYER
+	/**
+	 * Constructs both PLAYER
+	 */
 	public void createPlayers()
 	{
-		String pname = Print.askName(true);
+		String pname = printer.askName(true);
 		P1 = new Player(1,true,pname);
 
-		pname = Print.askName(false);
+		pname = printer.askName(false);
 		P2 = new Player(2,false,pname);
-		Print.printLine();
-		Print.printLine();
+		printer.printLine();
+		printer.printLine();
 	}
-	//Constructs board
+	/**
+	 * Constructs board
+	 */
 	public void createBoard()
 	{
 		for (int i=0;i<64;i++) 
@@ -113,7 +125,12 @@ public class ChessGame
 		}	  
 		B.add(new OutOfBoard());
 	}
-	//Constructs the BOARD one PIECE at a time
+	/**
+	 * Constructs the BOARD one PIECE at a time
+	 * @param P
+	 * @param C
+	 * @return
+	 */
 	public Piece putPiece(int P, colorPiece C){
 		Piece put = null;
 		switch (pieces[P])
@@ -146,16 +163,24 @@ public class ChessGame
 		B.add(put);
 		return put;
 	}
-	//Try current move
+	/**
+	 * Try current move
+	 * @param P
+	 * @return
+	 */
 	public Piece tryMove(Player P){
 		saveMoveKings();
 		Piece captured = moveTo(P,Bfuture,mW[0],mW[1]);
 		Utils.setThreatsOnBoard(Bfuture);
-		Print.printThreateningOnBoard(Bfuture);
-		//Print.printThreatenOnBoard(Bfuture);
+		printer.printThreateningOnBoard(Bfuture);
+		//printer.printThreatenOnBoard(Bfuture);
 		return captured;
 	}
-	//Gets moves from PLAYER and try them until they are valid, then make the move
+	/**
+	 * Gets moves from PLAYER and try them until they are valid, then makes the move
+	 * @param P
+	 * @return
+	 */
 	public Piece askNMoveCoord(Player P){
 		Piece captured = null;
 		//		boolean losingMobility = false;
@@ -166,17 +191,17 @@ public class ChessGame
 			if (check) 
 			{
 				revertMoveKings();
-				Print.printCheck();
-				Print.printBoard(B);
+				printer.printCheck();
+				printer.printBoard(B);
 			}
 			//Ask coordinates
 			Bfuture = Utils.cloneAL(B);
-			Print.askMove(P,Bfuture,mW);
+			printer.askMove(P,Bfuture,mW);
 			//Test the move 
 			captured = tryMove(P);
 			//Verify if Player playing turn if is check
 			check=Utils.isInCheck(Bfuture,P,posK1,posK2);
-			Print.printIsCheck(check);
+			printer.printIsCheck(check);
 		}while(check);		
 		//Move is OK, Finalize it
 		setCaptures(captured,P);
@@ -184,7 +209,15 @@ public class ChessGame
 		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B.get(mW[1]).loseSpecialMove();
 		return captured;
 	}
-	//Makes the move, supposing it is valid
+
+	/**
+	 * Makes the move, supposing it is valid
+	 * @param P
+	 * @param Board
+	 * @param Pinit
+	 * @param Pfinal
+	 * @return
+	 */
 	public Piece moveTo(Player P,ArrayList <Piece>Board,int Pinit,int Pfinal) {
 		Piece moving = getPiece(Pinit,Board);
 
@@ -206,7 +239,12 @@ public class ChessGame
 		setPiece(moving,Pfinal,Board);
 		return captured;
 	}
-	//Adds a PIECE into the wcaptures/bcaptures ARRAYLIST, containing CAPTURES per COLOR
+	/**
+	 * Adds a PIECE into the wcaptures/bcaptures ARRAYLIST, containing CAPTURES per COLOR
+	 * @param captured
+	 * @param P
+	 * @return
+	 */
 	public Piece setCaptures(Piece captured,Player P){
 		if (((captured.getType()) != typePiece.N) && P.isWhite()) {
 			wcaptures.add(captured.getName());
@@ -218,17 +256,27 @@ public class ChessGame
 			return captured;  
 		}
 	}
-	//Saves Coordinates of KING, in case his move is not valid
+	/**
+	 * Saves Coordinates of KING, in case his move is not valid
+	 */
 	public void saveMoveKings(){
 		posK1bu=posK1;
 		posK2bu=posK2;
 	}
-	//Reverts previous Coordinates of KING, when his move was not valid
+	/**
+	 * Reverts previous Coordinates of KING, when his move was not valid
+	 */
 	public void revertMoveKings(){
 		posK1=posK1bu;
 		posK2=posK2bu;
 	}
-	//Modify the BOARD composition after a move
+
+	/**
+	 * Modify the BOARD composition after a move
+	 * @param p
+	 * @param P
+	 * @param Board
+	 */
 	public void setPiece(Piece p,int P,ArrayList<Piece> Board){
 		Board.set(P,p);
 		(getPiece(P,Board)).setPos(P);
@@ -236,16 +284,22 @@ public class ChessGame
 		(getPiece(P,Board)).setLCoord();
 	}
 
-	//Organize the turn of the PLAYER
+	/**
+	 * Organize the turn of the PLAYER
+	 * @param M
+	 * @param N
+	 * @return
+	 */
 	public boolean playTurn(Player M,Player N) {
-		if(M.isWhite()) Print.printBoardState(B,M,1);	
-		else if(!(M.isWhite())) Print.printBoardState(B,M,2);
+		if(M.isWhite()) printer.printBoardState(B,M,1);	
+		else if(!(M.isWhite())) printer.printBoardState(B,M,2);
 		askNMoveCoord(M);
-		Print.printBoard(B);
-		Print.printCaptures(wcaptures,bcaptures);
+		printer.printBoard(B);
+		printer.printCaptures(wcaptures,bcaptures);
 		if (Utils.isInCheck(B,N,posK1,posK2))
 		{
-			Print.oppInCheck(B,N);
+			//Gotta check if this is a Mate
+			printer.oppInCheck(B,N);
 		}
 		return false;
 	}
