@@ -201,7 +201,7 @@ public class Queen extends Piece {
 	private boolean checkMoveDiagDR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
 		//Dx==-Dy  Dx>0
 		boolean obstacle = false;
-		for (int i=1;i<Dy;i++)
+		for (int i=1;i<Dx;i++)
 		{
 			if (!(Utils.isVoid(B,Px-i,Py+i))) obstacle=true;
 		}
