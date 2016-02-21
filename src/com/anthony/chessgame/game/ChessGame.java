@@ -15,7 +15,7 @@ import com.anthony.chessgame.piece.Piece.colorPiece;
 import com.anthony.chessgame.util.IPrint;
 import com.anthony.chessgame.util.Utils;
 //Main Class for the GAMES OF CHESS
-public class ChessGame
+public class ChessGame implements SpecialMoveObserver
 {
 	//Players
 	private Player P1;
@@ -33,6 +33,9 @@ public class ChessGame
 	private int posK1bu;
 	private int posK2;
 	private int posK2bu;
+	//Not null if a pawn of the corresponding player did a 2 case move last turn 
+	private Piece pawnW;
+	private Piece pawnB;
 	//POSITIONS of a PIECE which is being played
 	private int[] mW;
 	
@@ -98,7 +101,12 @@ public class ChessGame
 	//Saves position of King in case Castling attempt is not valid
 	public int getPosK1(){return posK1;}
 	public int getPosK2(){return posK2;}
-
+	//Getter to check "En passant"
+	public Piece getFoePawn(boolean W) {
+		Piece pawn = (W) ? pawnB : pawnW;
+		return pawn;
+	}
+	
 	/**
 	 * Constructs both PLAYER
 	 */
@@ -140,6 +148,7 @@ public class ChessGame
 			break;
 		case 1:
 			put = new Pawn(P,C);
+			((Pawn)put).setSpecialMoveListener(this);
 			break;
 		case 2:
 			put = new Knight(P,C);
@@ -172,7 +181,7 @@ public class ChessGame
 		saveMoveKings();
 		Piece captured = moveTo(P,Bfuture,mW[0],mW[1]);
 		Utils.setThreatsOnBoard(Bfuture);
-		printer.printThreateningOnBoard(Bfuture);
+		//printer.printThreateningOnBoard(Bfuture);
 		//printer.printThreatenOnBoard(Bfuture);
 		return captured;
 	}
@@ -195,6 +204,7 @@ public class ChessGame
 				printer.printBoard(B);
 			}
 			//Ask coordinates
+			Bfuture = null;
 			Bfuture = Utils.cloneAL(B);
 			printer.askMove(P,Bfuture,mW);
 			//Test the move 
@@ -205,8 +215,12 @@ public class ChessGame
 		}while(check);		
 		//Move is OK, Finalize it
 		setCaptures(captured,P);
-		B=Utils.cloneAL(Bfuture);
+		B=null;
+		B=Bfuture;
+		//Lose special moves opportunity
 		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B.get(mW[1]).loseSpecialMove();
+		//reset other player passable pawn
+		resetMovePawn(!P.isWhite());
 		return captured;
 	}
 
@@ -221,7 +235,7 @@ public class ChessGame
 	public Piece moveTo(Player P,ArrayList <Piece>Board,int Pinit,int Pfinal) {
 		Piece moving = getPiece(Pinit,Board);
 
-		//Verify Castling conditions
+		//Verify Castling conditions to move the Rook too
 		if (moving.getType()==typePiece.K)
 		{
 			if (P.isWhite()) posK1 = Pfinal;
@@ -232,11 +246,27 @@ public class ChessGame
 				else if ( ((Pfinal-Pinit)==-2)) moveTo(P,Board,Pfinal-2,Pfinal+1);
 			}
 		}
-
+		
 		//Moving pieces
-		Piece captured = getPiece(Pfinal,Board); 	
+		Piece captured = getPiece(Pfinal,Board);
 		setPiece(new Nothing(Pinit,colorPiece.NONE),Pinit,Board);
 		setPiece(moving,Pfinal,Board);
+		
+		//Verify Passing conditions
+		if (moving.getType()==typePiece.P)
+		{
+			int Px = moving.getPosx();
+			int Py = moving.getPosy();
+			Py = (P.isWhite()) ? Py-1 : Py+1;
+			Piece passedTest = (P.isWhite()) ? pawnB : pawnW;
+			if(Utils.getPiece(Board, Px,Py)==passedTest) {
+				captured = passedTest;
+				int pos = captured.getPos();
+				setPiece(new Nothing(pos,colorPiece.NONE),pos,Board);
+			}
+		}
+
+		
 		return captured;
 	}
 	/**
@@ -270,6 +300,16 @@ public class ChessGame
 		posK1=posK1bu;
 		posK2=posK2bu;
 	}
+	/**
+	 * Resets Passing conditions check for a Pawn, when his move was not valid
+	 */
+	public void resetMovePawn(boolean W){
+		if (W) {
+			if (pawnW!= null) pawnW = null;
+		} else {
+			if (pawnB!= null) pawnB = null;
+		}
+	}
 
 	/**
 	 * Modify the BOARD composition after a move
@@ -293,15 +333,28 @@ public class ChessGame
 	public boolean playTurn(Player M,Player N) {
 		if(M.isWhite()) printer.printBoardState(B,M,1);	
 		else if(!(M.isWhite())) printer.printBoardState(B,M,2);
+		
 		askNMoveCoord(M);
+		
 		printer.printBoard(B);
 		printer.printCaptures(wcaptures,bcaptures);
+		
 		if (Utils.isInCheck(B,N,posK1,posK2))
 		{
-			//Gotta check if this is a Mate
+			//TODO Gotta check if this is a Mate
 			printer.oppInCheck(B,N);
 		}
 		return false;
 	}
-
+	@Override
+	/**
+	 * 
+	 */
+	public void bigLeapSpawnSpotted(Piece P,boolean W) {
+		if (W) {
+			pawnW = P;
+		} else {
+			pawnB = P;
+		}
+	}
 }

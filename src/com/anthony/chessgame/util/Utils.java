@@ -147,6 +147,13 @@ public class Utils {
 	 */
 	public static boolean isWhite(ArrayList<Piece> B,int Px,int Py){return isWhite(B,Utils.getPos(Px,Py));}
 	/**
+	 * Returns true if the PIECE at P is Pawn
+	 * @param B
+	 * @param P
+	 * @return
+	 */
+	public static boolean isPawn(ArrayList<Piece> B,int P){return (((B.get(P)).getType()) == typePiece.P);}
+	/**
 	 * Returns true if the PIECE at P is King
 	 * @param B
 	 * @param P
