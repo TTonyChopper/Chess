@@ -70,6 +70,7 @@ public abstract class Piece{
 	 */
 	public boolean hasSpecialMove(){return false;};
 	public boolean loseSpecialMove(){return false;};
+	public Integer[] getPossibleMovesList(){return possibleMoves.toArray(new Integer[possibleMoves.size()]);};
 	public int getPos() {return pos;}
 	public int getPosx() {return posx;}
 	public int getPosy() {return posy;}
@@ -139,15 +140,15 @@ public abstract class Piece{
 	 * 
 	 */
 	public void setLCoord(){
-		lposx = (char)(posx - 1 + (int)('a'));
-		lposy = (char)(posy - 1 + (int)('1'));
+		lposx = (char)(posx  + (int)('a'));
+		lposy = (char)(posy  + (int)('1'));
 	}
 	/**
 	 * 
 	 */
 	public void setLToCoord(){
-		posx = ((int)lposx + 1 - (int)('a'));
-		posy = ((int)lposy + 1 - (int)('1'));
+		posx = ((int)lposx  - (int)('a'));
+		posy = ((int)lposy  - (int)('1'));
 	}
 
 	/**
@@ -234,5 +235,11 @@ public abstract class Piece{
 		if (type != other.type)
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "Piece [name=" + name + ", pos=" + pos + ", posx=" + posx
+				+ ", posy=" + posy + ", lposx=" + lposx + ", lposy=" + lposy
+				+ "]";
 	}
 }

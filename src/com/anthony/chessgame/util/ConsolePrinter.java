@@ -1,5 +1,7 @@
 package com.anthony.chessgame.util;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -149,6 +151,11 @@ public class ConsolePrinter implements IPrint{
 		for (Player p : P) {
 			System.out.print("Player "+p.getNumber()+" pieces : ");
 			List<Piece> pieces = p.getPieces();
+			Collections.sort(pieces,new Comparator<Piece>() {
+			      public int compare(Piece p1, Piece p2) {
+			          return p1.getName().compareTo(p2.getName());
+			        }
+			      });
 			for (Piece pc : pieces) {
 				System.out.print(pc.getName()+" ");
 			}

@@ -208,7 +208,7 @@ public class Utils {
 	}
 
 	/**
-	 * Returns true if the KING of the PLAYER J is attacked[PLAYER in CHESS]
+	 * Returns true if the KING of the PLAYER J is attacked[PLAYER in CHECK]
 	 * @param B
 	 * @param J
 	 * @param posK1

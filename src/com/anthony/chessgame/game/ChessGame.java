@@ -1,5 +1,6 @@
 package com.anthony.chessgame.game;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.anthony.chessgame.piece.Bishop;
@@ -86,8 +87,19 @@ public class ChessGame implements SpecialMoveObserver
 			//printer.printThreateningOnBoard(B);
 			//printer.printThreatenOnBoard(B);
 			checkmate = playTurn(P1,P2);
-			if ((checkmate==null) || checkmate==true) break;
+			if ((checkmate==null) || (checkmate==true)) {
+				break;
+			}
 			checkmate2 = playTurn(P2,P1);
+		}
+		
+		//TODO
+		if ((checkmate==null) && (checkmate2==null)) {
+//			printer.printPat(P1,P2);
+		} else if (checkmate==true) {
+//			printer.printMate(P1,P2);
+		} else if (checkmate==true) {
+//			printer.printMate(P2,P1);
 		}
 		printer.printGameOver();
 	}
@@ -190,13 +202,42 @@ public class ChessGame implements SpecialMoveObserver
 		return put;
 	}
 	/**
+	 * 
+	 * @param P
+	 */
+	public void tryMoveBack(Player P,Piece captured){
+		moveBackTo(P,Bfuture,mW[1],mW[0],captured);
+	}
+	/**
+	 * 
+	 * @param P
+	 * @param pOrig
+	 * @param pDest
+	 */
+	public void tryMoveBack(Player P,int pOrig,int pMoved,Piece captured){
+		revertMoveKings();
+		moveBackTo(P,Bfuture,pMoved,pOrig,captured);
+		Utils.setThreatsOnBoard(Bfuture);
+		//printer.printThreateningOnBoard(Bfuture);
+		//printer.printThreatenOnBoard(Bfuture);
+		//printer.printPlayerPiecesOnBoard(P1,P2);
+	}
+	/**
 	 * Try current move
 	 * @param P
 	 * @return
 	 */
 	public Piece tryMove(Player P){
+		return tryMove(P,mW[0],mW[1]);
+	}
+	/**
+	 * Try current move
+	 * @param P
+	 * @return
+	 */
+	public Piece tryMove(Player P, int pOrig, int pDest){
 		saveMoveKings();
-		Piece captured = moveTo(P,Bfuture,mW[0],mW[1]);
+		Piece captured = moveTo(P,Bfuture,pOrig,pDest);
 		Utils.setThreatsOnBoard(Bfuture);
 		//printer.printThreateningOnBoard(Bfuture);
 		//printer.printThreatenOnBoard(Bfuture);
@@ -205,7 +246,6 @@ public class ChessGame implements SpecialMoveObserver
 	}
 	public void finalizeMove(Piece moving,Piece captured,Player P) {
 		setCaptures(captured,getFoe(P));
-		setPieceMobilities(P);
 		if (captured.isWhite() != null) getFoe(P).losePiece(captured);
 		B=null;
 		B=Bfuture;
@@ -213,6 +253,33 @@ public class ChessGame implements SpecialMoveObserver
 		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B.get(mW[1]).loseSpecialMove();
 		//reset other player passable pawn
 		resetMovePawn(!P.isWhite());
+	}
+	
+	/**
+	 * Try moves until they are valid, then makes the move(same as askNMoveCoord, without getting moves from player)
+	 * @param P
+	 * @return
+	 */
+	public boolean moveCoord(Player P,int pOrig,int pDest){
+		//		boolean losingMobility = false;
+		Piece captured = null;
+		boolean check= false;
+
+		Bfuture = null;
+		Bfuture = Utils.cloneAL(B);
+
+		//Test the move 
+		captured = tryMove(P,pOrig,pDest);
+		//Verify if Player playing turn if is check
+		check=Utils.isInCheck(Bfuture,P,posK1,posK2);
+		
+		tryMoveBack(P,pOrig,pDest,captured);
+		if (check) {
+			return false;
+		} else {
+			//Move is OK : YAY(hoping it is a good one)!
+			return true;
+		}
 	}
 	/**
 	 * Gets moves from PLAYER and try them until they are valid, then makes the move
@@ -229,7 +296,7 @@ public class ChessGame implements SpecialMoveObserver
 		{
 			if (check) 
 			{
-				revertMoveKings();
+				tryMoveBack(P,captured);
 				printer.printCheck();
 				printer.printBoard(B);
 			}
@@ -247,7 +314,25 @@ public class ChessGame implements SpecialMoveObserver
 		finalizeMove(moving,captured,P);
 		return captured;
 	}
-
+	/** Makes back the move, supposing it is valid
+	 * 
+	 * @param P
+	 * @param Board
+	 * @param Pinit
+	 * @param Pfinal
+	 * @return
+	 */
+	public void moveBackTo(Player P,ArrayList <Piece>Board,int pMoved,int pOrig,Piece captured) {
+		moveTo(P,Board,pMoved,pOrig);
+		if (captured == null) {
+			setPiece(new Nothing(pMoved,colorPiece.NONE),pMoved,Board);
+		} else if (captured.getPos() == pMoved) {
+			setPiece(captured,pMoved,Board);
+		} else {
+			setPiece(new Nothing(pMoved,colorPiece.NONE),pMoved,Board);
+			setPiece(captured,captured.getPos(),Board);
+		}				
+	}
 	/**
 	 * Makes the move, supposing it is valid
 	 * @param P
@@ -315,9 +400,16 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public Boolean setPieceMobilities(Player P){
-		//TODO
-		return true;
+	public Boolean isOneMobility(Player P){
+		List<Piece> ps = P.getPieces();
+		Iterator<Piece> itr = ps.iterator();
+		int i=0;
+		while(itr.hasNext()) {
+			Piece p = itr.next();
+			i = p.scanPotentialMoves();
+			if (i>0) break;
+		}
+		return (i>0);
 	}
 	/**
 	 * Saves Coordinates of KING, in case his move is not valid
@@ -333,6 +425,7 @@ public class ChessGame implements SpecialMoveObserver
 		posK1=posK1bu;
 		posK2=posK2bu;
 	}
+
 	/**
 	 * Resets Passing conditions check for a Pawn, when his move was not valid
 	 */
@@ -363,10 +456,24 @@ public class ChessGame implements SpecialMoveObserver
 	 * @return
 	 */
 	public Boolean findOneMoveForPlayer(Player P) {
-		//TODO
 		List<Piece> pieces = P.getPieces();
+		Iterator<Piece> itr = pieces.iterator();
+		boolean end = false;
 		
-		return true;
+		while ((!end) && (itr.hasNext())) {
+			Piece p = itr.next();
+			int pOrig = p.getPos(); 
+			Integer[] moves = p.getPossibleMovesList();
+			for (Integer i : moves) {
+				int pDest = i.intValue();
+				boolean success = moveCoord(P,pOrig,pDest);
+				if (success) {
+					end = true;
+					return true;
+				}
+			}
+		}
+		return end;
 	}
 	/**
 	 * Organize the turn of the PLAYER
@@ -382,11 +489,14 @@ public class ChessGame implements SpecialMoveObserver
 		
 		printer.printBoard(B);
 		printer.printCaptures(wcaptures,bcaptures);
-		printer.printPlayersPiecesOnBoard(P1,P2);
-		P1.printPossibleMoves();
-		P2.printPossibleMoves();
+		printer.printPlayersPiecesOnBoard(M,N);
+		//M.printPossibleMoves();
+		//N.printPossibleMoves();
 		
-		Boolean oneMoveFound = findOneMoveForPlayer(N);
+		Boolean oneMoveFound = false;
+		if (isOneMobility(N)) {
+			oneMoveFound = findOneMoveForPlayer(N);
+		}
 		boolean check = false;
 		
 		if (Utils.isInCheck(B,N,posK1,posK2))
