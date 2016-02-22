@@ -41,9 +41,7 @@ public class ChessGame implements SpecialMoveObserver
 	private Piece pawnB;
 	//POSITIONS of a PIECE which is being played
 	private int[] mW;
-	
 	private IPrint printer;
-
 	private final static int pieces[]={
 		4,2,3,5,6,3,2,4,1,1,1,1,1,1,1,1,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -68,7 +66,6 @@ public class ChessGame implements SpecialMoveObserver
 		mW= new int[]{8,9};
 		printer = p;
 	}
-
 	/**
 	 * start and play the game
 	 */
@@ -82,7 +79,7 @@ public class ChessGame implements SpecialMoveObserver
 		printer.printBoard(B);
 		Utils.setThreatsOnBoard(B);
 
-		while ((checkmate2!=null) && (checkmate==false))
+		while ((checkmate2!=null) && (checkmate2==false))
 		{
 			//printer.printThreateningOnBoard(B);
 			//printer.printThreatenOnBoard(B);
@@ -125,7 +122,6 @@ public class ChessGame implements SpecialMoveObserver
 	public Player getFoe(Player P) {
 		return (P1==P) ? P2:P1;
 	}
-	
 	/**
 	 * Constructs both PLAYER
 	 */
@@ -254,7 +250,6 @@ public class ChessGame implements SpecialMoveObserver
 		//reset other player passable pawn
 		resetMovePawn(!P.isWhite());
 	}
-	
 	/**
 	 * Try moves until they are valid, then makes the move(same as askNMoveCoord, without getting moves from player)
 	 * @param P
@@ -425,7 +420,6 @@ public class ChessGame implements SpecialMoveObserver
 		posK1=posK1bu;
 		posK2=posK2bu;
 	}
-
 	/**
 	 * Resets Passing conditions check for a Pawn, when his move was not valid
 	 */
@@ -436,7 +430,6 @@ public class ChessGame implements SpecialMoveObserver
 			if (pawnB!= null) pawnB = null;
 		}
 	}
-
 	/**
 	 * Modify the BOARD composition after a move
 	 * @param p
@@ -449,7 +442,6 @@ public class ChessGame implements SpecialMoveObserver
 		(getPiece(P,Board)).setCoord();
 		(getPiece(P,Board)).setLCoord();
 	}
-
 	/**
 	 * Tests every piece of the player and tries to find one legal move
 	 * @param P

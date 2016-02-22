@@ -9,9 +9,6 @@ public class King extends Piece {
 	//true; set to false after first move[condition for Castling]
 	private boolean still;
 
-	////1 for column a ; 2 for column h
-	//private int number;
-
     /**
 	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Kw"/"Kb", it is still(true) on creation 
 	 * @param P
@@ -33,7 +30,6 @@ public class King extends Piece {
 	 * One-way SETTER in case it moves
 	 */
 	public boolean loseSpecialMove(){return still=false;}
-
 	@Override
 	/**
 	 * Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases 
@@ -100,7 +96,6 @@ public class King extends Piece {
 		else return false;
 		return false;
 	}
-	
 	@Override
 	/**
 	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
@@ -128,8 +123,7 @@ public class King extends Piece {
 			addThreatening(obstacle);
 		}
 		return false;
-	}
-	
+	}	
 	@Override
 	/**
 	 * Returns number of potential moves
@@ -137,7 +131,6 @@ public class King extends Piece {
 	public int scanPotentialMoves() {
 		return possibleMoves.size();
 	}
-
 	/**
 	 * Functions needed to verify KING is not in Check if Castling 
 	 * Same ones taken from CLASS CHESSGAME 

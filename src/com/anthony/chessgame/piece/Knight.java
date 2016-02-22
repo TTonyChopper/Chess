@@ -8,7 +8,7 @@ import com.anthony.chessgame.util.Utils;
 public class Knight extends Piece {
 
 	/**
-	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb" 
+	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Nw"/"Nb" 
 	 * @param P
 	 * @param C
 	 */
@@ -16,7 +16,6 @@ public class Knight extends Piece {
 		super(P);
 		definePiece(typePiece.Kn,C);
 	}
-
 	
 	@Override
 	/**
@@ -33,7 +32,6 @@ public class Knight extends Piece {
 		}
 		else return false;
 	}
-
 	@Override
 	/**
 	 * SETTER for THREATENING : contains the destination PIECE(friendly or not)
@@ -61,8 +59,7 @@ public class Knight extends Piece {
 			addThreatening(Utils.getPiece(B,X2,Y2));
 		}
 		return false;
-	}
-	
+	}	
 	@Override
 	/**
 	 * Returns number of potential moves

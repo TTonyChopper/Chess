@@ -47,7 +47,6 @@ public class Utils {
 	 * @return
 	 */
 	public static colorPiece getPieceC(ArrayList<Piece> B,int P){return (B.get(P)).getColor();} 
-
 	/**
 	 * Transforms and Returns COORDINATES into POSITION 
 	 * @param Px
@@ -58,7 +57,6 @@ public class Utils {
 		if (Px>=0&&Py>=0&&Px<8&&Py<8) return 8*Py+Px;
 		else return 64;
 	}
-
 	/**
 	 * Clears THREATEN for every PIECE on a given BOARD
 	 * @param B
@@ -80,7 +78,6 @@ public class Utils {
 			if (!isVoid(B,t)) (B.get(t)).setThreats(B);
 		}
 	}
-
 	/**
 	 * Clones and Returns the copy of a given BOARD, to keep a BACKUP 
 	 * @param B1
@@ -91,7 +88,6 @@ public class Utils {
 		for (int i=0;i<65;i++){ B2.add(B1.get(i));}
 		return B2;
 	}
-
 	/**
 	 * Returns true if the PIECE at P is of COLOR W(0 for BLACK, 1 for WHITE)
 	 * @param B
@@ -115,7 +111,6 @@ public class Utils {
 	public static Boolean comparePieceC(ArrayList<Piece> B,int Px,int Py,boolean W){
 		return comparePieceC(B,Utils.getPos(Px, Py),W);
 	}
-
 	/**
 	 * Returns true if the PIECE at P is VOID[NOTHING]
 	 * @param B
@@ -188,8 +183,6 @@ public class Utils {
 	 * @return
 	 */
 	public static boolean isRookAndSpecial(ArrayList<Piece> B,int P){return( (isRook(B,P)) && !(B.get(P).hasSpecialMove()) );}
-
-
 	/**
 	 * Given a PIECE, returns true if Attacked by an Foe PIECE
 	 * @param P
@@ -206,7 +199,6 @@ public class Utils {
 		}
 		return check;
 	}
-
 	/**
 	 * Returns true if the KING of the PLAYER J is attacked[PLAYER in CHECK]
 	 * @param B

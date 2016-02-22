@@ -16,7 +16,6 @@ public class Nothing extends Piece {
 		super(P);
 		definePiece(typePiece.N,C);
 	}
-
 	/**
 	 * CONSTRUCTOR : create a PIECE of COLOR C=0[NEUTRAL] at COORDINATES(PX,PY), and his NAME stays "  " from PIECE 
 	 * @param Px
@@ -35,8 +34,7 @@ public class Nothing extends Piece {
 	public boolean checkMove(int Px, int Py, boolean W, Player J, ArrayList<Piece> B) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	
+	}	
 	@Override
 	/**
 	 * 

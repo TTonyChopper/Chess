@@ -8,7 +8,7 @@ import com.anthony.chessgame.util.Utils;
 public class Bishop extends Piece {
 
 	/**
-	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
+	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Bw"/"Bb"
 	 * @param P
 	 * @param C
 	 */
@@ -42,8 +42,6 @@ public class Bishop extends Piece {
 
 		return moveok;
 	}
-
-	
 	@Override
 	/**
 	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
@@ -60,7 +58,6 @@ public class Bishop extends Piece {
 		addThreatening(DiagDL(B));
 		return false;
 	}
-	
 	@Override
 	/**
 	 *
@@ -68,7 +65,6 @@ public class Bishop extends Piece {
 	public int scanPotentialMoves() {
 		return possibleMoves.size();
 	}
-
 	/**
 	 * Checks move on the Up Left diagonal
 	 * @param Px
@@ -145,7 +141,6 @@ public class Bishop extends Piece {
 		}
 		return !obstacle;
 	}
-
 	/**
 	 * 
 	 * @param B

@@ -65,8 +65,7 @@ public class Rook extends Piece {
 	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
 	 * 4 concrete PIECE threaten 
 	 */
-	public boolean setThreats(ArrayList <Piece> B)
-	{
+	public boolean setThreats(ArrayList <Piece> B){
 		clearThreatening();
 		clearPossibleMoves();
 		addThreatening(LineL(B));
@@ -160,7 +159,6 @@ public class Rook extends Piece {
 		}
 		return !obstacle;
 	}	
-
 	/**
 	 * 
 	 * @param B

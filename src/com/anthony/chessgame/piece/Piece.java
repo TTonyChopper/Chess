@@ -9,13 +9,19 @@ import com.anthony.chessgame.util.Utils;
 public abstract class Piece{
 	
 	//enum declaration for pieces	
-	public static enum typePiece{Bb("B"),Bw("B"),K("K"),Kn("N"),N(" "),O("X"),P("P"),Q("Q"),R("R");
+	public static enum typePiece{Bb("B",3),Bw("B",3),K("K",999),Kn("N",3),N(" ",0),O("X",0),P("P",1),Q("Q",9),R("R",5);
 	private String name;
-	private typePiece(String name){
+	//nominal value of the piece
+	private int power;
+	private typePiece(String name, int power){
 		this.name = name;
+		this.power = power;
 	}
 	public String getN(){
 		return name;
+	}
+	public int getPower(){
+		return power;
 	}
 	}; 
 	//enum declaration for colors
@@ -110,8 +116,6 @@ public abstract class Piece{
 	 * @return
 	 */
 	public abstract boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B);
-	
-	
 	/**
 	 * 
 	 * @param type
@@ -150,7 +154,6 @@ public abstract class Piece{
 		posx = ((int)lposx  - (int)('a'));
 		posy = ((int)lposy  - (int)('1'));
 	}
-
 	/**
 	 * Prints each THREATEN PIECE for this one 
 	 */
@@ -199,7 +202,6 @@ public abstract class Piece{
 	 * @param P
 	 */
 	public void addThreatening(Piece P){threatening.add(P);(P.getThreaten()).add(this);}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -211,7 +213,6 @@ public abstract class Piece{
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

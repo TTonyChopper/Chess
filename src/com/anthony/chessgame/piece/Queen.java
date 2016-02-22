@@ -52,7 +52,6 @@ public class Queen extends Piece {
 
 		return moveok;
 	}
-
 	@Override
 	/**
 	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
@@ -72,7 +71,6 @@ public class Queen extends Piece {
 		addThreatening(DiagDL(B));
 		return false;
 	}
-
 	@Override
 	/**
 	 * Returns number of potential moves
@@ -80,7 +78,6 @@ public class Queen extends Piece {
 	public int scanPotentialMoves() {
 		return possibleMoves.size();
 	}
-	
 	/**
 	 * Checks move Upward  
 	 * @param Px
@@ -380,7 +377,7 @@ public class Queen extends Piece {
 		int X = getPosx();	
 		int Y = getPosy();
 		Piece obstacle = null;
-		for (int i=0;(i<8)&&(obstacle==null);i++)
+		for (int i=0;(i<8)&&(obstacle==null);i++) 
 		{
 			X--;
 			Y--;

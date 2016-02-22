@@ -31,7 +31,6 @@ public class ConsolePrinter implements IPrint{
 	 * 
 	 */
 	public void printLine(){System.out.println("\n");}
-	
 	/**
 	 * Transforms COORDINATES into CHAR
 	 */
@@ -39,7 +38,6 @@ public class ConsolePrinter implements IPrint{
 		destx = (int)((int)(L.charAt(0))-(int)'a');
 		desty = (int)((int)(L.charAt(1))-(int)'1');
 	}
-
 	/**
 	 * Asks and Returns a name for the PLAYER of COLOR W
 	 */
@@ -115,7 +113,6 @@ public class ConsolePrinter implements IPrint{
 		}
 		return Utils.getPiece(Board,mW[0]);
 	}
-	
 	/**
 	 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 	 */
@@ -153,7 +150,7 @@ public class ConsolePrinter implements IPrint{
 			List<Piece> pieces = p.getPieces();
 			Collections.sort(pieces,new Comparator<Piece>() {
 			      public int compare(Piece p1, Piece p2) {
-			          return p1.getName().compareTo(p2.getName());
+			          return new Integer(p1.getType().getPower()).compareTo(p2.getType().getPower());
 			        }
 			      });
 			for (Piece pc : pieces) {
@@ -162,7 +159,6 @@ public class ConsolePrinter implements IPrint{
 			System.out.println("");
 		}
 	}	
-	
 	/**
 	 * Prints and inform the PLAYER he has put his Foe in CHECK
 	 */
@@ -206,7 +202,6 @@ public class ConsolePrinter implements IPrint{
 
 		System.out.print("\n");
 	}
-
 	/**
 	 * Prints the actual BOARD state
 	 */
@@ -247,5 +242,4 @@ public class ConsolePrinter implements IPrint{
 	 */
 	public void printStats(){ 
 	}	
-
 }

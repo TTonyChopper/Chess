@@ -73,5 +73,4 @@ public class Player{
 	 * Adds one LOSS to this PLAYER
 	 */
 	public void Defeat(){loss++;}
-
 }

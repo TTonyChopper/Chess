@@ -22,8 +22,7 @@ public class OutOfBoard extends Piece{
 	public boolean checkMove(int Px, int Py, boolean W, Player J, ArrayList<Piece> B) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	
+	}	
 	@Override
 	/**
 	 * 

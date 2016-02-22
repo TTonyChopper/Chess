@@ -11,7 +11,7 @@ public class Pawn extends Piece {
 	SpecialMoveObserver obs = null;
 	
 	/**
-	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Qw"/"Qb"
+	 * CONSTRUCTOR : create a PIECE of COLOR C at POSITION P, and his NAME becomes "Pw"/"Pb"
 	 * @param P
 	 * @param C
 	 */
@@ -35,7 +35,6 @@ public class Pawn extends Piece {
 		if (foePawn==Utils.getPiece(B,Px,Py)) result = true;
 		return result;
 	}
-	
 	@Override
 	/**
 	 * Movement allowed, stopping to the first obstacle[non VOID] : Up/Down[COLOR],
@@ -76,7 +75,6 @@ public class Pawn extends Piece {
 		}
 		return false;
 	}
-
 	@Override
 	/**
 	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
@@ -104,15 +102,13 @@ public class Pawn extends Piece {
 		
 		return false;
 	}
-
 	@Override
 	/**
 	 * Returns number of potential moves
 	 */
 	public int scanPotentialMoves() {
 		return possibleMoves.size();
-	}
-	
+	}	
 	/**
 	 * 
 	 * @param B
@@ -167,8 +163,7 @@ public class Pawn extends Piece {
 			checkCase(B,getPosx()+1,getPosy()-1,true);
 		}
 		return result;
-	}
-	
+	}	
 	/**
 	 * 
 	 * @param l
@@ -176,7 +171,6 @@ public class Pawn extends Piece {
 	public void setSpecialMoveListener(SpecialMoveObserver l){
 		obs = l;
 	}
-	
 	/**
 	 * 
 	 * @param l
@@ -184,7 +178,6 @@ public class Pawn extends Piece {
 	public void removeSpecialMoveListener(SpecialMoveObserver l){
 		obs = null;
 	}
-	
 	/**
 	 * 
 	 * @param W
