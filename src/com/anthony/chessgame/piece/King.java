@@ -110,6 +110,7 @@ public class King extends Piece {
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
+		clearPossibleMoves();
 		int X = getPosx();	
 		int Y = getPosy();
 		int X2 = X;
@@ -120,13 +121,23 @@ public class King extends Piece {
 		{
 			X2 = X+Dx[i];
 			Y2 = Y+Dy[i];
-			addThreatening(Utils.getPiece(B,X2,Y2));
+			Piece obstacle = Utils.getPiece(B,X2,Y2);
+			if ( ((obstacle.getType()) == typePiece.N) || ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) ) {
+				possibleMoves.add(obstacle.getPos());
+			}
+			addThreatening(obstacle);
 		}
-		clearPossibleMoves();
 		return false;
 	}
-
 	
+	@Override
+	/**
+	 * Returns number of potential moves
+	 */
+	public int scanPotentialMoves() {
+		return possibleMoves.size();
+	}
+
 	/**
 	 * Functions needed to verify KING is not in Check if Castling 
 	 * Same ones taken from CLASS CHESSGAME 

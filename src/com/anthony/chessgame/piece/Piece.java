@@ -1,12 +1,13 @@
 package com.anthony.chessgame.piece;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.util.Utils;
 //MOTHER Class for every PIECE, CHECKMOVE & SETTHREATS are OVERRIDEN
 public abstract class Piece{
-
+	
 	//enum declaration for pieces	
 	public static enum typePiece{Bb("B"),Bw("B"),K("K"),Kn("N"),N(" "),O("X"),P("P"),Q("Q"),R("R");
 	private String name;
@@ -27,8 +28,6 @@ public abstract class Piece{
 		return W;
 	}
 	}; 
-
-
 
 	//Type of this PIECE
 	protected typePiece type;
@@ -94,6 +93,13 @@ public abstract class Piece{
 	 */
 	public abstract boolean setThreats(ArrayList <Piece> B);
 	/**
+	 * 
+	 * @return The number of potential moves the piece can make
+	 */
+	public int scanPotentialMoves(){
+		return 0;
+	}
+	/**
 	 * Calls checkMove of every PIECE of a given BOARD
 	 * @param Px
 	 * @param Py
@@ -144,8 +150,6 @@ public abstract class Piece{
 		posy = ((int)lposy + 1 - (int)('1'));
 	}
 
-
-
 	/**
 	 * Prints each THREATEN PIECE for this one 
 	 */
@@ -163,6 +167,17 @@ public abstract class Piece{
 		{
 			System.out.println("n "+(i+1)+" : "+(threaten.get(i)).getName());  
 		}
+	}
+	/**
+	 * Prints each possible moves from this piece
+	 */
+	public void printPossibleMoves(){
+		System.out.print("Possible moves for "+getName()+" : ");
+		Iterator<Integer> itr = possibleMoves.iterator();
+		while(itr.hasNext()) {
+			System.out.print(itr.next()+" ");  
+		}
+		System.out.println("");
 	}
 	/**
 	 * Resets THREATENING for this PIECE : is always called before updating it by erasing previous data
@@ -183,4 +198,41 @@ public abstract class Piece{
 	 * @param P
 	 */
 	public void addThreatening(Piece P){threatening.add(P);(P.getThreaten()).add(this);}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + pos;
+		result = prime * result + posx;
+		result = prime * result + posy;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Piece other = (Piece) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (pos != other.pos)
+			return false;
+		if (posx != other.posx)
+			return false;
+		if (posy != other.posy)
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
 }

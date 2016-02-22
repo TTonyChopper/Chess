@@ -61,6 +61,7 @@ public class Queen extends Piece {
 	 */
 	public boolean setThreats(ArrayList <Piece> B){
 		clearThreatening();
+		clearPossibleMoves();
 		addThreatening(LineL(B));
 		addThreatening(DiagUL(B));
 		addThreatening(ColumnU(B));
@@ -69,11 +70,17 @@ public class Queen extends Piece {
 		addThreatening(DiagDR(B));
 		addThreatening(ColumnD(B));	  
 		addThreatening(DiagDL(B));
-		clearPossibleMoves();
 		return false;
 	}
 
-
+	@Override
+	/**
+	 * Returns number of potential moves
+	 */
+	public int scanPotentialMoves() {
+		return possibleMoves.size();
+	}
+	
 	/**
 	 * Checks move Upward  
 	 * @param Px
@@ -226,58 +233,88 @@ public class Queen extends Piece {
 		}
 		return !obstacle;
 	}
-
+	
 	/**
-	 * Checks obstacle Upward
+	 * 
 	 * @param B
+	 * @param X
+	 * @param Y
 	 * @return
 	 */
-	private Piece ColumnU(ArrayList <Piece> B){
-		int i;
-		for (i = getPosy()+1;i<8;i++)
-		{
-			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+	private Piece checkCase(ArrayList <Piece> B,int X, int Y) {
+		if (!(Utils.isVoid(B,X,Y))) {
+			Piece obstacle = Utils.getPiece(B,X,Y);
+			if ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) {
+				possibleMoves.add(obstacle.getPos());
+			}
+			return Utils.getPiece(B,X,Y);
+		} else {
+			possibleMoves.add(Utils.getPos(X,Y));
+			return null;
 		}
-		return Utils.getPiece(B,getPosx(),i);	
 	}
 	/**
-	 * Checks obstacle Downward
+	 * Checks obstacle upward
 	 * @param B
 	 * @return
 	 */
-	private Piece ColumnD(ArrayList <Piece> B){
+	private Piece ColumnU(ArrayList <Piece> B)
+	{
 		int i;
-		for (i = getPosy()-1;i>-1;i--)
-		{ 
-			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+		Piece obstacle = null;
+		for (i = getPosy()+1;(i<8)&&(obstacle==null);i++) {
+			obstacle = checkCase(B,getPosx(),i);
 		}
-		return Utils.getPiece(B,getPosx(),i);	
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
-	 * Checks obstacle on the Left
+	 * Checks obstacle downward
 	 * @param B
 	 * @return
 	 */
-	private Piece LineL(ArrayList <Piece> B){
+	private Piece ColumnD(ArrayList <Piece> B)
+	{
 		int i;
-		for (i = getPosx()-1;i>-1;i--)
+		Piece obstacle = null;
+		for (i = getPosy()-1;(i>-1)&&(obstacle==null);i--)
 		{ 
-			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+			obstacle = checkCase(B,getPosx(),i);
 		}
-		return Utils.getPiece(B,i,getPosy());	
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
-	 * Checks obstacle on the Right
+	 * Checks obstacle on the left
 	 * @param B
 	 * @return
 	 */
-	private Piece LineR(ArrayList <Piece> B){
+	private Piece LineL(ArrayList <Piece> B)
+	{
 		int i;
-		for (i = getPosx()+1;i<8;i++)
-		{ 
-			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+		Piece obstacle = null;
+		for (i = getPosx()-1;(i>-1)&&(obstacle==null);i--)
+		{  
+			obstacle = checkCase(B,i,getPosy());
 		}
-		return Utils.getPiece(B,i,getPosy());
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;	
+	}
+	/**
+	 * Checks obstacle on the right
+	 * @param B
+	 * @return
+	 */
+	private Piece LineR(ArrayList <Piece> B)
+	{
+		int i;
+		Piece obstacle = null;
+		for (i = getPosx()+1;(i<8)&&(obstacle==null);i++)
+		{ 
+			obstacle = checkCase(B,i,getPosy());
+		}
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the Up Left diagonal
@@ -287,13 +324,16 @@ public class Queen extends Piece {
 	private Piece DiagUL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X--;
 			Y++;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the Up Right diagonal
@@ -303,13 +343,15 @@ public class Queen extends Piece {
 	private Piece DiagUR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X++;
 			Y++;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the Down Right diagonal
@@ -319,13 +361,15 @@ public class Queen extends Piece {
 	private Piece DiagDR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X++;
 			Y--;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the Down Left diagonal
@@ -335,13 +379,14 @@ public class Queen extends Piece {
 	private Piece DiagDL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X--;
 			Y--;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
-
 }

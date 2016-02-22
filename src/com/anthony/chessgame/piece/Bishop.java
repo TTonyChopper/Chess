@@ -53,12 +53,20 @@ public class Bishop extends Piece {
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
+		clearPossibleMoves();
 		addThreatening(DiagUL(B));
 		addThreatening(DiagUR(B));
 		addThreatening(DiagDR(B));
 		addThreatening(DiagDL(B));
-		clearPossibleMoves();
 		return false;
+	}
+	
+	@Override
+	/**
+	 *
+	 */
+	public int scanPotentialMoves() {
+		return possibleMoves.size();
 	}
 
 	/**
@@ -139,6 +147,25 @@ public class Bishop extends Piece {
 	}
 
 	/**
+	 * 
+	 * @param B
+	 * @param X
+	 * @param Y
+	 * @return
+	 */
+	private Piece checkCase(ArrayList <Piece> B,int X, int Y) {
+		if (!(Utils.isVoid(B,X,Y))) {
+			Piece obstacle = Utils.getPiece(B,X,Y);
+			if ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) {
+				possibleMoves.add(obstacle.getPos());
+			}
+			return Utils.getPiece(B,X,Y);
+		} else {
+			possibleMoves.add(Utils.getPos(X,Y));
+			return null;
+		}
+	}
+	/**
 	 * Checks obstacle on the Up Left diagonal
 	 * @param B
 	 * @return
@@ -146,13 +173,16 @@ public class Bishop extends Piece {
 	private Piece DiagUL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X--;
 			Y++;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the Up Right diagonal
@@ -162,13 +192,15 @@ public class Bishop extends Piece {
 	private Piece DiagUR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X++;
 			Y++;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the Down Right diagonal
@@ -178,13 +210,15 @@ public class Bishop extends Piece {
 	private Piece DiagDR(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X++;
 			Y--;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the Down Left diagonal
@@ -194,12 +228,14 @@ public class Bishop extends Piece {
 	private Piece DiagDL(ArrayList <Piece> B){
 		int X = getPosx();	
 		int Y = getPosy();
-		for (int i=0;i<8;i++)
+		Piece obstacle = null;
+		for (int i=0;(i<8)&&(obstacle==null);i++)
 		{
 			X--;
 			Y--;
-			if (!(Utils.isVoid(B,X,Y))) return Utils.getPiece(B,X,Y);
+			obstacle = checkCase(B,X,Y);
 		}
-		return Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 }

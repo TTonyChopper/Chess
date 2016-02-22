@@ -27,8 +27,9 @@ public interface IPrint {
 		 * @param J
 		 * @param Board
 		 * @param mW
+		 * @return
 		 */
-		public void askMove(Player J,ArrayList<Piece> Board,int[] mW);		
+		public Piece askMove(Player J,ArrayList<Piece> Board,int[] mW);		
 		/**
 		 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 		 * @param B
@@ -40,12 +41,18 @@ public interface IPrint {
 		 */
 		public void printThreatenOnBoard(ArrayList<Piece> B);
 		/**
-		 * Prints and inform the PLAYER he has put his Foe in CHESS
+		 * Prints every PIECE of both PLAYER
+		 * @param P1
+		 * @param P2
+		 */
+		public void printPlayersPiecesOnBoard(Player... P);
+		/**
+		 * Prints and inform the PLAYER he has put his Foe in CHECK
 		 * @param B
 		 * @param J2
 		 * @return
 		 */
-		public boolean oppInCheck(ArrayList<Piece> B,Player J2);
+		public void oppInCheck(ArrayList<Piece> B,Player J2,boolean moveFound);
 		/**
 		 * Prints and inform the PLAYER he is in CHESS
 		 */
@@ -68,6 +75,10 @@ public interface IPrint {
 		 * @param B
 		 */
 		public void printBoard(ArrayList<Piece> B);
+		/**
+		 * Game over
+		 */
+		public void printGameOver();
 		/**
 		 * Shows PLAYER STATS
 		 */

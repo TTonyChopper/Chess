@@ -86,13 +86,54 @@ public class Pawn extends Piece {
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
+		clearPossibleMoves();
 		addThreatening(DiagL(B));
 		addThreatening(DiagR(B));
-		clearPossibleMoves();
+		//Pawn can move vertically without threating
+		if (getColor().getW()) {
+			if (getPosy()==1) {
+				checkCase(B,getPosx(),getPosy()+2,false);
+			}
+			checkCase(B,getPosx(),getPosy()+1,false);
+		} else {
+			if (getPosy()==6) {
+				checkCase(B,getPosx(),getPosy()-2,false);
+			}
+			checkCase(B,getPosx(),getPosy()-1,false);
+		}
+		
 		return false;
 	}
 
+	@Override
+	/**
+	 * Returns number of potential moves
+	 */
+	public int scanPotentialMoves() {
+		return possibleMoves.size();
+	}
 	
+	/**
+	 * 
+	 * @param B
+	 * @param X
+	 * @param Y
+	 * @return
+	 */
+	private Piece checkCase(ArrayList <Piece> B,int X, int Y,boolean isCapture) {
+		if (!(Utils.isVoid(B,X,Y))) {
+			Piece obstacle = Utils.getPiece(B,X,Y);
+			//Warning : pawn can move only to capture vertically
+			if ((isCapture) && (obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) {
+				possibleMoves.add(obstacle.getPos());
+			}
+			return Utils.getPiece(B,X,Y);
+		} else {
+			//Warning : pawn can move to void case only when not capturing
+			if (!isCapture) possibleMoves.add(Utils.getPos(X,Y));
+			return null;
+		}
+	}
 	/**
 	 * Looks for a PIECE on the Left diagonal
 	 * @param B
@@ -100,8 +141,15 @@ public class Pawn extends Piece {
 	 */
 	private Piece DiagL(ArrayList <Piece> B)
 	{
-		if (getColor().getW()) return Utils.getPiece(B,getPosx()-1,getPosy()+1);
-		else return Utils.getPiece(B,getPosx()-1,getPosy()-1);
+		Piece result = null;
+		if (getColor().getW()) {
+			result = Utils.getPiece(B,getPosx()-1,getPosy()+1);
+			checkCase(B,getPosx()-1,getPosy()+1,true);
+		} else {
+			result = Utils.getPiece(B,getPosx()-1,getPosy()-1);
+			checkCase(B,getPosx()-1,getPosy()-1,true);
+		}
+		return result;
 	}
 	/**
 	 * Looks for a PIECE on the Right diagonal
@@ -110,8 +158,15 @@ public class Pawn extends Piece {
 	 */
 	private Piece DiagR(ArrayList <Piece> B)
 	{
-		if (getColor().getW()) return Utils.getPiece(B,getPosx()+1,getPosy()+1);
-		else return Utils.getPiece(B,getPosx()+1,getPosy()-1);
+		Piece result = null;
+		if (getColor().getW()) {
+			result = Utils.getPiece(B,getPosx()+1,getPosy()+1);
+			checkCase(B,getPosx()+1,getPosy()+1,true);
+		} else {
+			result = Utils.getPiece(B,getPosx()+1,getPosy()-1);
+			checkCase(B,getPosx()+1,getPosy()-1,true);
+		}
+		return result;
 	}
 	
 	/**

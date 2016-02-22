@@ -1,5 +1,6 @@
 package com.anthony.chessgame.game;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.anthony.chessgame.piece.Bishop;
 import com.anthony.chessgame.piece.King;
@@ -8,10 +9,10 @@ import com.anthony.chessgame.piece.Nothing;
 import com.anthony.chessgame.piece.OutOfBoard;
 import com.anthony.chessgame.piece.Pawn;
 import com.anthony.chessgame.piece.Piece;
+import com.anthony.chessgame.piece.Piece.colorPiece;
 import com.anthony.chessgame.piece.Piece.typePiece;
 import com.anthony.chessgame.piece.Queen;
 import com.anthony.chessgame.piece.Rook;
-import com.anthony.chessgame.piece.Piece.colorPiece;
 import com.anthony.chessgame.util.IPrint;
 import com.anthony.chessgame.util.Utils;
 //Main Class for the GAMES OF CHESS
@@ -23,8 +24,9 @@ public class ChessGame implements SpecialMoveObserver
 	//Boards : real and trial board
 	private ArrayList <Piece> B;
 	private ArrayList <Piece> Bfuture;
-	private boolean checkmate;
-	private boolean checkmate2;
+	//True when Mate, null on Pat.
+	private Boolean checkmate;
+	private Boolean checkmate2;
 	//Captured pieces
 	private ArrayList<String> wcaptures;
 	private ArrayList<String> bcaptures;
@@ -79,14 +81,15 @@ public class ChessGame implements SpecialMoveObserver
 		printer.printBoard(B);
 		Utils.setThreatsOnBoard(B);
 
-		while (!checkmate2)
+		while ((checkmate2!=null) && (checkmate==false))
 		{
-			//Calc.printThreateningOnBoard(B);
-			//Calc.printThreatenOnBoard(B);
+			//printer.printThreateningOnBoard(B);
+			//printer.printThreatenOnBoard(B);
 			checkmate = playTurn(P1,P2);
-			if (checkmate) break;
+			if ((checkmate==null) || checkmate==true) break;
 			checkmate2 = playTurn(P2,P1);
 		}
+		printer.printGameOver();
 	}
 
 	//GETTER for a PIECE parameter, for a given POSITION P
@@ -105,6 +108,10 @@ public class ChessGame implements SpecialMoveObserver
 	public Piece getFoePawn(boolean W) {
 		Piece pawn = (W) ? pawnB : pawnW;
 		return pawn;
+	}
+	//Getter for enemy player
+	public Player getFoe(Player P) {
+		return (P1==P) ? P2:P1;
 	}
 	
 	/**
@@ -169,6 +176,16 @@ public class ChessGame implements SpecialMoveObserver
 			break;
 		}	
 
+		if (C.getW() != null) {
+			//Testing colors of Player and new piece put
+			if (P1.isWhite()==C.getW()) {
+				P1.receivePiece(put);
+			}
+			if (P2.isWhite()==C.getW()) {
+				P2.receivePiece(put);
+			}
+		} 
+		
 		B.add(put);
 		return put;
 	}
@@ -183,7 +200,19 @@ public class ChessGame implements SpecialMoveObserver
 		Utils.setThreatsOnBoard(Bfuture);
 		//printer.printThreateningOnBoard(Bfuture);
 		//printer.printThreatenOnBoard(Bfuture);
+		//printer.printPlayerPiecesOnBoard(P1,P2);
 		return captured;
+	}
+	public void finalizeMove(Piece moving,Piece captured,Player P) {
+		setCaptures(captured,getFoe(P));
+		setPieceMobilities(P);
+		if (captured.isWhite() != null) getFoe(P).losePiece(captured);
+		B=null;
+		B=Bfuture;
+		//Lose special moves opportunity
+		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B.get(mW[1]).loseSpecialMove();
+		//reset other player passable pawn
+		resetMovePawn(!P.isWhite());
 	}
 	/**
 	 * Gets moves from PLAYER and try them until they are valid, then makes the move
@@ -191,6 +220,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @return
 	 */
 	public Piece askNMoveCoord(Player P){
+		Piece moving = null;
 		Piece captured = null;
 		//		boolean losingMobility = false;
 		boolean check= false;
@@ -206,7 +236,7 @@ public class ChessGame implements SpecialMoveObserver
 			//Ask coordinates
 			Bfuture = null;
 			Bfuture = Utils.cloneAL(B);
-			printer.askMove(P,Bfuture,mW);
+			moving=printer.askMove(P,Bfuture,mW);
 			//Test the move 
 			captured = tryMove(P);
 			//Verify if Player playing turn if is check
@@ -214,13 +244,7 @@ public class ChessGame implements SpecialMoveObserver
 			printer.printIsCheck(check);
 		}while(check);		
 		//Move is OK, Finalize it
-		setCaptures(captured,P);
-		B=null;
-		B=Bfuture;
-		//Lose special moves opportunity
-		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B.get(mW[1]).loseSpecialMove();
-		//reset other player passable pawn
-		resetMovePawn(!P.isWhite());
+		finalizeMove(moving,captured,P);
 		return captured;
 	}
 
@@ -287,6 +311,15 @@ public class ChessGame implements SpecialMoveObserver
 		}
 	}
 	/**
+	 * Returns false if no potential move[without considering checks]is possible(Very rare case)
+	 * @param P
+	 * @return
+	 */
+	public Boolean setPieceMobilities(Player P){
+		//TODO
+		return true;
+	}
+	/**
 	 * Saves Coordinates of KING, in case his move is not valid
 	 */
 	public void saveMoveKings(){
@@ -325,12 +358,23 @@ public class ChessGame implements SpecialMoveObserver
 	}
 
 	/**
+	 * Tests every piece of the player and tries to find one legal move
+	 * @param P
+	 * @return
+	 */
+	public Boolean findOneMoveForPlayer(Player P) {
+		//TODO
+		List<Piece> pieces = P.getPieces();
+		
+		return true;
+	}
+	/**
 	 * Organize the turn of the PLAYER
 	 * @param M
 	 * @param N
 	 * @return
 	 */
-	public boolean playTurn(Player M,Player N) {
+	public Boolean playTurn(Player M,Player N) {
 		if(M.isWhite()) printer.printBoardState(B,M,1);	
 		else if(!(M.isWhite())) printer.printBoardState(B,M,2);
 		
@@ -338,13 +382,26 @@ public class ChessGame implements SpecialMoveObserver
 		
 		printer.printBoard(B);
 		printer.printCaptures(wcaptures,bcaptures);
+		printer.printPlayersPiecesOnBoard(P1,P2);
+		P1.printPossibleMoves();
+		P2.printPossibleMoves();
+		
+		Boolean oneMoveFound = findOneMoveForPlayer(N);
+		boolean check = false;
 		
 		if (Utils.isInCheck(B,N,posK1,posK2))
 		{
-			//TODO Gotta check if this is a Mate
-			printer.oppInCheck(B,N);
+			check = true;
+			printer.oppInCheck(B,N,oneMoveFound);
 		}
-		return false;
+		
+		Boolean result = false;
+		if ((!oneMoveFound) && (check)) {
+			result = true;
+		}else if ((!oneMoveFound) && (!check)) {
+			result = null;
+		}
+		return result;
 	}
 	@Override
 	/**

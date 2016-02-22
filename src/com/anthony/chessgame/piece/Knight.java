@@ -43,6 +43,7 @@ public class Knight extends Piece {
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
+		clearPossibleMoves();
 		int X = getPosx();	
 		int Y = getPosy();
 		int X2 = X;
@@ -53,9 +54,20 @@ public class Knight extends Piece {
 		{
 			X2 = X+Dx[i];
 			Y2 = Y+Dy[i];
+			Piece obstacle = Utils.getPiece(B,X2,Y2);
+			if ( ((obstacle.getType()) == typePiece.N) || ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) ) {
+				possibleMoves.add(obstacle.getPos());
+			}
 			addThreatening(Utils.getPiece(B,X2,Y2));
 		}
-		clearPossibleMoves();
 		return false;
+	}
+	
+	@Override
+	/**
+	 * Returns number of potential moves
+	 */
+	public int scanPotentialMoves() {
+		return possibleMoves.size();
 	}
 }

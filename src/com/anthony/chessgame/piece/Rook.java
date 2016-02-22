@@ -68,15 +68,22 @@ public class Rook extends Piece {
 	public boolean setThreats(ArrayList <Piece> B)
 	{
 		clearThreatening();
+		clearPossibleMoves();
 		addThreatening(LineL(B));
 		addThreatening(ColumnU(B));
 		addThreatening(LineR(B));
 		addThreatening(ColumnD(B));
-		clearPossibleMoves();
 		return false;
 	}
 	
-
+	@Override
+	/**
+	 * Returns number of potential moves
+	 */
+	public int scanPotentialMoves() {
+		return possibleMoves.size();
+	}
+	
 	/**
 	 * Checks move Upward  
 	 * @param Px
@@ -155,6 +162,25 @@ public class Rook extends Piece {
 	}	
 
 	/**
+	 * 
+	 * @param B
+	 * @param X
+	 * @param Y
+	 * @return
+	 */
+	private Piece checkCase(ArrayList <Piece> B,int X, int Y) {
+		if (!(Utils.isVoid(B,X,Y))) {
+			Piece obstacle = Utils.getPiece(B,X,Y);
+			if ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) {
+				possibleMoves.add(obstacle.getPos());
+			}
+			return Utils.getPiece(B,X,Y);
+		} else {
+			possibleMoves.add(Utils.getPos(X,Y));
+			return null;
+		}
+	}
+	/**
 	 * Checks obstacle upward
 	 * @param B
 	 * @return
@@ -162,11 +188,12 @@ public class Rook extends Piece {
 	private Piece ColumnU(ArrayList <Piece> B)
 	{
 		int i;
-		for (i = getPosy()+1;i<8;i++)
-		{
-			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+		Piece obstacle = null;
+		for (i = getPosy()+1;(i<8)&&(obstacle==null);i++) {
+			obstacle = checkCase(B,getPosx(),i);
 		}
-		return Utils.getPiece(B,getPosx(),i);	
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle downward
@@ -176,11 +203,13 @@ public class Rook extends Piece {
 	private Piece ColumnD(ArrayList <Piece> B)
 	{
 		int i;
-		for (i = getPosy()-1;i>-1;i--)
+		Piece obstacle = null;
+		for (i = getPosy()-1;(i>-1)&&(obstacle==null);i--)
 		{ 
-			if (!(Utils.isVoid(B,getPosx(),i))) return Utils.getPiece(B,getPosx(),i);
+			obstacle = checkCase(B,getPosx(),i);
 		}
-		return Utils.getPiece(B,getPosx(),i);	
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
 	/**
 	 * Checks obstacle on the left
@@ -190,11 +219,13 @@ public class Rook extends Piece {
 	private Piece LineL(ArrayList <Piece> B)
 	{
 		int i;
-		for (i = getPosx()-1;i>-1;i--)
+		Piece obstacle = null;
+		for (i = getPosx()-1;(i>-1)&&(obstacle==null);i--)
 		{  
-			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+			obstacle = checkCase(B,i,getPosy());
 		}
-		return Utils.getPiece(B,i,getPosy());	
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;	
 	}
 	/**
 	 * Checks obstacle on the right
@@ -204,11 +235,12 @@ public class Rook extends Piece {
 	private Piece LineR(ArrayList <Piece> B)
 	{
 		int i;
-		for (i = getPosx()+1;i<8;i++)
+		Piece obstacle = null;
+		for (i = getPosx()+1;(i<8)&&(obstacle==null);i++)
 		{ 
-			if (!(Utils.isVoid(B,i,getPosy()))) return Utils.getPiece(B,i,getPosy());
+			obstacle = checkCase(B,i,getPosy());
 		}
-		return Utils.getPiece(B,i,getPosy());
+		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		return obstacle;
 	}
-
 }

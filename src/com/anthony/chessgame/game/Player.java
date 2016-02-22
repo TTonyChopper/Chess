@@ -1,4 +1,10 @@
 package com.anthony.chessgame.game;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.anthony.chessgame.piece.Piece;
+
 //Class  PLAYER
 public class Player{
 
@@ -12,6 +18,8 @@ public class Player{
 	private String pname;
 	//COLOR of the PIECE the PLAYER plays
 	private boolean white;
+	//playing pieces
+	List<Piece> pieces = new ArrayList<Piece>();
 
 	/**
 	 * CONSTRUCTOR : Player 
@@ -27,6 +35,23 @@ public class Player{
 		white = W;	  
 	}
 
+	public void receivePiece(Piece P) {
+		if (!pieces.contains(P)) pieces.add(P);
+	}
+	public void losePiece(Piece P) {
+		pieces.remove(P);
+	}
+	public List<Piece> getPieces() {
+		return pieces;
+	}
+	public void printPossibleMoves() {
+		for (Piece p : pieces) {
+			p.printPossibleMoves();
+		}
+	}
+	public int getNumber() {
+		return number;
+	}
 	/**
 	 * @return true if white, false otherwise
 	 */

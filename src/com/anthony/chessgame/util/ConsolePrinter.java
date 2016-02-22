@@ -1,5 +1,6 @@
 package com.anthony.chessgame.util;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.anthony.chessgame.game.Player;
@@ -71,7 +72,7 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 	 */
-	public void askMove(Player J,ArrayList<Piece> Board,int[] mW){
+	public Piece askMove(Player J,ArrayList<Piece> Board,int[] mW){
 		String L = null;
 		boolean moveisok = false;
 		boolean pieceisok = false;
@@ -110,6 +111,7 @@ public class ConsolePrinter implements IPrint{
 			}
 			else System.out.println("Erreur.");
 		}
+		return Utils.getPiece(Board,mW[0]);
 	}
 	
 	/**
@@ -140,14 +142,26 @@ public class ConsolePrinter implements IPrint{
 			}
 		}
 	}	
+	/**
+	 * Prints THREATEN[every PIECE attacking a given PIECE, one by one] of every PIECE of a given BOARD
+	 */
+	public void printPlayersPiecesOnBoard(Player... P){
+		for (Player p : P) {
+			System.out.print("Player "+p.getNumber()+" pieces : ");
+			List<Piece> pieces = p.getPieces();
+			for (Piece pc : pieces) {
+				System.out.print(pc.getName()+" ");
+			}
+			System.out.println("");
+		}
+	}	
 	
 	/**
-	 * Prints and inform the PLAYER he has put his Foe in CHESS
+	 * Prints and inform the PLAYER he has put his Foe in CHECK
 	 */
-	public boolean oppInCheck(ArrayList<Piece> B,Player J2){
-		boolean checkmate = false;
+	public void oppInCheck(ArrayList<Piece> B,Player J2,boolean moveFound){
 		System.out.println("You have put your opponent in check !");
-		return checkmate;
+		if(!moveFound) System.out.println("He seems to be Check Mate!");
 	}
 	/**
 	 * Prints and inform the PLAYER he is in CHESS
@@ -214,6 +228,12 @@ public class ConsolePrinter implements IPrint{
 		System.out.println("1");
 		System.out.println("   +----+----+----+----+----+----+----+----+");
 		System.out.println("     a    b    c    d    e    f    g    h  ");
+	}
+	/**
+	 * Game Over
+	 */
+	public void printGameOver(){
+		System.out.println("GAME OVER!");
 	}
 	/**
 	 * Shows PLAYER STATS
