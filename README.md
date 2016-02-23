@@ -8,6 +8,6 @@ Supports :
   -special moves : "Pawn initial move", "Castling", "En passant"
   -check control
   -check mate and pat control(endgame detection)
-  
+  -pawn promotion(pawn,knight,bishop,rook,queen)
 
 Display logic is loosely coupled with game mechanics, enabling development of other UI use.
