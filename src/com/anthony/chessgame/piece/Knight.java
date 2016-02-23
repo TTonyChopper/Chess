@@ -1,6 +1,4 @@
 package com.anthony.chessgame.piece;
-import java.util.ArrayList;
-
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.util.Utils;
 
@@ -22,7 +20,7 @@ public class Knight extends Piece {
 	 * Movement allowed, 8 destination cases : L-like move 2/1 in one direction, 1/2 orthogonally
      * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){
+	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
 		if ((Math.abs(Dx) ==1 && Math.abs(Dy) ==2)||(Math.abs(Dx) ==2 && Math.abs(Dy) ==1))
@@ -38,7 +36,7 @@ public class Knight extends Piece {
 	 * If destination if out of the board, puts an OutOfBoard object instead(NAME "XX") 
 	 * 8 concrete PIECE threaten 
 	 */
-	public boolean setThreats(ArrayList <Piece> B)
+	public boolean setThreats(Piece[] B)
 	{
 		clearThreatening();
 		clearPossibleMoves();
@@ -48,7 +46,7 @@ public class Knight extends Piece {
 		int Y2 = Y;
 		int Dx[] = {-2,-1,1,2,2,1,-1,-2};
 		int Dy[] = {1,2,2,1,-1,-2,-2,-1};
-		for (int i=0;i<8;i++)
+		for (int i=0;i<BOARD_SIZE;i++)
 		{
 			X2 = X+Dx[i];
 			Y2 = Y+Dy[i];

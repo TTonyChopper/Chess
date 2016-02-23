@@ -1,6 +1,4 @@
 package com.anthony.chessgame.piece;
-import java.util.ArrayList;
-
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.util.Utils;
 
@@ -22,7 +20,7 @@ public class Queen extends Piece {
 	 * Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT-UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
 	 * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){
+	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
 		boolean moveok = false;
@@ -58,7 +56,7 @@ public class Queen extends Piece {
 	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
 	 * 8 concrete PIECE threaten
 	 */
-	public boolean setThreats(ArrayList <Piece> B){
+	public boolean setThreats(Piece[] B){
 		clearThreatening();
 		clearPossibleMoves();
 		addThreatening(LineL(B));
@@ -88,7 +86,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveColumnU(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveColumnU(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx==0 et Dy>0
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
@@ -107,7 +105,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveColumnD(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveColumnD(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx==0 et Dy<0
 		boolean obstacle = false;
 		for (int i=-1;i>Dy;i--)
@@ -126,7 +124,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveLineL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveLineL(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx<0 et Dy==0
 		boolean obstacle = false;
 		for (int i=-1;i>Dx;i--)
@@ -145,7 +143,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveLineR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveLineR(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx>0 et Dy==0
 		boolean obstacle = false;
 		for (int i=1;i<Dx;i++)
@@ -164,7 +162,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveDiagUL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveDiagUL(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx==-Dy  Dy>0
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
@@ -183,7 +181,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveDiagUR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveDiagUR(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx==Dy  Dy>0
 		boolean obstacle = false;
 		for (int i=1;i<Dy;i++)
@@ -202,7 +200,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveDiagDR(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveDiagDR(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx==-Dy  Dx>0
 		boolean obstacle = false;
 		for (int i=1;i<Dx;i++)
@@ -221,7 +219,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private boolean checkMoveDiagDL(int Px, int Py,int Dx, int Dy,boolean W,ArrayList<Piece> B){
+	private boolean checkMoveDiagDL(int Px, int Py,int Dx, int Dy,boolean W,Piece[] B){
 		//Dx==Dy  Dx<0
 		boolean obstacle = false;
 		for (int i=-1;i>Dx;i--)
@@ -238,7 +236,7 @@ public class Queen extends Piece {
 	 * @param Y
 	 * @return
 	 */
-	private Piece checkCase(ArrayList <Piece> B,int X, int Y) {
+	private Piece checkCase(Piece[] B,int X, int Y) {
 		if (!(Utils.isVoid(B,X,Y))) {
 			Piece obstacle = Utils.getPiece(B,X,Y);
 			if ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) {
@@ -255,14 +253,14 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece ColumnU(ArrayList <Piece> B)
+	private Piece ColumnU(Piece[] B)
 	{
 		int i;
 		Piece obstacle = null;
-		for (i = getPosy()+1;(i<8)&&(obstacle==null);i++) {
+		for (i = getPosy()+1;(i<BOARD_SIZE)&&(obstacle==null);i++) {
 			obstacle = checkCase(B,getPosx(),i);
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;
 	}
 	/**
@@ -270,7 +268,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece ColumnD(ArrayList <Piece> B)
+	private Piece ColumnD(Piece[] B)
 	{
 		int i;
 		Piece obstacle = null;
@@ -278,7 +276,7 @@ public class Queen extends Piece {
 		{ 
 			obstacle = checkCase(B,getPosx(),i);
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;
 	}
 	/**
@@ -286,7 +284,7 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece LineL(ArrayList <Piece> B)
+	private Piece LineL(Piece[] B)
 	{
 		int i;
 		Piece obstacle = null;
@@ -294,7 +292,7 @@ public class Queen extends Piece {
 		{  
 			obstacle = checkCase(B,i,getPosy());
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;	
 	}
 	/**
@@ -302,15 +300,15 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece LineR(ArrayList <Piece> B)
+	private Piece LineR(Piece[] B)
 	{
 		int i;
 		Piece obstacle = null;
-		for (i = getPosx()+1;(i<8)&&(obstacle==null);i++)
+		for (i = getPosx()+1;(i<BOARD_SIZE)&&(obstacle==null);i++)
 		{ 
 			obstacle = checkCase(B,i,getPosy());
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;
 	}
 	/**
@@ -318,18 +316,18 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece DiagUL(ArrayList <Piece> B){
+	private Piece DiagUL(Piece[] B){
 		int X = getPosx();	
 		int Y = getPosy();
 		Piece obstacle = null;
-		for (int i=0;(i<8)&&(obstacle==null);i++)
+		for (int i=0;(i<BOARD_SIZE)&&(obstacle==null);i++)
 		{
 			X--;
 			Y++;
 			
 			obstacle = checkCase(B,X,Y);
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;
 	}
 	/**
@@ -337,17 +335,17 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece DiagUR(ArrayList <Piece> B){
+	private Piece DiagUR(Piece[] B){
 		int X = getPosx();	
 		int Y = getPosy();
 		Piece obstacle = null;
-		for (int i=0;(i<8)&&(obstacle==null);i++)
+		for (int i=0;(i<BOARD_SIZE)&&(obstacle==null);i++)
 		{
 			X++;
 			Y++;
 			obstacle = checkCase(B,X,Y);
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;
 	}
 	/**
@@ -355,17 +353,17 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece DiagDR(ArrayList <Piece> B){
+	private Piece DiagDR(Piece[] B){
 		int X = getPosx();	
 		int Y = getPosy();
 		Piece obstacle = null;
-		for (int i=0;(i<8)&&(obstacle==null);i++)
+		for (int i=0;(i<BOARD_SIZE)&&(obstacle==null);i++)
 		{
 			X++;
 			Y--;
 			obstacle = checkCase(B,X,Y);
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;
 	}
 	/**
@@ -373,17 +371,17 @@ public class Queen extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece DiagDL(ArrayList <Piece> B){
+	private Piece DiagDL(Piece[] B){
 		int X = getPosx();	
 		int Y = getPosy();
 		Piece obstacle = null;
-		for (int i=0;(i<8)&&(obstacle==null);i++) 
+		for (int i=0;(i<BOARD_SIZE)&&(obstacle==null);i++) 
 		{
 			X--;
 			Y--;
 			obstacle = checkCase(B,X,Y);
 		}
-		if (obstacle == null) obstacle = Utils.getPiece(B,8,8);
+		if (obstacle == null) obstacle = Utils.getPiece(B,BOARD_SIZE,BOARD_SIZE);
 		return obstacle;
 	}
 }

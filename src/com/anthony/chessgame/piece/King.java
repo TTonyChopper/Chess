@@ -1,6 +1,4 @@
 package com.anthony.chessgame.piece;
-import java.util.ArrayList;
-
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.util.Utils;
 
@@ -35,7 +33,7 @@ public class King extends Piece {
 	 * Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases 
 	 * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B){
+	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();	
 		if ((Math.abs(Dx)==1)&&(Math.abs(Dy)==1)||(Math.abs(Dx)==0)&&(Math.abs(Dy)==1)||(Math.abs(Dx)==1)&&(Math.abs(Dy)==0))
@@ -57,7 +55,7 @@ public class King extends Piece {
 				//Check if King route is safe!
 				int pKing = getPos();
 				boolean check = Utils.isThreaten(this);
-				ArrayList<Piece> Bmind = new ArrayList<Piece>();
+				Piece[] Bmind = new Piece[B.length];
 				for (int i=0;i<2;i++)
 				{
 					Bmind=Utils.cloneAL(B);
@@ -82,7 +80,7 @@ public class King extends Piece {
 				//Check if King route is safe!
 				int pKing = getPos();
 				boolean check = Utils.isThreaten(this);
-				ArrayList<Piece> Bmind = new ArrayList<Piece>();
+				Piece[] Bmind = new Piece[B.length];
 				for (int i=0;i<2;i++)
 				{
 					Bmind=Utils.cloneAL(B);
@@ -102,7 +100,7 @@ public class King extends Piece {
 	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
 	 * 8 concrete PIECE threaten
 	 */
-	public boolean setThreats(ArrayList <Piece> B)
+	public boolean setThreats(Piece[] B)
 	{
 		clearThreatening();
 		clearPossibleMoves();
@@ -112,7 +110,7 @@ public class King extends Piece {
 		int Y2 = Y;
 		int Dx[] = {-1,-1,0,1,1,1,0,-1};
 		int Dy[] = {0,1,1,1,0,-1,-1,-1};
-		for (int i=0;i<8;i++)
+		for (int i=0;i<BOARD_SIZE;i++)
 		{
 			X2 = X+Dx[i];
 			Y2 = Y+Dy[i];
@@ -138,27 +136,20 @@ public class King extends Piece {
 	 * @param P
 	 * @param Board
 	 */
-	private void setPiece(Piece p,int P,ArrayList<Piece> Board){
-		Board.set(P,p);
-		(getPiece(P,Board)).setPos(P);
-		(getPiece(P,Board)).setCoord();
-		(getPiece(P,Board)).setLCoord();
+	private void setPiece(Piece p,int P,Piece[] Board){
+		Board[P] = p;
+		Board[P].setPos(P);
+		Board[P].setCoord();
+		Board[P].setLCoord();
 	}
-	/**
-	 * 
-	 * @param P
-	 * @param B
-	 * @return
-	 */
-	private Piece getPiece(int P,ArrayList <Piece>B){return B.get(P);} 
 	/**
 	 * Moves King to adjacent case, using a copy of the BOARD B, named BMIND 
 	 * @param Pinit
 	 * @param Pfinal
 	 * @param Board
 	 */
-	private void moveKingInMind(int Pinit,int Pfinal,ArrayList <Piece> Board){
-		Piece moving = getPiece(Pinit,Board);	
+	private void moveKingInMind(int Pinit,int Pfinal,Piece[] Board){
+		Piece moving = Board[Pinit];	
 
 		//Moving pieces 	
 		setPiece(new Nothing(Pinit,colorPiece.NONE),Pinit,Board);

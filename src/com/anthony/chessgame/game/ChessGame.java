@@ -19,12 +19,20 @@ import com.anthony.chessgame.util.Utils;
 //Main Class for the GAMES OF CHESS
 public class ChessGame implements SpecialMoveObserver
 {
+	final static int BOARD_WIDTH = 8;
+	final static int BOARD_HEIGHT = 8;
+	final static int PIECES_PER_PLAYER = 16;
+	final static int PIECES[]={
+		4,2,3,5,6,3,2,4,1,1,1,1,1,1,1,1,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		1,1,1,1,1,1,1,1,4,2,3,5,6,3,2,4};
 	//Players
 	private Player P1;
 	private Player P2;
 	//Boards : real and trial board
-	private ArrayList <Piece> B;
-	private ArrayList <Piece> Bfuture;
+	private Piece[] B;
+	private Piece[] Bfuture;
 	//True when Mate, null on Pat.
 	private Boolean checkmate;
 	private Boolean checkmate2;
@@ -42,19 +50,14 @@ public class ChessGame implements SpecialMoveObserver
 	//POSITIONS of a PIECE which is being played
 	private int[] mW;
 	private IPrint printer;
-	private final static int pieces[]={
-		4,2,3,5,6,3,2,4,1,1,1,1,1,1,1,1,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		1,1,1,1,1,1,1,1,4,2,3,5,6,3,2,4};
 
 	/**
 	 * CONSTRUCTOR
 	 * @param p
 	 */
 	public ChessGame(IPrint p){
-		B = new ArrayList <Piece>();
-		Bfuture = new ArrayList <Piece>();
+		B = new Piece[BOARD_WIDTH*BOARD_HEIGHT+1];
+		Bfuture = new Piece[BOARD_WIDTH*BOARD_HEIGHT+1];
 		checkmate = false;
 		checkmate2 = false;
 		wcaptures = new ArrayList<String>();
@@ -63,7 +66,7 @@ public class ChessGame implements SpecialMoveObserver
 		posK1bu= 4;
 		posK2= 60;
 		posK2bu= 60;
-		mW= new int[]{8,9};
+		mW= new int[2];
 		printer = p;
 	}
 	/**
@@ -102,14 +105,14 @@ public class ChessGame implements SpecialMoveObserver
 	}
 
 	//GETTER for a PIECE parameter, for a given POSITION P
-	public Piece getPiece(int P,ArrayList <Piece>B){return B.get(P);}  
-	public colorPiece getPieceC(int P){return (B.get(P)).getColor();} 	 
-	public String getPieceN(int P){return (B.get(P)).getName();} 	
-	public int getPiecePos(int P){return (B.get(P)).getPos();}
-	public int getPiecePosx(int P){return (B.get(P)).getPosx();}
-	public int getPosy(int P){return (B.get(P)).getPosy();}
-	public char getPieceLposx(int P){return (B.get(P)).getLposx();}
-	public char getPieceLposy(int P){return (B.get(P)).getLposy();} 
+	public Piece getPiece(int P,Piece[] B){return B[P];}  
+	public colorPiece getPieceC(int P){return B[P].getColor();} 	 
+	public String getPieceN(int P){return B[P].getName();} 	
+	public int getPiecePos(int P){return B[P].getPos();}
+	public int getPiecePosx(int P){return B[P].getPosx();}
+	public int getPosy(int P){return B[P].getPosy();}
+	public char getPieceLposx(int P){return B[P].getLposx();}
+	public char getPieceLposy(int P){return B[P].getLposy();} 
 	//Saves position of King in case Castling attempt is not valid
 	public int getPosK1(){return posK1;}
 	public int getPosK2(){return posK2;}
@@ -146,7 +149,7 @@ public class ChessGame implements SpecialMoveObserver
 			else if (i/16==3)	putPiece(i,colorPiece.BLACK);  
 			else putPiece(i,colorPiece.NONE); 	  
 		}	  
-		B.add(new OutOfBoard());
+		B[BOARD_WIDTH*BOARD_HEIGHT] = new OutOfBoard();
 	}
 	/**
 	 * Constructs the BOARD one PIECE at a time
@@ -156,7 +159,7 @@ public class ChessGame implements SpecialMoveObserver
 	 */
 	private Piece putPiece(int P, colorPiece C){
 		Piece put = null;
-		switch (pieces[P])
+		switch (PIECES[P])
 		{
 		case 0:
 			put = new Nothing(P,C);
@@ -194,7 +197,7 @@ public class ChessGame implements SpecialMoveObserver
 			}
 		} 
 		
-		B.add(put);
+		setPiece(put,P,B);
 		return put;
 	}
 	/**
@@ -246,9 +249,29 @@ public class ChessGame implements SpecialMoveObserver
 		B=null;
 		B=Bfuture;
 		//Lose special moves opportunity
-		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B.get(mW[1]).loseSpecialMove();
+		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B[mW[1]].loseSpecialMove();
 		//reset other player passable pawn
 		resetMovePawn(!P.isWhite());
+		
+//		//TODO Pawn promotion ?
+//		if(moving.getType()==typePiece.P) {
+//			if ( ((P.isWhite()) && (moving.getPosy()==7)) || ((!P.isWhite()) && (moving.getPosy()==0)) ){
+//				typePiece type = printer.askPromotion((P));
+//				int pos = moving.getPos();
+//				int index = B.indexOf(moving);
+//				if (index != -1) {
+//					Piece newPiece = null;
+//					switch(type){
+//						case P :
+//						default : return;
+//						case N : ;
+//						case Q : ;
+//						case
+//					}
+//					B.set(index,new())
+//				}
+//			}
+//		}
 	}
 	/**
 	 * Try moves until they are valid, then makes the move(same as askNMoveCoord, without getting moves from player)
@@ -317,7 +340,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param Pfinal
 	 * @return
 	 */
-	private void moveBackTo(Player P,ArrayList <Piece>Board,int pMoved,int pOrig,Piece captured) {
+	private void moveBackTo(Player P,Piece[] Board,int pMoved,int pOrig,Piece captured) {
 		moveTo(P,Board,pMoved,pOrig);
 		if (captured == null) {
 			setPiece(new Nothing(pMoved,colorPiece.NONE),pMoved,Board);
@@ -336,7 +359,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param Pfinal
 	 * @return
 	 */
-	private Piece moveTo(Player P,ArrayList <Piece>Board,int Pinit,int Pfinal) {
+	private Piece moveTo(Player P,Piece[] Board,int Pinit,int Pfinal) {
 		Piece moving = getPiece(Pinit,Board);
 
 		//Verify Castling conditions to move the Rook too
@@ -436,8 +459,8 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @param Board
 	 */
-	private void setPiece(Piece p,int P,ArrayList<Piece> Board){
-		Board.set(P,p);
+	private void setPiece(Piece p,int P,Piece[] Board){
+		Board[P] = p;
 		(getPiece(P,Board)).setPos(P);
 		(getPiece(P,Board)).setCoord();
 		(getPiece(P,Board)).setLCoord();

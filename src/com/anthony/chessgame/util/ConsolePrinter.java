@@ -67,12 +67,12 @@ public class ConsolePrinter implements IPrint{
 	 * @return
 	 */
 	private Boolean isValid(int x,int y){
-		return (x>=0)&&(x<8)&&(y>=0)&&(y<8);
+		return (x>=0)&&(x<Piece.BOARD_SIZE)&&(y>=0)&&(y<Piece.BOARD_SIZE);
 	}
 	/**
 	 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 	 */
-	public Piece askMove(Player J,ArrayList<Piece> Board,int[] mW){
+	public Piece askMove(Player J,Piece[] Board,int[] mW){
 		String L = null;
 		boolean moveisok = false;
 		boolean pieceisok = false;
@@ -92,7 +92,7 @@ public class ConsolePrinter implements IPrint{
 				if (!isValid(x,y)) {
 					pieceisok = false;
 				} else {
-					mW[0] = 8*y+x; 
+					mW[0] = Piece.BOARD_SIZE*y+x; 
 					mW[1] = 0;
 					pieceisok=Utils.comparePieceC(Board,mW[0],J.isWhite());
 				}
@@ -116,28 +116,28 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 	 */
-	public void printThreateningOnBoard(ArrayList<Piece> B){
+	public void printThreateningOnBoard(Piece[] B){
 		for (int t=0;t<64;t++)
 		{
 			if (!Utils.isVoid(B,t)){
-				String name =(B.get(t)).getName();
+				String name =B[t].getName();
 				System.out.println(name);
-				System.out.println("x : "+(B.get(t)).getPosx()+" y : "+(B.get(t)).getPosy());
-				(B.get(t)).printThreateningNames();
+				System.out.println("x : "+B[t].getPosx()+" y : "+B[t].getPosy());
+				B[t].printThreateningNames();
 			}
 		}
 	}	
 	/**
 	 * Prints THREATEN[every PIECE attacking a given PIECE, one by one] of every PIECE of a given BOARD
 	 */
-	public void printThreatenOnBoard(ArrayList<Piece> B){
+	public void printThreatenOnBoard(Piece[] B){
 		for (int t=0;t<64;t++)
 		{
 			if (!Utils.isVoid(B,t)){
-				String name =(B.get(t)).getName();
+				String name =B[t].getName();
 				System.out.println(name);
-				System.out.println("x : "+(B.get(t)).getPosx()+" y : "+(B.get(t)).getPosy());
-				(B.get(t)).printThreatenNames();
+				System.out.println("x : "+B[t].getPosx()+" y : "+B[t].getPosy());
+				B[t].printThreatenNames();
 			}
 		}
 	}	
@@ -162,7 +162,7 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Prints and inform the PLAYER he has put his Foe in CHECK
 	 */
-	public void oppInCheck(ArrayList<Piece> B,Player J2,boolean moveFound){
+	public void oppInCheck(Piece[] B,Player J2,boolean moveFound){
 		System.out.println("You have put your opponent in check !");
 		if(!moveFound) System.out.println("He seems to be Check Mate!");
 	}
@@ -175,7 +175,7 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Prints whose turn it is
 	 */
-	public void printBoardState(ArrayList<Piece> B,Player J,int N){
+	public void printBoardState(Piece[] B,Player J,int N){
 		System.out.println("Player "+N+"("+J.getPname()+") : Your turn to play!");
 	}
 	/**
@@ -205,17 +205,17 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Prints the actual BOARD state
 	 */
-	public void printBoard(ArrayList<Piece> B){
+	public void printBoard(Piece[] B){
 		System.out.println("");	
 		System.out.println("      a    b    c    d    e    f    g    h   ");	
 		System.out.println("   +----+----+----+----+----+----+----+----+");
 		System.out.print(" 8 | "+Utils.getPieceN(B,56)+" | ");
 		for (int i = 1;i<64;i++)
 		{
-			int Y = i % 8;
-			int newpos = 64 - ((i / 8)+1)*8 + Y;
-			char digit = (char) (((int)'8') - i/8);
-			char digit2 = (char) (((int)'8') - i/8+1);
+			int Y = i % Piece.BOARD_SIZE;
+			int newpos = 64 - ((i / Piece.BOARD_SIZE)+1)*Piece.BOARD_SIZE + Y;
+			char digit = (char) (((int)'8') - i/Piece.BOARD_SIZE);
+			char digit2 = (char) (((int)'8') - i/Piece.BOARD_SIZE+1);
 
 			if (Y==0) 
 			{	

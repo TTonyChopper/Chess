@@ -29,17 +29,17 @@ public interface IPrint {
 		 * @param mW
 		 * @return
 		 */
-		public Piece askMove(Player J,ArrayList<Piece> Board,int[] mW);		
+		public Piece askMove(Player J,Piece[] Board,int[] mW);		
 		/**
 		 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 		 * @param B
 		 */
-		public void printThreateningOnBoard(ArrayList<Piece> B);
+		public void printThreateningOnBoard(Piece[] B);
 		/**
 		 * Prints THREATEN[every PIECE attacking a given PIECE, one by one] of every PIECE of a given BOARD
 		 * @param B
 		 */
-		public void printThreatenOnBoard(ArrayList<Piece> B);
+		public void printThreatenOnBoard(Piece[] B);
 		/**
 		 * Prints every PIECE of both PLAYER
 		 * @param P1
@@ -52,7 +52,7 @@ public interface IPrint {
 		 * @param J2
 		 * @return
 		 */
-		public void oppInCheck(ArrayList<Piece> B,Player J2,boolean moveFound);
+		public void oppInCheck(Piece[] B,Player J2,boolean moveFound);
 		/**
 		 * Prints and inform the PLAYER he is in CHESS
 		 */
@@ -63,7 +63,7 @@ public interface IPrint {
 		 * @param J
 		 * @param N
 		 */
-		public void printBoardState(ArrayList<Piece> B,Player J,int N);
+		public void printBoardState(Piece[] B,Player J,int N);
 		/**
 		 * Prints captured pieces
 		 * @param wcaptures
@@ -74,7 +74,7 @@ public interface IPrint {
 		 * Prints the actual BOARD state
 		 * @param B
 		 */
-		public void printBoard(ArrayList<Piece> B);
+		public void printBoard(Piece[] B);
 		/**
 		 * Game over
 		 */

@@ -1,7 +1,5 @@
 package com.anthony.chessgame.piece;
 
-import java.util.ArrayList;
-
 import com.anthony.chessgame.game.Player;
 
 public class OutOfBoard extends Piece{
@@ -19,7 +17,7 @@ public class OutOfBoard extends Piece{
 	/**
 	 * 
 	 */
-	public boolean checkMove(int Px, int Py, boolean W, Player J, ArrayList<Piece> B) {
+	public boolean checkMove(int Px, int Py, boolean W, Player J, Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}	
@@ -27,7 +25,7 @@ public class OutOfBoard extends Piece{
 	/**
 	 * 
 	 */
-	public boolean setThreats(ArrayList<Piece> B) {
+	public boolean setThreats(Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}

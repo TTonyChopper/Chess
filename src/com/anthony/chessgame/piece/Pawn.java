@@ -1,6 +1,4 @@
 package com.anthony.chessgame.piece;
-import java.util.ArrayList;
-
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.game.SpecialMoveObserver;
 import com.anthony.chessgame.util.Utils;
@@ -28,7 +26,7 @@ public class Pawn extends Piece {
 	 * @param W
 	 * @return
 	 */
-	private boolean isEdible(ArrayList<Piece> B,int Px,int Py,boolean W){
+	private boolean isEdible(Piece[] B,int Px,int Py,boolean W){
 		boolean result = false;
 		Piece foePawn = obs.getFoePawn(W);
 		Py = (W) ? Py-1 : Py+1;
@@ -41,7 +39,7 @@ public class Pawn extends Piece {
 	 * or first element Up/Down on diagonal, Left or Right if there is an opponent to capture
 	 * RETURNS true if the move is allowed
 	 */	
-	public boolean checkMove(int Px,int Py,boolean W,Player J,ArrayList<Piece> B){
+	public boolean checkMove(int Px,int Py,boolean W,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
 		boolean nevermoved = false;
@@ -81,7 +79,7 @@ public class Pawn extends Piece {
 	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
 	 * 2 concrete PIECE threaten 
 	 */
-	public boolean setThreats(ArrayList <Piece> B)
+	public boolean setThreats(Piece[] B)
 	{
 		clearThreatening();
 		clearPossibleMoves();
@@ -116,7 +114,7 @@ public class Pawn extends Piece {
 	 * @param Y
 	 * @return
 	 */
-	private Piece checkCase(ArrayList <Piece> B,int X, int Y,boolean isCapture) {
+	private Piece checkCase(Piece[] B,int X, int Y,boolean isCapture) {
 		if (!(Utils.isVoid(B,X,Y))) {
 			Piece obstacle = Utils.getPiece(B,X,Y);
 			//Warning : pawn can move only to capture vertically
@@ -135,7 +133,7 @@ public class Pawn extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece DiagL(ArrayList <Piece> B)
+	private Piece DiagL(Piece[] B)
 	{
 		Piece result = null;
 		if (getColor().getW()) {
@@ -152,7 +150,7 @@ public class Pawn extends Piece {
 	 * @param B
 	 * @return
 	 */
-	private Piece DiagR(ArrayList <Piece> B)
+	private Piece DiagR(Piece[] B)
 	{
 		Piece result = null;
 		if (getColor().getW()) {

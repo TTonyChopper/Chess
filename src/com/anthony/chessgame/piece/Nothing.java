@@ -1,7 +1,5 @@
 package com.anthony.chessgame.piece;
 
-import java.util.ArrayList;
-
 import com.anthony.chessgame.game.Player;
 
 //Class representing VOID case
@@ -23,7 +21,7 @@ public class Nothing extends Piece {
 	 * @param C
 	 */
 	public Nothing(int Px,int Py,colorPiece C) {
-		super(8*Py+Px);
+		super(BOARD_SIZE*Py+Px);
 		definePiece(typePiece.N,C);
 	}
 
@@ -31,7 +29,7 @@ public class Nothing extends Piece {
 	/**
 	 * 
 	 */
-	public boolean checkMove(int Px, int Py, boolean W, Player J, ArrayList<Piece> B) {
+	public boolean checkMove(int Px, int Py, boolean W, Player J, Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}	
@@ -39,7 +37,7 @@ public class Nothing extends Piece {
 	/**
 	 * 
 	 */
-	public boolean setThreats(ArrayList<Piece> B) {
+	public boolean setThreats(Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}

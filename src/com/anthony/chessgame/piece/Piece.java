@@ -8,6 +8,7 @@ import com.anthony.chessgame.util.Utils;
 //MOTHER Class for every PIECE, CHECKMOVE & SETTHREATS are OVERRIDEN
 public abstract class Piece{
 	
+	public final static int BOARD_SIZE = 8;
 	//enum declaration for pieces	
 	public static enum typePiece{Bb("B",3),Bw("B",3),K("K",999),Kn("N",3),N(" ",0),O("X",0),P("P",1),Q("Q",9),R("R",5);
 	private String name;
@@ -98,7 +99,7 @@ public abstract class Piece{
 	 * @param B
 	 * @return
 	 */
-	public abstract boolean setThreats(ArrayList <Piece> B);
+	public abstract boolean setThreats(Piece[] B);
 	/**
 	 * 
 	 * @return The number of potential moves the piece can make
@@ -115,13 +116,13 @@ public abstract class Piece{
 	 * @param B
 	 * @return
 	 */
-	public abstract boolean checkMove(int Px, int Py,boolean W,Player J,ArrayList<Piece> B);
+	public abstract boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B);
 	/**
 	 * 
 	 * @param type
 	 * @param color
 	 */
-	public void definePiece(typePiece type, colorPiece color) {
+	protected void definePiece(typePiece type, colorPiece color) {
 		this.type = type;
 		this.color = color;
 		String C = (color.getW() == null) ? " " : ((color.getW()) ? "w" : "b"); 
@@ -137,8 +138,8 @@ public abstract class Piece{
 	 * 
 	 */
 	public void setCoord(){
-		posx = pos % 8 ;
-		posy = pos / 8 ;
+		posx = pos % BOARD_SIZE ;
+		posy = pos / BOARD_SIZE ;
 	}
 	/**
 	 * 
