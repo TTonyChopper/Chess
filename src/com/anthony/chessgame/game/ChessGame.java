@@ -125,7 +125,7 @@ public class ChessGame implements SpecialMoveObserver
 	/**
 	 * Constructs both PLAYER
 	 */
-	public void createPlayers()
+	private void createPlayers()
 	{
 		String pname = printer.askName(true);
 		P1 = new Player(1,true,pname);
@@ -138,7 +138,7 @@ public class ChessGame implements SpecialMoveObserver
 	/**
 	 * Constructs board
 	 */
-	public void createBoard()
+	private void createBoard()
 	{
 		for (int i=0;i<64;i++) 
 		{
@@ -154,7 +154,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param C
 	 * @return
 	 */
-	public Piece putPiece(int P, colorPiece C){
+	private Piece putPiece(int P, colorPiece C){
 		Piece put = null;
 		switch (pieces[P])
 		{
@@ -201,7 +201,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * 
 	 * @param P
 	 */
-	public void tryMoveBack(Player P,Piece captured){
+	private void tryMoveBack(Player P,Piece captured){
 		moveBackTo(P,Bfuture,mW[1],mW[0],captured);
 	}
 	/**
@@ -210,7 +210,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param pOrig
 	 * @param pDest
 	 */
-	public void tryMoveBack(Player P,int pOrig,int pMoved,Piece captured){
+	private void tryMoveBack(Player P,int pOrig,int pMoved,Piece captured){
 		revertMoveKings();
 		moveBackTo(P,Bfuture,pMoved,pOrig,captured);
 		Utils.setThreatsOnBoard(Bfuture);
@@ -223,7 +223,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public Piece tryMove(Player P){
+	private Piece tryMove(Player P){
 		return tryMove(P,mW[0],mW[1]);
 	}
 	/**
@@ -231,7 +231,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public Piece tryMove(Player P, int pOrig, int pDest){
+	private Piece tryMove(Player P, int pOrig, int pDest){
 		saveMoveKings();
 		Piece captured = moveTo(P,Bfuture,pOrig,pDest);
 		Utils.setThreatsOnBoard(Bfuture);
@@ -240,7 +240,7 @@ public class ChessGame implements SpecialMoveObserver
 		//printer.printPlayerPiecesOnBoard(P1,P2);
 		return captured;
 	}
-	public void finalizeMove(Piece moving,Piece captured,Player P) {
+	private void finalizeMove(Piece moving,Piece captured,Player P) {
 		setCaptures(captured,getFoe(P));
 		if (captured.isWhite() != null) getFoe(P).losePiece(captured);
 		B=null;
@@ -255,7 +255,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public boolean moveCoord(Player P,int pOrig,int pDest){
+	private boolean moveCoord(Player P,int pOrig,int pDest){
 		//		boolean losingMobility = false;
 		Piece captured = null;
 		boolean check= false;
@@ -281,7 +281,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public Piece askNMoveCoord(Player P){
+	private Piece askNMoveCoord(Player P){
 		Piece moving = null;
 		Piece captured = null;
 		//		boolean losingMobility = false;
@@ -317,7 +317,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param Pfinal
 	 * @return
 	 */
-	public void moveBackTo(Player P,ArrayList <Piece>Board,int pMoved,int pOrig,Piece captured) {
+	private void moveBackTo(Player P,ArrayList <Piece>Board,int pMoved,int pOrig,Piece captured) {
 		moveTo(P,Board,pMoved,pOrig);
 		if (captured == null) {
 			setPiece(new Nothing(pMoved,colorPiece.NONE),pMoved,Board);
@@ -336,7 +336,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param Pfinal
 	 * @return
 	 */
-	public Piece moveTo(Player P,ArrayList <Piece>Board,int Pinit,int Pfinal) {
+	private Piece moveTo(Player P,ArrayList <Piece>Board,int Pinit,int Pfinal) {
 		Piece moving = getPiece(Pinit,Board);
 
 		//Verify Castling conditions to move the Rook too
@@ -379,7 +379,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public Piece setCaptures(Piece captured,Player P){
+	private Piece setCaptures(Piece captured,Player P){
 		if (((captured.getType()) != typePiece.N) && P.isWhite()) {
 			wcaptures.add(captured.getName());
 			return captured;
@@ -395,7 +395,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public Boolean isOneMobility(Player P){
+	private Boolean isOneMobility(Player P){
 		List<Piece> ps = P.getPieces();
 		Iterator<Piece> itr = ps.iterator();
 		int i=0;
@@ -409,21 +409,21 @@ public class ChessGame implements SpecialMoveObserver
 	/**
 	 * Saves Coordinates of KING, in case his move is not valid
 	 */
-	public void saveMoveKings(){
+	private void saveMoveKings(){
 		posK1bu=posK1;
 		posK2bu=posK2;
 	}
 	/**
 	 * Reverts previous Coordinates of KING, when his move was not valid
 	 */
-	public void revertMoveKings(){
+	private void revertMoveKings(){
 		posK1=posK1bu;
 		posK2=posK2bu;
 	}
 	/**
 	 * Resets Passing conditions check for a Pawn, when his move was not valid
 	 */
-	public void resetMovePawn(boolean W){
+	private void resetMovePawn(boolean W){
 		if (W) {
 			if (pawnW!= null) pawnW = null;
 		} else {
@@ -436,7 +436,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @param Board
 	 */
-	public void setPiece(Piece p,int P,ArrayList<Piece> Board){
+	private void setPiece(Piece p,int P,ArrayList<Piece> Board){
 		Board.set(P,p);
 		(getPiece(P,Board)).setPos(P);
 		(getPiece(P,Board)).setCoord();
@@ -447,7 +447,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 * @return
 	 */
-	public Boolean findOneMoveForPlayer(Player P) {
+	private Boolean findOneMoveForPlayer(Player P) {
 		List<Piece> pieces = P.getPieces();
 		Iterator<Piece> itr = pieces.iterator();
 		boolean end = false;
@@ -473,7 +473,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param N
 	 * @return
 	 */
-	public Boolean playTurn(Player M,Player N) {
+	private Boolean playTurn(Player M,Player N) {
 		if(M.isWhite()) printer.printBoardState(B,M,1);	
 		else if(!(M.isWhite())) printer.printBoardState(B,M,2);
 		

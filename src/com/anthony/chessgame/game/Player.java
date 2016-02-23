@@ -44,6 +44,21 @@ public class Player{
 	public List<Piece> getPieces() {
 		return pieces;
 	}
+	public int scanPossibleMoves() {
+		int result = 0;
+		for (Piece p : pieces) {
+			result += p.scanPotentialMoves();
+		}
+		return result;
+	}
+	public int scanCumulatedPower() {
+		int result = 0;
+		for (Piece p : pieces) {
+			result += p.getType().getPower();
+		}
+		result -= Piece.typePiece.K.getPower();
+		return result;
+	}
 	public void printPossibleMoves() {
 		for (Piece p : pieces) {
 			p.printPossibleMoves();
@@ -73,4 +88,6 @@ public class Player{
 	 * Adds one LOSS to this PLAYER
 	 */
 	public void Defeat(){loss++;}
+	public int getVictories(){return win;}
+	public int getDefeats(){return loss;}
 }
