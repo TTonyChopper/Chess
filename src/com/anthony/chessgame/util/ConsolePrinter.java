@@ -114,6 +114,43 @@ public class ConsolePrinter implements IPrint{
 		return Utils.getPiece(Board,mW[0]);
 	}
 	/**
+	 * 
+	 * @return
+	 */
+	public Piece.typePiece askPromotion(){
+		String L = null;
+		Piece.typePiece type = Piece.typePiece.P;
+		System.out.println("Write the piece you want(one character) :");
+		System.out.println("\"P\" : Pawn");
+		System.out.println("\"B\" : Bishop");
+		System.out.println("\"N\" : Knight");
+		System.out.println("\"R\" : Rook");
+		System.out.println("\"Q\" : Queen");
+		boolean ok = true;
+		do {
+			while(((L=sc.nextLine()).length())!=1)
+			{
+				System.out.println("Error.\nTry again.");
+			}
+			switch (L) {
+				default : ok = false;
+					break;
+				case "P" : type = Piece.typePiece.P;
+					break;
+				//Bw or Bb will do
+				case "B" : type = Piece.typePiece.Bb;
+					break;
+				case "N" : type = Piece.typePiece.Kn;
+					break;
+				case "R" : type = Piece.typePiece.R;
+					break;
+				case "Q" : type = Piece.typePiece.Q;
+					break;
+			}
+		}while (!ok); 
+		return type;
+	}
+	/**
 	 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 	 */
 	public void printThreateningOnBoard(Piece[] B){

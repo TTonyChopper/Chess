@@ -29,7 +29,12 @@ public interface IPrint {
 		 * @param mW
 		 * @return
 		 */
-		public Piece askMove(Player J,Piece[] Board,int[] mW);		
+		public Piece askMove(Player J,Piece[] Board,int[] mW);	
+		/**
+		 * 
+		 * @return
+		 */
+		public Piece.typePiece askPromotion();	
 		/**
 		 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 		 * @param B

@@ -253,25 +253,35 @@ public class ChessGame implements SpecialMoveObserver
 		//reset other player passable pawn
 		resetMovePawn(!P.isWhite());
 		
-//		//TODO Pawn promotion ?
-//		if(moving.getType()==typePiece.P) {
-//			if ( ((P.isWhite()) && (moving.getPosy()==7)) || ((!P.isWhite()) && (moving.getPosy()==0)) ){
-//				typePiece type = printer.askPromotion((P));
-//				int pos = moving.getPos();
-//				int index = B.indexOf(moving);
-//				if (index != -1) {
-//					Piece newPiece = null;
-//					switch(type){
-//						case P :
-//						default : return;
-//						case N : ;
-//						case Q : ;
-//						case
-//					}
-//					B.set(index,new())
-//				}
-//			}
-//		}
+		//Pawn promotion ?
+		if(moving.getType()==typePiece.P) {
+			if ( ((P.isWhite()) && (moving.getPosy()==7)) || ((!P.isWhite()) && (moving.getPosy()==0)) ){
+				typePiece type = printer.askPromotion();
+				int pos = moving.getPos();
+				Piece newPiece = null;
+				colorPiece C = (P.isWhite()) ? colorPiece.WHITE : colorPiece.BLACK;
+				switch(type){
+					case P :
+					case K :
+					case N : 	
+					case O :
+					default : return;
+					case Bw : 
+					case Bb : newPiece = new Bishop(pos,C);
+						break;
+					case Kn : newPiece = new Knight(pos,C);;
+						break;
+					case R :  newPiece = new Rook(pos,C);;
+						break;
+					case Q :  newPiece = new Queen(pos,C);;
+						break;
+				}
+				P.losePiece(moving);
+				P.receivePiece(newPiece);
+				setPiece(newPiece,pos,B);
+				Utils.setThreatsOnBoard(B);
+			}
+		}
 	}
 	/**
 	 * Try moves until they are valid, then makes the move(same as askNMoveCoord, without getting moves from player)
