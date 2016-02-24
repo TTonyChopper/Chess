@@ -6,7 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -26,7 +26,7 @@ public class BoardPanel extends JPanel implements MouseListener{
 	 */
 	private static final long serialVersionUID = -3945785575519400790L;
 	
-	private static final String BASE_PATH = "resources/pieces/";
+	private static final String BASE_PATH = "pieces/";
 	private static final String VOID_PATH = "Void.png";
 	private static final String PAWNW_PATH = "PawnW.png";
 	private static final String BISHOPW_PATH = "BishopW.png";
@@ -97,8 +97,8 @@ public class BoardPanel extends JPanel implements MouseListener{
 				e.printStackTrace();
 			}
 			try {
-				File f = new File(path);
-				img = ImageIO.read(f);
+				BufferedInputStream is = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(path));
+				img = ImageIO.read(is);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

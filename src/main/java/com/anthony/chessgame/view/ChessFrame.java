@@ -136,7 +136,7 @@ public class ChessFrame extends JFrame implements IPrint{
 		return null;
 	}
 	@Override
-	public Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G) {
+	public Piece askMove(final Player J,final Piece[] Board,final int[] mW,final ChessGame G) {
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override
 			public void run() {
@@ -194,7 +194,7 @@ public class ChessFrame extends JFrame implements IPrint{
 		
 	}
 	@Override
-	public void printBoard(Piece[] B) {
+	public void printBoard(final Piece[] B) {
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override
 			public void run() {
