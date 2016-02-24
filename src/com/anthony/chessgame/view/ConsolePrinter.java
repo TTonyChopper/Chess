@@ -1,12 +1,15 @@
-package com.anthony.chessgame.util;
+package com.anthony.chessgame.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import com.anthony.chessgame.game.ChessGame;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
+import com.anthony.chessgame.util.IPrint;
+import com.anthony.chessgame.util.Utils;
 
 //This class tries to contain every important methods, those using System.out.print for example or Scanner
 //Has to be modified to become a graphic game
@@ -41,7 +44,7 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Asks and Returns a name for the PLAYER of COLOR W
 	 */
-	public String askName(boolean W){
+	public String askName(boolean W,ChessGame G){
 		String pname=null;
 		if (W)
 		{
@@ -72,7 +75,7 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 	 */
-	public Piece askMove(Player J,Piece[] Board,int[] mW){
+	public Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G){
 		String L = null;
 		boolean moveisok = false;
 		boolean pieceisok = false;
@@ -106,7 +109,7 @@ public class ConsolePrinter implements IPrint{
 			{
 				setDest(L.toLowerCase());	
 				mW[1] = Utils.getPos(destx, desty);
-				moveisok = Utils.getPiece(Board,mW[0]).checkMove(destx,desty,J.isWhite(),J,Board);
+				moveisok = Utils.getPiece(Board,mW[0]).checkMove(destx,desty,J,Board);
 				if (!moveisok) System.out.println("Coup non valide.");
 			}
 			else System.out.println("Erreur.");
@@ -117,9 +120,9 @@ public class ConsolePrinter implements IPrint{
 	 * 
 	 * @return
 	 */
-	public Piece.typePiece askPromotion(){
+	public Piece.TypePiece askPromotion(ChessGame G){
 		String L = null;
-		Piece.typePiece type = Piece.typePiece.P;
+		Piece.TypePiece type = Piece.TypePiece.P;
 		System.out.println("Write the piece you want(one character) :");
 		System.out.println("\"P\" : Pawn");
 		System.out.println("\"B\" : Bishop");
@@ -135,16 +138,16 @@ public class ConsolePrinter implements IPrint{
 			switch (L) {
 				default : ok = false;
 					break;
-				case "P" : type = Piece.typePiece.P;
+				case "P" : type = Piece.TypePiece.P;
 					break;
 				//Bw or Bb will do
-				case "B" : type = Piece.typePiece.Bb;
+				case "B" : type = Piece.TypePiece.Bb;
 					break;
-				case "N" : type = Piece.typePiece.Kn;
+				case "N" : type = Piece.TypePiece.Kn;
 					break;
-				case "R" : type = Piece.typePiece.R;
+				case "R" : type = Piece.TypePiece.R;
 					break;
-				case "Q" : type = Piece.typePiece.Q;
+				case "Q" : type = Piece.TypePiece.Q;
 					break;
 			}
 		}while (!ok); 

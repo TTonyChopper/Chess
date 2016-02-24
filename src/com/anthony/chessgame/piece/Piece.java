@@ -10,11 +10,11 @@ public abstract class Piece{
 	
 	public final static int BOARD_SIZE = 8;
 	//enum declaration for pieces	
-	public static enum typePiece{Bb("B",3),Bw("B",3),K("K",999),Kn("N",3),N(" ",0),O("X",0),P("P",1),Q("Q",9),R("R",5);
+	public static enum TypePiece{Bb("B",3),Bw("B",3),K("K",999),Kn("N",3),N(" ",0),O("X",0),P("P",1),Q("Q",9),R("R",5);
 	private String name;
 	//nominal value of the piece
 	private int power;
-	private typePiece(String name, int power){
+	private TypePiece(String name, int power){
 		this.name = name;
 		this.power = power;
 	}
@@ -37,7 +37,7 @@ public abstract class Piece{
 	}; 
 
 	//Type of this PIECE
-	protected typePiece type;
+	protected TypePiece type;
 	//COLOR of this PIECE
 	protected colorPiece color;
 	//name with color
@@ -85,7 +85,7 @@ public abstract class Piece{
 	public char getLposy() {return lposy;}
 	public String getName(){return name;}
 	public Boolean isWhite(){return color.getW();}
-	public typePiece getType(){return type;}
+	public TypePiece getType(){return type;}
 	public colorPiece getColor(){return color;}
 	public ArrayList<Piece> getThreaten(){return threaten;}
 	public boolean isThreatenKing(int P,Player J){
@@ -111,18 +111,17 @@ public abstract class Piece{
 	 * Calls checkMove of every PIECE of a given BOARD
 	 * @param Px
 	 * @param Py
-	 * @param W
 	 * @param J
 	 * @param B
 	 * @return
 	 */
-	public abstract boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B);
+	public abstract boolean checkMove(int Px, int Py,Player J,Piece[] B);
 	/**
 	 * 
 	 * @param type
 	 * @param color
 	 */
-	protected void definePiece(typePiece type, colorPiece color) {
+	protected void definePiece(TypePiece type, colorPiece color) {
 		this.type = type;
 		this.color = color;
 		String C = (color.getW() == null) ? " " : ((color.getW()) ? "w" : "b"); 

@@ -20,6 +20,7 @@ public class Player{
 	private boolean white;
 	//playing pieces
 	List<Piece> pieces = new ArrayList<Piece>();
+	private Piece movingPiece;
 
 	/**
 	 * CONSTRUCTOR : Player 
@@ -56,7 +57,7 @@ public class Player{
 		for (Piece p : pieces) {
 			result += p.getType().getPower();
 		}
-		result -= Piece.typePiece.K.getPower();
+		result -= Piece.TypePiece.K.getPower();
 		return result;
 	}
 	public void printPossibleMoves() {
@@ -76,6 +77,12 @@ public class Player{
 	 * @return the name of the player
 	 */
 	public String getPname() {return pname;}
+	public Piece getMovingPiece() {
+		return movingPiece;
+	}
+	public void setMovingPiece(Piece movingPiece) {
+		this.movingPiece = movingPiece;
+	}
 	/**
 	 * Adds one WIN on this PLAYER and one LOSS on the other PLAYER
 	 * @param opp The opposite player

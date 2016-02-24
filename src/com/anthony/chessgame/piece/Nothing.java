@@ -12,7 +12,7 @@ public class Nothing extends Piece {
 	 */
 	public Nothing(int P,colorPiece C) {
 		super(P);
-		definePiece(typePiece.N,C);
+		definePiece(TypePiece.N,C);
 	}
 	/**
 	 * CONSTRUCTOR : create a PIECE of COLOR C=0[NEUTRAL] at COORDINATES(PX,PY), and his NAME stays "  " from PIECE 
@@ -22,14 +22,14 @@ public class Nothing extends Piece {
 	 */
 	public Nothing(int Px,int Py,colorPiece C) {
 		super(BOARD_SIZE*Py+Px);
-		definePiece(typePiece.N,C);
+		definePiece(TypePiece.N,C);
 	}
 
 	@Override
 	/**
 	 * 
 	 */
-	public boolean checkMove(int Px, int Py, boolean W, Player J, Piece[] B) {
+	public boolean checkMove(int Px, int Py, Player J, Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}	

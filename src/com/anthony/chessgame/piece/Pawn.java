@@ -15,7 +15,7 @@ public class Pawn extends Piece {
 	 */
 	public Pawn(int P,colorPiece C) {
 		super(P);
-		definePiece(typePiece.P,C);
+		definePiece(TypePiece.P,C);
 	}
 
 	/**
@@ -39,9 +39,10 @@ public class Pawn extends Piece {
 	 * or first element Up/Down on diagonal, Left or Right if there is an opponent to capture
 	 * RETURNS true if the move is allowed
 	 */	
-	public boolean checkMove(int Px,int Py,boolean W,Player J,Piece[] B){
+	public boolean checkMove(int Px,int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
+		boolean W = J.isWhite();
 		boolean nevermoved = false;
 		if ((W&&(getPosy()==1))||((!W)&&(getPosy()==6))) nevermoved=true;
 		//System.out.println("nevermoved "+nevermoved);

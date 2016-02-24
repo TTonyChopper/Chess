@@ -10,14 +10,14 @@ public class OutOfBoard extends Piece{
 	public OutOfBoard()
 	{
 		super(64);
-		definePiece(typePiece.O,colorPiece.NONE);
+		definePiece(TypePiece.O,colorPiece.NONE);
 	}
 
 	@Override
 	/**
 	 * 
 	 */
-	public boolean checkMove(int Px, int Py, boolean W, Player J, Piece[] B) {
+	public boolean checkMove(int Px, int Py, Player J, Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}	

@@ -40,7 +40,7 @@
                         <goal>launch4j</goal>
                     </goals>
                     <configuration>
-                        <headerType>console</headerType>
+                        <headerType>gui</headerType>
                         <jar>${project.build.directory}/${project.artifactId}-${project.version}.jar</jar>
                         <outfile>${project.build.directory}/Chess.exe</outfile>
                         <downloadUrl>http://java.com/download</downloadUrl>

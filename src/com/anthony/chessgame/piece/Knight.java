@@ -12,7 +12,7 @@ public class Knight extends Piece {
 	 */
 	public Knight(int P,colorPiece C) {
 		super(P);
-		definePiece(typePiece.Kn,C);
+		definePiece(TypePiece.Kn,C);
 	}
 	
 	@Override
@@ -20,9 +20,10 @@ public class Knight extends Piece {
 	 * Movement allowed, 8 destination cases : L-like move 2/1 in one direction, 1/2 orthogonally
      * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
+	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
+		boolean W = J.isWhite();
 		if ((Math.abs(Dx) ==1 && Math.abs(Dy) ==2)||(Math.abs(Dx) ==2 && Math.abs(Dy) ==1))
 		{
 			if (!Utils.comparePieceC(B,Px,Py,W)) return true;
@@ -51,7 +52,7 @@ public class Knight extends Piece {
 			X2 = X+Dx[i];
 			Y2 = Y+Dy[i];
 			Piece obstacle = Utils.getPiece(B,X2,Y2);
-			if ( ((obstacle.getType()) == typePiece.N) || ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) ) {
+			if ( ((obstacle.getType()) == TypePiece.N) || ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) ) {
 				possibleMoves.add(obstacle.getPos());
 			}
 			addThreatening(Utils.getPiece(B,X2,Y2));

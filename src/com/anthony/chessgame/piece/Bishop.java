@@ -15,9 +15,9 @@ public class Bishop extends Piece {
 		int posx = P%Piece.BOARD_SIZE;
 		int posy = P/Piece.BOARD_SIZE;
 		if (posx%2==posy%2) {
-			definePiece(typePiece.Bw,C);
+			definePiece(TypePiece.Bw,C);
 		}else {
-			definePiece(typePiece.Bb,C);
+			definePiece(TypePiece.Bb,C);
 		}
 	}  
 
@@ -26,9 +26,10 @@ public class Bishop extends Piece {
 	 * Movement allowed, stopping to the first obstacle[non VOID] : diagonals UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
 	 * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
+	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
+		boolean W = J.isWhite();
 		boolean moveok = false;
 		if (Dx==-Dy)
 		{

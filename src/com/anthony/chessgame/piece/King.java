@@ -14,7 +14,7 @@ public class King extends Piece {
 	 */
 	public King(int P,colorPiece C) {
 		super(P);
-		definePiece(typePiece.K,C);
+		definePiece(TypePiece.K,C);
 		still = true;
 	}
 
@@ -33,9 +33,10 @@ public class King extends Piece {
 	 * Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases 
 	 * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
+	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
-		int Dy = Py - getPosy();	
+		int Dy = Py - getPosy();
+		boolean W = J.isWhite();
 		if ((Math.abs(Dx)==1)&&(Math.abs(Dy)==1)||(Math.abs(Dx)==0)&&(Math.abs(Dy)==1)||(Math.abs(Dx)==1)&&(Math.abs(Dy)==0))
 		{	
 			if (!Utils.comparePieceC(B,Px,Py,W)) return true;
@@ -115,7 +116,7 @@ public class King extends Piece {
 			X2 = X+Dx[i];
 			Y2 = Y+Dy[i];
 			Piece obstacle = Utils.getPiece(B,X2,Y2);
-			if ( ((obstacle.getType()) == typePiece.N) || ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) ) {
+			if ( ((obstacle.getType()) == TypePiece.N) || ((obstacle.isWhite()!=null) && (isWhite()!=obstacle.isWhite())) ) {
 				possibleMoves.add(obstacle.getPos());
 			}
 			addThreatening(obstacle);

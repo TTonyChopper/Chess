@@ -1,6 +1,7 @@
 package com.anthony.chessgame.game;
 
-import com.anthony.chessgame.util.ConsolePrinter;
+import com.anthony.chessgame.util.PrinterFactory;
+import com.anthony.chessgame.util.PrinterFactory.PrinterType;
 
 public class Chess {
 
@@ -9,7 +10,7 @@ public class Chess {
 	 * @param args none required
 	 */
 	public static void main(String[] args){
-		ChessGame G = new ChessGame(new ConsolePrinter());
+		ChessGame G = new ChessGame(PrinterFactory.getPrinter(PrinterType.SWING));
 		G.start();
 	}
 

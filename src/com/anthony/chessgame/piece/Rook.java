@@ -17,7 +17,7 @@ public class Rook extends Piece {
 	 */
 	public Rook(int P,colorPiece C) {
 		super(P);
-		definePiece(typePiece.R,C);
+		definePiece(TypePiece.R,C);
 		immobile = true;
 	}
 
@@ -35,9 +35,10 @@ public class Rook extends Piece {
 	 * Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT
 	 * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
+	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
+		boolean W = J.isWhite();
 		boolean moveok = false;
 		//Looking for an obstacle(friendly or not[non VOID]) on the way
 		if (Dx==0)

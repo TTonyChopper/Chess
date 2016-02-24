@@ -2,6 +2,7 @@ package com.anthony.chessgame.util;
 
 import java.util.ArrayList;
 
+import com.anthony.chessgame.game.ChessGame;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
 
@@ -21,7 +22,7 @@ public interface IPrint {
 		 * @param W
 		 * @return
 		 */
-		public String askName(boolean W);
+		public String askName(boolean W,ChessGame G);
 		/**
 		 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 		 * @param J
@@ -29,12 +30,12 @@ public interface IPrint {
 		 * @param mW
 		 * @return
 		 */
-		public Piece askMove(Player J,Piece[] Board,int[] mW);	
-		/**
+		public Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G);	
+		/**askMove
 		 * 
 		 * @return
 		 */
-		public Piece.typePiece askPromotion();	
+		public Piece.TypePiece askPromotion(ChessGame G);	
 		/**
 		 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 		 * @param B

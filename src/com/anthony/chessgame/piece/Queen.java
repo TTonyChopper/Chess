@@ -12,7 +12,7 @@ public class Queen extends Piece {
 	 */
 	public Queen(int P,colorPiece C) {
 		super(P);
-		definePiece(typePiece.Q,C);
+		definePiece(TypePiece.Q,C);
 	}
 
 	@Override
@@ -20,9 +20,10 @@ public class Queen extends Piece {
 	 * Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT-UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
 	 * RETURNS true if the move is allowed
 	 */
-	public boolean checkMove(int Px, int Py,boolean W,Player J,Piece[] B){
+	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
 		int Dy = Py - getPosy();
+		boolean W = J.isWhite();
 		boolean moveok = false;
 		if (Dx==0)
 		{

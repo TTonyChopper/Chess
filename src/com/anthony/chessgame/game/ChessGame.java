@@ -11,7 +11,7 @@ import com.anthony.chessgame.piece.OutOfBoard;
 import com.anthony.chessgame.piece.Pawn;
 import com.anthony.chessgame.piece.Piece;
 import com.anthony.chessgame.piece.Piece.colorPiece;
-import com.anthony.chessgame.piece.Piece.typePiece;
+import com.anthony.chessgame.piece.Piece.TypePiece;
 import com.anthony.chessgame.piece.Queen;
 import com.anthony.chessgame.piece.Rook;
 import com.anthony.chessgame.util.IPrint;
@@ -53,6 +53,22 @@ public class ChessGame implements SpecialMoveObserver
 
 	/**
 	 * CONSTRUCTOR
+	 */
+	public ChessGame(){
+		B = new Piece[BOARD_WIDTH*BOARD_HEIGHT+1];
+		Bfuture = new Piece[BOARD_WIDTH*BOARD_HEIGHT+1];
+		checkmate = false;
+		checkmate2 = false;
+		wcaptures = new ArrayList<String>();
+		bcaptures = new ArrayList<String>();
+		posK1= 4;
+		posK1bu= 4;
+		posK2= 60;
+		posK2bu= 60;
+		mW= new int[2];
+	}
+	/**
+	 * CONSTRUCTOR
 	 * @param p
 	 */
 	public ChessGame(IPrint p){
@@ -73,6 +89,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * start and play the game
 	 */
 	public void start(){
+		if (printer == null) return;
 		printer.printTitle();
 
 		createPlayers();
@@ -130,10 +147,10 @@ public class ChessGame implements SpecialMoveObserver
 	 */
 	private void createPlayers()
 	{
-		String pname = printer.askName(true);
+		String pname = printer.askName(true,this);
 		P1 = new Player(1,true,pname);
 
-		pname = printer.askName(false);
+		pname = printer.askName(false,this);
 		P2 = new Player(2,false,pname);
 		printer.printLine();
 		printer.printLine();
@@ -254,9 +271,9 @@ public class ChessGame implements SpecialMoveObserver
 		resetMovePawn(!P.isWhite());
 		
 		//Pawn promotion ?
-		if(moving.getType()==typePiece.P) {
+		if(moving.getType()==TypePiece.P) {
 			if ( ((P.isWhite()) && (moving.getPosy()==7)) || ((!P.isWhite()) && (moving.getPosy()==0)) ){
-				typePiece type = printer.askPromotion();
+				TypePiece type = printer.askPromotion(this);
 				int pos = moving.getPos();
 				Piece newPiece = null;
 				colorPiece C = (P.isWhite()) ? colorPiece.WHITE : colorPiece.BLACK;
@@ -331,7 +348,7 @@ public class ChessGame implements SpecialMoveObserver
 			//Ask coordinates
 			Bfuture = null;
 			Bfuture = Utils.cloneAL(B);
-			moving=printer.askMove(P,Bfuture,mW);
+			moving=printer.askMove(P,Bfuture,mW,this);
 			//Test the move 
 			captured = tryMove(P);
 			//Verify if Player playing turn if is check
@@ -373,7 +390,7 @@ public class ChessGame implements SpecialMoveObserver
 		Piece moving = getPiece(Pinit,Board);
 
 		//Verify Castling conditions to move the Rook too
-		if (moving.getType()==typePiece.K)
+		if (moving.getType()==TypePiece.K)
 		{
 			if (P.isWhite()) posK1 = Pfinal;
 			else if (!(P.isWhite())) posK2 = Pfinal;
@@ -390,7 +407,7 @@ public class ChessGame implements SpecialMoveObserver
 		setPiece(moving,Pfinal,Board);
 		
 		//Verify Passing conditions
-		if (moving.getType()==typePiece.P)
+		if (moving.getType()==TypePiece.P)
 		{
 			int Px = moving.getPosx();
 			int Py = moving.getPosy();
@@ -413,10 +430,10 @@ public class ChessGame implements SpecialMoveObserver
 	 * @return
 	 */
 	private Piece setCaptures(Piece captured,Player P){
-		if (((captured.getType()) != typePiece.N) && P.isWhite()) {
+		if (((captured.getType()) != TypePiece.N) && P.isWhite()) {
 			wcaptures.add(captured.getName());
 			return captured;
-		}else if (((captured.getType()) != typePiece.N)&& !P.isWhite()) {
+		}else if (((captured.getType()) != TypePiece.N)&& !P.isWhite()) {
 			bcaptures.add(captured.getName());
 			return captured;
 		}else{

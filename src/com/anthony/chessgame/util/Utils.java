@@ -6,7 +6,7 @@ import java.util.List;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
 import com.anthony.chessgame.piece.Piece.colorPiece;
-import com.anthony.chessgame.piece.Piece.typePiece;
+import com.anthony.chessgame.piece.Piece.TypePiece;
 
 public class Utils {
 
@@ -141,7 +141,7 @@ public class Utils {
 	 * @param P
 	 * @return
 	 */
-	public static boolean isVoid(Piece[] B,int P){return (B[P].getType()) == typePiece.N;}
+	public static boolean isVoid(Piece[] B,int P){return (B[P].getType()) == TypePiece.N;}
 	/**
 	 * Returns true if the PIECE at (Px,Py) is VOID[NOTHING]
 	 * @param B
@@ -171,21 +171,21 @@ public class Utils {
 	 * @param P
 	 * @return
 	 */
-	public static boolean isPawn(Piece[] B,int P){return ((B[P].getType()) == typePiece.P);}
+	public static boolean isPawn(Piece[] B,int P){return ((B[P].getType()) == TypePiece.P);}
 	/**
 	 * Returns true if the PIECE at P is King
 	 * @param B
 	 * @param P
 	 * @return
 	 */
-	public static boolean isKing(Piece[] B,int P){return ((B[P].getType()) == typePiece.K);}
+	public static boolean isKing(Piece[] B,int P){return ((B[P].getType()) == TypePiece.K);}
 	/**
 	 * Returns true if the PIECE at P is King
 	 * @param B
 	 * @param P
 	 * @return
 	 */
-	public static boolean isKing(List<Piece> B,int P){return ((B.get(P).getType()) == typePiece.K);}
+	public static boolean isKing(List<Piece> B,int P){return ((B.get(P).getType()) == TypePiece.K);}
 	/**
 	 * Returns true if the PIECE at P is White King
 	 * @param B
@@ -206,7 +206,7 @@ public class Utils {
 	 * @param P
 	 * @return
 	 */
-	public static boolean isRook(Piece[] B,int P){return ((B[P].getType()) == typePiece.R);}
+	public static boolean isRook(Piece[] B,int P){return ((B[P].getType()) == TypePiece.R);}
 	/**
 	 * Returns true if the PIECE at P is Rook and has Special Move
 	 * @param B
