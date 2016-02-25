@@ -50,6 +50,8 @@ public class ChessGame implements SpecialMoveObserver
 	//POSITIONS of a PIECE which is being played
 	private int[] mW;
 	private IPrint printer;
+	//Object transmitted between threads
+	private Object holder;
 
 	/**
 	 * CONSTRUCTOR
@@ -141,6 +143,18 @@ public class ChessGame implements SpecialMoveObserver
 	//Getter for enemy player
 	public Player getFoe(Player P) {
 		return (P1==P) ? P2:P1;
+	}
+	public Player getPlayer1() {
+		return P1;
+	}
+	public Player getPlayer2() {
+		return P2;
+	}
+	public Object getHolder() {
+		return holder;
+	}
+	public void setHolder(Object o) {
+		holder = o;
 	}
 	/**
 	 * Constructs both PLAYER

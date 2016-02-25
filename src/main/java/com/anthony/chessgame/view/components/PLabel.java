@@ -1,7 +1,9 @@
 package com.anthony.chessgame.view.components;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.border.BevelBorder;
 
 import com.anthony.chessgame.piece.Piece;
 
@@ -39,5 +41,11 @@ public class PLabel extends JLabel {
 	 */
 	public int getPos() {
 		return pos;
+	}
+	public void select() {
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));	
+	}
+	public void unselect() {
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 	}
 }

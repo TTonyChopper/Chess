@@ -1,6 +1,5 @@
 package com.anthony.chessgame.view.components;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
@@ -61,9 +60,13 @@ public class BoardPanel extends JPanel implements MouseListener{
 	 * 
 	 */
 	private void initComponents() {
-		setLayout(new GridLayout(8,8));
+		GridLayout gl = new GridLayout(8,8,1,1);
+		setLayout(gl);
+		setBorder(BorderFactory.createEmptyBorder(20,20,10,10));
 		updateBoard();
-		setPreferredSize(new Dimension(labels[0].getIcon().getIconWidth()*8,labels[0].getIcon().getIconHeight()*8));
+		Dimension d = new Dimension((labels[0].getIcon().getIconWidth()+22)*8,(labels[0].getIcon().getIconHeight()+22)*8);
+		setPreferredSize(d);
+		setMinimumSize(d);
 	}
 	/**
 	 * 
@@ -104,6 +107,7 @@ public class BoardPanel extends JPanel implements MouseListener{
 			}
 	        ImageIcon t = new ImageIcon(img);
 			labels[i] = new PLabel(t,p,i);
+			labels[i].unselect();
 			add(labels[i]);
 			labels[i].addMouseListener(this);
 		}
@@ -167,7 +171,7 @@ public class BoardPanel extends JPanel implements MouseListener{
 			Boolean isWhite = nextPiece.isWhite();
 			//Move
 			if((lastPieceLabel != null) && !((isWhite!=null) && (lastPieceSelected.isWhite()==isWhite))) {
-				lastPieceLabel.setBorder(null);
+				lastPieceLabel.unselect();
 				int pos = l.getPos();
 				int posx = pos%8;
 				int posy = pos/8;
@@ -185,18 +189,18 @@ public class BoardPanel extends JPanel implements MouseListener{
 			//Reselection another piece
 			} else if ((lastPieceLabel != null) && (isWhite!=null)){
 				if(isWhite == waitingPlayer.isWhite()) {
-					lastPieceLabel.setBorder(null);
+					lastPieceLabel.unselect();
 					lastPieceLabel = l;
-					l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+					l.select();
 				}
 			//First selection
 			} else {
 				if (lastPieceLabel != null) {
-					lastPieceLabel.setBorder(null);
+					lastPieceLabel.unselect();
 					lastPieceLabel = null;
 				}
 				if ((isWhite!=null) && (isWhite == waitingPlayer.isWhite())) {
-					l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+					l.select();
 					lastPieceLabel = l;
 				}
 			}

@@ -1,7 +1,6 @@
 package com.anthony.chessgame.view;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import com.anthony.chessgame.piece.Piece;
 import com.anthony.chessgame.piece.Piece.TypePiece;
 import com.anthony.chessgame.util.IPrint;
 import com.anthony.chessgame.view.components.BoardPanel;
-import com.anthony.chessgame.view.components.GamePanel;
+import com.anthony.chessgame.view.components.PlayerDialog;
 
 public class ChessFrame extends JFrame implements IPrint{
 
@@ -26,15 +25,18 @@ public class ChessFrame extends JFrame implements IPrint{
 	private static final long serialVersionUID = 7457878922842570019L;
 	
 	//Default height window app
-	public final static int HEIGHT = 860; 
+	public final static int HEIGHT = 950; 
 	//Default width window app
-	public final static int WIDTH = 640; 
-	//Margin for window insets
-	private int margin;
+	public final static int WIDTH = 820; 
+	//Players names
+	private String p1;
+	private String p2;
 	//Current displayed panel
 	private JPanel currentPanel=null;
+	//Current GamePanel
+	private GamePanel gP;
 	//Current Board view
-	private BoardPanel boardPanel;
+	private BoardPanel bP;
 	
 	/**
 	 * 
@@ -42,7 +44,6 @@ public class ChessFrame extends JFrame implements IPrint{
 	 */
 	public ChessFrame(int margin) {
 		super("Chess Game");
-		setMargin(margin);
 		addWindowListener(new WindowListener() {
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -61,22 +62,6 @@ public class ChessFrame extends JFrame implements IPrint{
 			@Override
 			public void windowDeactivated(WindowEvent e) {}
 		});
-	}
-	
-	/**
-	 * 
-	 */
-	public Insets getInsets() {
-		Insets in = super.getInsets();
-		return new Insets(in.top + margin, in.left + margin,
-				in.bottom + margin, in.right + margin);
-	}
-	/**
-	 * 
-	 * @param m
-	 */
-	public void setMargin(int m) {
-		margin = m;
 	}
 	/**
 	 * 
@@ -108,6 +93,7 @@ public class ChessFrame extends JFrame implements IPrint{
 	 * @param p
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private JPanel replaceCurrentPanel(JPanel p) {
 		removeCurrentPanel();
 		addCurrentPanel(p);
@@ -115,32 +101,51 @@ public class ChessFrame extends JFrame implements IPrint{
 	}
 	
 	@Override
-	public void printTitle() {
-		setTitle("CHESS v1.0");
-	}
+	public void printTitle() {setTitle("CHESS v1.0");}
 	@Override
-	public void printIsCheck(boolean check) {
-		// TODO Auto-generated method stub
-	}
+	public void printIsCheck(boolean check) {}
 	@Override
-	public void printLine() {
-		// TODO Auto-generated method stub
-	}
+	public void printLine() {}
 	@Override
 	public void setDest(String L) {
 		// TODO Auto-generated method stub
 	}
 	@Override
 	public String askName(boolean W, ChessGame C) {
-		// TODO Auto-generated method stub
-		return null;
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				PlayerDialog pd = new PlayerDialog(W,C);
+				pd.setVisible(true);
+			}
+		});
+		synchronized(C) {
+			try {
+				C.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		Object o = C.getHolder();
+		String result = "";
+		if ((o==null) || !(o instanceof String)) {
+			return null;
+		} else {
+			result = (String) o;
+			if (W) {
+				p1 = result;
+			} else {
+				p2 = result;
+			}
+		}
+		return  result; 
 	}
 	@Override
 	public Piece askMove(final Player J,final Piece[] Board,final int[] mW,final ChessGame G) {
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override
 			public void run() {
-				boardPanel.readyForMove(ChessFrame.this,J,Board,mW,G);
+				bP.readyForMove(ChessFrame.this,J,Board,mW,G);
 			}
 		});
 		synchronized(J) {
@@ -154,67 +159,73 @@ public class ChessFrame extends JFrame implements IPrint{
 	}
 	@Override
 	public TypePiece askPromotion(ChessGame G) {
-		// TODO Auto-generated method stub
-		return null;
+		return TypePiece.Q;
 	}
 	@Override
-	public void printThreateningOnBoard(Piece[] B) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void printThreateningOnBoard(Piece[] B) {}
 	@Override
-	public void printThreatenOnBoard(Piece[] B) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void printThreatenOnBoard(Piece[] B) {}
 	@Override
-	public void printPlayersPiecesOnBoard(Player... P) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void printPlayersPiecesOnBoard(Player... P) {}
 	@Override
 	public void oppInCheck(Piece[] B, Player J2, boolean moveFound) {
-		// TODO Auto-generated method stub
-		
+		gP.printText("The other player is in Check!");
 	}
 	@Override
 	public void printCheck() {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				if (gP!=null) {
+					gP.printText("You sir are in trouble!");
+				}
+			}
+		});	
 	}
 	@Override
 	public void printBoardState(Piece[] B, Player J, int N) {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				gP.printText("Your time to play : "+J.getPname());
+			}
+		});
 	}
 	@Override
 	public void printCaptures(ArrayList<String> wcaptures,
 			ArrayList<String> bcaptures) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 	@Override
 	public void printBoard(final Piece[] B) {
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override
 			public void run() {
-				if (boardPanel == null) {
-					currentPanel = new GamePanel(B);
-					boardPanel = ((GamePanel)currentPanel).getBoardPanel();
+				if (bP == null) {
+					currentPanel = new GamePanel(B,p1,p2);
+					gP = (GamePanel)currentPanel;
+					bP = gP.getBoardPanel();
 					add(currentPanel);
 					setPreferredSize(new Dimension(HEIGHT,WIDTH));
 					pack();
 					setLocationRelativeTo(null);
 					setVisible(true);
 				} else {
-					boardPanel.updateBoard(B);
+					bP.updateBoard(B);
 				}
 			}
 		});
 	}
 	@Override
 	public void printGameOver() {
-		// TODO Auto-generated method stub
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				if (gP!=null) {
+					gP.printText("The Game is over!");
+				}
+			}
+		});
 	}
 	@Override
 	public void printStats() {
