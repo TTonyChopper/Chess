@@ -3,6 +3,16 @@ package com.anthony.chessgame.game;
 import com.anthony.chessgame.piece.Piece;
 
 public interface SpecialMoveObserver {
-	public void bigLeapSpawnSpotted(Piece P,boolean W);
-	public Piece getFoePawn(boolean W);
+	/**
+	 *
+	 * @param P
+	 * @param W
+	 */
+	void bigLeapSpawnSpotted(Piece P,boolean W);
+	/**
+	 *
+	 * @param W
+	 * @return
+	 */
+	Piece getFoePawn(boolean W);
 }

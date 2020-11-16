@@ -16,9 +16,9 @@ public class Knight extends Piece {
 	}
 	
 	@Override
-	/**
-	 * Movement allowed, 8 destination cases : L-like move 2/1 in one direction, 1/2 orthogonally
-     * RETURNS true if the move is allowed
+	/*
+	  Movement allowed, 8 destination cases : L-like move 2/1 in one direction, 1/2 orthogonally
+      RETURNS true if the move is allowed
 	 */
 	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
@@ -32,10 +32,10 @@ public class Knight extends Piece {
 		else return false;
 	}
 	@Override
-	/**
-	 * SETTER for THREATENING : contains the destination PIECE(friendly or not)
-	 * If destination if out of the board, puts an OutOfBoard object instead(NAME "XX") 
-	 * 8 concrete PIECE threaten 
+	/*
+	  SETTER for THREATENING : contains the destination PIECE(friendly or not)
+	  If destination if out of the board, puts an OutOfBoard object instead(NAME "XX")
+	  8 concrete PIECE threaten
 	 */
 	public boolean setThreats(Piece[] B)
 	{
@@ -60,8 +60,8 @@ public class Knight extends Piece {
 		return false;
 	}	
 	@Override
-	/**
-	 * Returns number of potential moves
+	/*
+	  Returns number of potential moves
 	 */
 	public int scanPotentialMoves() {
 		return possibleMoves.size();

@@ -8,21 +8,21 @@ import com.anthony.chessgame.piece.Piece;
 
 public interface IPrint {
 		//FAST ConsolePrinter
-		public void printTitle();	
-		public void printIsCheck(boolean check);
-		public void printLine();
+		void printTitle();
+		void printIsCheck(boolean check);
+		void printLine();
 		
 		/**
 		 * Transforms COORDINATES into CHAR
 		 * @param L
 		 */
-		public void setDest(String L);
+		void setDest(String L);
 		/**
 		 * Asks and Returns a name for the PLAYER of COLOR W
 		 * @param W
 		 * @return
 		 */
-		public String askName(boolean W,ChessGame G);
+		String askName(boolean W,ChessGame G);
 		/**
 		 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 		 * @param J
@@ -30,63 +30,62 @@ public interface IPrint {
 		 * @param mW
 		 * @return
 		 */
-		public Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G);	
+		Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G);
 		/**askMove
 		 * 
 		 * @return
 		 */
-		public Piece.TypePiece askPromotion(ChessGame G);	
+		Piece.TypePiece askPromotion(ChessGame G);
 		/**
 		 * Prints THREATENING[every PIECE attacked by a given PIECE, one by one] of every PIECE of a given BOARD
 		 * @param B
 		 */
-		public void printThreateningOnBoard(Piece[] B);
+		void printThreateningOnBoard(Piece[] B);
 		/**
 		 * Prints THREATEN[every PIECE attacking a given PIECE, one by one] of every PIECE of a given BOARD
 		 * @param B
 		 */
-		public void printThreatenOnBoard(Piece[] B);
+		void printThreatenOnBoard(Piece[] B);
 		/**
 		 * Prints every PIECE of both PLAYER
-		 * @param P1
-		 * @param P2
+		 * @param P
 		 */
-		public void printPlayersPiecesOnBoard(Player... P);
+		void printPlayersPiecesOnBoard(Player... P);
 		/**
 		 * Prints and inform the PLAYER he has put his Foe in CHECK
 		 * @param B
 		 * @param J2
 		 * @return
 		 */
-		public void oppInCheck(Piece[] B,Player J2,boolean moveFound);
+		void oppInCheck(Piece[] B,Player J2,boolean moveFound);
 		/**
 		 * Prints and inform the PLAYER he is in CHESS
 		 */
-		public void printCheck();
+		void printCheck();
 		/**
 		 * Prints whose turn it is
 		 * @param B
 		 * @param J
 		 * @param N
 		 */
-		public void printBoardState(Piece[] B,Player J,int N);
+		void printBoardState(Piece[] B,Player J,int N);
 		/**
 		 * Prints captured pieces
 		 * @param wcaptures
 		 * @param bcaptures
 		 */
-		public void printCaptures(ArrayList<String> wcaptures,ArrayList<String> bcaptures);
+		void printCaptures(ArrayList<String> wcaptures,ArrayList<String> bcaptures);
 		/**
 		 * Prints the actual BOARD state
 		 * @param B
 		 */
-		public void printBoard(Piece[] B);
+		void printBoard(Piece[] B);
 		/**
 		 * Game over
 		 */
-		public void printGameOver();
+		void printGameOver();
 		/**
 		 * Shows PLAYER STATS
 		 */
-		public void printStats();
+		void printStats();
 }

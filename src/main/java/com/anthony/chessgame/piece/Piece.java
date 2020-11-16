@@ -10,11 +10,11 @@ public abstract class Piece{
 	
 	public final static int BOARD_SIZE = 8;
 	//enum declaration for pieces	
-	public static enum TypePiece{Bb("B",3),Bw("B",3),K("K",999),Kn("N",3),N(" ",0),O("X",0),P("P",1),Q("Q",9),R("R",5);
+	public enum TypePiece{Bb("B",3),Bw("B",3),K("K",999),Kn("N",3),N(" ",0),O("X",0),P("P",1),Q("Q",9),R("R",5);
 	private String name;
 	//nominal value of the piece
 	private int power;
-	private TypePiece(String name, int power){
+	TypePiece(String name, int power){
 		this.name = name;
 		this.power = power;
 	}
@@ -26,7 +26,7 @@ public abstract class Piece{
 	}
 	}; 
 	//enum declaration for colors
-	public static enum colorPiece{WHITE(true),BLACK(false),NONE(null);
+	public enum colorPiece{WHITE(true),BLACK(false),NONE(null);
 	private Boolean W;
 	private colorPiece(Boolean W){
 		this.W = W;
@@ -43,9 +43,9 @@ public abstract class Piece{
 	//name with color
 	protected String name;
 	//Contains each PIECE attacking this PIECE
-	protected ArrayList<Piece> threaten = new ArrayList<Piece>();
+	protected ArrayList<Piece> threaten;
 	//Contains each PIECE(friendly or not) attacked by this PIECE, can be OutOfBoard though 
-	protected ArrayList<Piece> threatening = new ArrayList<Piece>();
+	protected ArrayList<Piece> threatening;
 	//Contains possible Moves
 	TreeSet<Integer> possibleMoves;
 	//Position of the PIECE on the 64 cases BOARD, from 0(a1) to 63(h8) 
@@ -62,9 +62,9 @@ public abstract class Piece{
 	 * @param P
 	 */
 	public Piece(int P) {
-		threaten = new ArrayList<Piece>(); 
-		threatening = new ArrayList<Piece>();
-		possibleMoves = new TreeSet<Integer>();
+		threaten = new ArrayList<>();
+		threatening = new ArrayList<>();
+		possibleMoves = new TreeSet<>();
 		pos = P;
 		setCoord();
 		setLCoord();
@@ -177,10 +177,7 @@ public abstract class Piece{
 	 */
 	public void printPossibleMoves(){
 		System.out.print("Possible moves for "+getName()+" : ");
-		Iterator<Integer> itr = possibleMoves.iterator();
-		while(itr.hasNext()) {
-			System.out.print(itr.next()+" ");  
-		}
+		possibleMoves.stream().map(possibleMove -> possibleMove + " ").forEach(System.out::print);
 		System.out.println("");
 	}
 	/**

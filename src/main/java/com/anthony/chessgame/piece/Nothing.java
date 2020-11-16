@@ -26,17 +26,11 @@ public class Nothing extends Piece {
 	}
 
 	@Override
-	/**
-	 * 
-	 */
 	public boolean checkMove(int Px, int Py, Player J, Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}	
 	@Override
-	/**
-	 * 
-	 */
 	public boolean setThreats(Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;

@@ -34,10 +34,10 @@ public class Pawn extends Piece {
 		return result;
 	}
 	@Override
-	/**
-	 * Movement allowed, stopping to the first obstacle[non VOID] : Up/Down[COLOR],
-	 * or first element Up/Down on diagonal, Left or Right if there is an opponent to capture
-	 * RETURNS true if the move is allowed
+	/*
+	  Movement allowed, stopping to the first obstacle[non VOID] : Up/Down[COLOR],
+	  or first element Up/Down on diagonal, Left or Right if there is an opponent to capture
+	  RETURNS true if the move is allowed
 	 */	
 	public boolean checkMove(int Px,int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
@@ -75,10 +75,10 @@ public class Pawn extends Piece {
 		return false;
 	}
 	@Override
-	/**
-	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
-	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
-	 * 2 concrete PIECE threaten 
+	/*
+	  SETTER for THREATENING : contains the first obstacle(friendly or not)
+	  If no piece is on the way, puts an OutOfBoard object instead(NAME "XX")
+	  2 concrete PIECE threaten
 	 */
 	public boolean setThreats(Piece[] B)
 	{
@@ -102,8 +102,8 @@ public class Pawn extends Piece {
 		return false;
 	}
 	@Override
-	/**
-	 * Returns number of potential moves
+	/*
+	  Returns number of potential moves
 	 */
 	public int scanPotentialMoves() {
 		return possibleMoves.size();
@@ -136,7 +136,7 @@ public class Pawn extends Piece {
 	 */
 	private Piece DiagL(Piece[] B)
 	{
-		Piece result = null;
+		Piece result;
 		if (getColor().getW()) {
 			result = Utils.getPiece(B,getPosx()-1,getPosy()+1);
 			checkCase(B,getPosx()-1,getPosy()+1,true);
@@ -153,7 +153,7 @@ public class Pawn extends Piece {
 	 */
 	private Piece DiagR(Piece[] B)
 	{
-		Piece result = null;
+		Piece result;
 		if (getColor().getW()) {
 			result = Utils.getPiece(B,getPosx()+1,getPosy()+1);
 			checkCase(B,getPosx()+1,getPosy()+1,true);

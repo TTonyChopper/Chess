@@ -16,9 +16,9 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	/**
-	 * Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT-UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
-	 * RETURNS true if the move is allowed
+	/*
+	  Movement allowed, stopping to the first obstacle[non VOID] : TOP-DOWN-LEFT-RIGHT-UP LEFT-UP RIGHT-DOWN RIGHT-DOWN LEFT
+	  RETURNS true if the move is allowed
 	 */
 	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
@@ -52,10 +52,10 @@ public class Queen extends Piece {
 		return moveok;
 	}
 	@Override
-	/**
-	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
-	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
-	 * 8 concrete PIECE threaten
+	/*
+	  SETTER for THREATENING : contains the first obstacle(friendly or not)
+	  If no piece is on the way, puts an OutOfBoard object instead(NAME "XX")
+	  8 concrete PIECE threaten
 	 */
 	public boolean setThreats(Piece[] B){
 		clearThreatening();
@@ -71,8 +71,8 @@ public class Queen extends Piece {
 		return false;
 	}
 	@Override
-	/**
-	 * Returns number of potential moves
+	/*
+	  Returns number of potential moves
 	 */
 	public int scanPotentialMoves() {
 		return possibleMoves.size();

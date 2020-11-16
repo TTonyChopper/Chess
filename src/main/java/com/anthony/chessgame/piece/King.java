@@ -19,19 +19,19 @@ public class King extends Piece {
 	}
 
 	@Override
-	/**
-	 * King may castle as long as still is true
+	/*
+	  King may castle as long as still is true
 	 */
 	public boolean hasSpecialMove(){return still;}
 	@Override
-	/**
-	 * One-way SETTER in case it moves
+	/*
+	  One-way SETTER in case it moves
 	 */
 	public boolean loseSpecialMove(){return still=false;}
 	@Override
-	/**
-	 * Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases 
-	 * RETURNS true if the move is allowed
+	/*
+	  Movement allowed, stopping to the first obstacle[non VOID] : all 8 adjacent cases
+	  RETURNS true if the move is allowed
 	 */
 	public boolean checkMove(int Px, int Py,Player J,Piece[] B){
 		int Dx = Px - getPosx();
@@ -81,7 +81,7 @@ public class King extends Piece {
 				//Check if King route is safe!
 				int pKing = getPos();
 				boolean check = Utils.isThreaten(this);
-				Piece[] Bmind = new Piece[B.length];
+				Piece[] Bmind;
 				for (int i=0;i<2;i++)
 				{
 					Bmind=Utils.cloneAL(B);
@@ -96,10 +96,10 @@ public class King extends Piece {
 		return false;
 	}
 	@Override
-	/**
-	 * SETTER for THREATENING : contains the first obstacle(friendly or not)
-	 * If no piece is on the way, puts an OutOfBoard object instead(NAME "XX") 
-	 * 8 concrete PIECE threaten
+	/*
+	  SETTER for THREATENING : contains the first obstacle(friendly or not)
+	  If no piece is on the way, puts an OutOfBoard object instead(NAME "XX")
+	  8 concrete PIECE threaten
 	 */
 	public boolean setThreats(Piece[] B)
 	{
@@ -124,8 +124,8 @@ public class King extends Piece {
 		return false;
 	}	
 	@Override
-	/**
-	 * Returns number of potential moves
+	/*
+	  Returns number of potential moves
 	 */
 	public int scanPotentialMoves() {
 		return possibleMoves.size();

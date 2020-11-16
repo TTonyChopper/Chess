@@ -34,7 +34,7 @@ public class PlayerDialog extends JDialog implements ActionListener{
 	public void initComponents(boolean w){
 		
 		add(Box.createRigidArea(new Dimension(0, 10)));
-		StringBuffer p = new StringBuffer(""); 
+		StringBuffer p = new StringBuffer();
 		if (w){
 			p.append("Player 1 :");
 		} else {

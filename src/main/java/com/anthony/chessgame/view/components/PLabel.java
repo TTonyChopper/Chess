@@ -13,7 +13,7 @@ public class PLabel extends JLabel {
 	 * 
 	 */
 	private static final long serialVersionUID = -2856733113022275577L;
-	Piece p = null;
+	Piece p;
 	int pos;
 	
 	/**

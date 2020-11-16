@@ -5,7 +5,7 @@ import com.anthony.chessgame.view.ConsolePrinter;
 
 public class PrinterFactory {
 
-	public static enum PrinterType{CONSOLE,SWING};
+	public enum PrinterType{CONSOLE,SWING};
 	
 	/**
 	 * 

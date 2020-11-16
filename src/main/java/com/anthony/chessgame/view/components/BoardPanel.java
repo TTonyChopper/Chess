@@ -155,8 +155,8 @@ public class BoardPanel extends JPanel implements MouseListener{
 	}
 
 	@Override
-	/**
-	 * Selection of pieces 
+	/*
+	  Selection of pieces
 	 */
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();

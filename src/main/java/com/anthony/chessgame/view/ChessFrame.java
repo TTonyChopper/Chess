@@ -112,12 +112,10 @@ public class ChessFrame extends JFrame implements IPrint{
 	}
 	@Override
 	public String askName(boolean W, ChessGame C) {
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				PlayerDialog pd = new PlayerDialog(W,C);
-				pd.setVisible(true);
-			}
+		SwingUtilities.invokeLater(() ->
+		{
+			PlayerDialog pd = new PlayerDialog(W,C);
+			pd.setVisible(true);
 		});
 		synchronized(C) {
 			try {
@@ -127,8 +125,8 @@ public class ChessFrame extends JFrame implements IPrint{
 			}
 		}
 		Object o = C.getHolder();
-		String result = "";
-		if ((o==null) || !(o instanceof String)) {
+		String result;
+		if (!(o instanceof String)) {
 			return null;
 		} else {
 			result = (String) o;
@@ -142,12 +140,7 @@ public class ChessFrame extends JFrame implements IPrint{
 	}
 	@Override
 	public Piece askMove(final Player J,final Piece[] Board,final int[] mW,final ChessGame G) {
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				bP.readyForMove(ChessFrame.this,J,Board,mW,G);
-			}
-		});
+		SwingUtilities.invokeLater(() -> bP.readyForMove(ChessFrame.this,J,Board,mW,G));
 		synchronized(J) {
 			try {
 				J.wait();
@@ -173,23 +166,16 @@ public class ChessFrame extends JFrame implements IPrint{
 	}
 	@Override
 	public void printCheck() {
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				if (gP!=null) {
-					gP.printText("You sir are in trouble!");
-				}
+		SwingUtilities.invokeLater(() ->
+		{
+			if (gP!=null) {
+				gP.printText("You sir are in trouble!");
 			}
-		});	
+		});
 	}
 	@Override
 	public void printBoardState(Piece[] B, Player J, int N) {
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				gP.printText("Your time to play : "+J.getPname());
-			}
-		});
+		SwingUtilities.invokeLater(() -> gP.printText("Your time to play : "+J.getPname()));
 	}
 	@Override
 	public void printCaptures(ArrayList<String> wcaptures,
@@ -198,32 +184,28 @@ public class ChessFrame extends JFrame implements IPrint{
 	}
 	@Override
 	public void printBoard(final Piece[] B) {
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				if (bP == null) {
-					currentPanel = new GamePanel(B,p1,p2);
-					gP = (GamePanel)currentPanel;
-					bP = gP.getBoardPanel();
-					add(currentPanel);
-					setPreferredSize(new Dimension(HEIGHT,WIDTH));
-					pack();
-					setLocationRelativeTo(null);
-					setVisible(true);
-				} else {
-					bP.updateBoard(B);
-				}
+		SwingUtilities.invokeLater(() ->
+		{
+			if (bP == null) {
+				currentPanel = new GamePanel(B,p1,p2);
+				gP = (GamePanel)currentPanel;
+				bP = gP.getBoardPanel();
+				add(currentPanel);
+				setPreferredSize(new Dimension(HEIGHT,WIDTH));
+				pack();
+				setLocationRelativeTo(null);
+				setVisible(true);
+			} else {
+				bP.updateBoard(B);
 			}
 		});
 	}
 	@Override
 	public void printGameOver() {
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				if (gP!=null) {
-					gP.printText("The Game is over!");
-				}
+		SwingUtilities.invokeLater(() ->
+		{
+			if (gP!=null) {
+				gP.printText("The Game is over!");
 			}
 		});
 	}

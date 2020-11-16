@@ -22,11 +22,15 @@ public class ChessGame implements SpecialMoveObserver
 	final static int BOARD_WIDTH = 8;
 	final static int BOARD_HEIGHT = 8;
 	final static int PIECES_PER_PLAYER = 16;
-	final static int PIECES[]={
-		4,2,3,5,6,3,2,4,1,1,1,1,1,1,1,1,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		1,1,1,1,1,1,1,1,4,2,3,5,6,3,2,4};
+	final static int[] PIECES ={
+	        4,2,3,5,6,3,2,4,
+            1,1,1,1,1,1,1,1,
+            0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,
+            1,1,1,1,1,1,1,1,
+            4,2,3,5,6,3,2,4};
 	//Players
 	private Player P1;
 	private Player P2;
@@ -61,8 +65,8 @@ public class ChessGame implements SpecialMoveObserver
 		Bfuture = new Piece[BOARD_WIDTH*BOARD_HEIGHT+1];
 		checkmate = false;
 		checkmate2 = false;
-		wcaptures = new ArrayList<String>();
-		bcaptures = new ArrayList<String>();
+		wcaptures = new ArrayList<>();
+		bcaptures = new ArrayList<>();
 		posK1= 4;
 		posK1bu= 4;
 		posK2= 60;
@@ -78,8 +82,8 @@ public class ChessGame implements SpecialMoveObserver
 		Bfuture = new Piece[BOARD_WIDTH*BOARD_HEIGHT+1];
 		checkmate = false;
 		checkmate2 = false;
-		wcaptures = new ArrayList<String>();
-		bcaptures = new ArrayList<String>();
+		wcaptures = new ArrayList<>();
+		bcaptures = new ArrayList<>();
 		posK1= 4;
 		posK1bu= 4;
 		posK2= 60;
@@ -101,12 +105,12 @@ public class ChessGame implements SpecialMoveObserver
 		printer.printBoard(B);
 		Utils.setThreatsOnBoard(B);
 
-		while ((checkmate2!=null) && (checkmate2==false))
+		while ((checkmate2!=null) && (!checkmate2))
 		{
 			//printer.printThreateningOnBoard(B);
 			//printer.printThreatenOnBoard(B);
 			checkmate = playTurn(P1,P2);
-			if ((checkmate==null) || (checkmate==true)) {
+			if ((checkmate==null) || (checkmate)) {
 				break;
 			}
 			checkmate2 = playTurn(P2,P1);
@@ -115,9 +119,9 @@ public class ChessGame implements SpecialMoveObserver
 		//TODO
 		if ((checkmate==null) && (checkmate2==null)) {
 //			printer.printPat(P1,P2);
-		} else if (checkmate==true) {
+		} else if (checkmate) {
 //			printer.printMate(P1,P2);
-		} else if (checkmate==true) {
+		} else if (checkmate2) {
 //			printer.printMate(P2,P1);
 		}
 		printer.printGameOver();
@@ -176,8 +180,8 @@ public class ChessGame implements SpecialMoveObserver
 	{
 		for (int i=0;i<64;i++) 
 		{
-			if (i/16==0) putPiece(i,colorPiece.WHITE); 
-			else if (i/16==3)	putPiece(i,colorPiece.BLACK);  
+			if (i/PIECES_PER_PLAYER==0) putPiece(i,colorPiece.WHITE);
+			else if (i/PIECES_PER_PLAYER==3) putPiece(i,colorPiece.BLACK);
 			else putPiece(i,colorPiece.NONE); 	  
 		}	  
 		B[BOARD_WIDTH*BOARD_HEIGHT] = new OutOfBoard();
@@ -242,7 +246,8 @@ public class ChessGame implements SpecialMoveObserver
 	 * 
 	 * @param P
 	 * @param pOrig
-	 * @param pDest
+	 * @param pMoved
+     * @param captured
 	 */
 	private void tryMoveBack(Player P,int pOrig,int pMoved,Piece captured){
 		revertMoveKings();
@@ -263,6 +268,8 @@ public class ChessGame implements SpecialMoveObserver
 	/**
 	 * Try current move
 	 * @param P
+     * @param pOrig
+     * @param pDest
 	 * @return
 	 */
 	private Piece tryMove(Player P, int pOrig, int pDest){
@@ -274,6 +281,13 @@ public class ChessGame implements SpecialMoveObserver
 		//printer.printPlayerPiecesOnBoard(P1,P2);
 		return captured;
 	}
+
+    /**
+     *
+     * @param moving
+     * @param captured
+     * @param P
+     */
 	private void finalizeMove(Piece moving,Piece captured,Player P) {
 		setCaptures(captured,getFoe(P));
 		if (captured.isWhite() != null) getFoe(P).losePiece(captured);
@@ -289,7 +303,7 @@ public class ChessGame implements SpecialMoveObserver
 			if ( ((P.isWhite()) && (moving.getPosy()==7)) || ((!P.isWhite()) && (moving.getPosy()==0)) ){
 				TypePiece type = printer.askPromotion(this);
 				int pos = moving.getPos();
-				Piece newPiece = null;
+				Piece newPiece;
 				colorPiece C = (P.isWhite()) ? colorPiece.WHITE : colorPiece.BLACK;
 				switch(type){
 					case P :
@@ -317,11 +331,13 @@ public class ChessGame implements SpecialMoveObserver
 	/**
 	 * Try moves until they are valid, then makes the move(same as askNMoveCoord, without getting moves from player)
 	 * @param P
+     * @param pOrig
+     * @param pDest
 	 * @return
 	 */
 	private boolean moveCoord(Player P,int pOrig,int pDest){
-		//		boolean losingMobility = false;
-		Piece captured = null;
+		//boolean losingMobility = false;
+		Piece captured;
 		boolean check= false;
 
 		Bfuture = null;
@@ -331,7 +347,7 @@ public class ChessGame implements SpecialMoveObserver
 		captured = tryMove(P,pOrig,pDest);
 		//Verify if Player playing turn if is check
 		check=Utils.isInCheck(Bfuture,P,posK1,posK2);
-		
+
 		tryMoveBack(P,pOrig,pDest,captured);
 		if (check) {
 			return false;
@@ -346,9 +362,9 @@ public class ChessGame implements SpecialMoveObserver
 	 * @return
 	 */
 	private Piece askNMoveCoord(Player P){
-		Piece moving = null;
+		Piece moving;
 		Piece captured = null;
-		//		boolean losingMobility = false;
+		//boolean losingMobility = false;
 		boolean check= false;
 
 		do
@@ -373,12 +389,13 @@ public class ChessGame implements SpecialMoveObserver
 		finalizeMove(moving,captured,P);
 		return captured;
 	}
-	/** Makes back the move, supposing it is valid
-	 * 
+	/**
+	 * Makes back the move, supposing it is valid
 	 * @param P
 	 * @param Board
-	 * @param Pinit
-	 * @param Pfinal
+	 * @param pMoved
+	 * @param pOrig
+     * @param captured
 	 * @return
 	 */
 	private void moveBackTo(Player P,Piece[] Board,int pMoved,int pOrig,Piece captured) {
@@ -434,7 +451,6 @@ public class ChessGame implements SpecialMoveObserver
 			}
 		}
 
-		
 		return captured;
 	}
 	/**
@@ -514,22 +530,20 @@ public class ChessGame implements SpecialMoveObserver
 	private Boolean findOneMoveForPlayer(Player P) {
 		List<Piece> pieces = P.getPieces();
 		Iterator<Piece> itr = pieces.iterator();
-		boolean end = false;
-		
-		while ((!end) && (itr.hasNext())) {
+
+		while ((itr.hasNext())) {
 			Piece p = itr.next();
 			int pOrig = p.getPos(); 
 			Integer[] moves = p.getPossibleMovesList();
 			for (Integer i : moves) {
-				int pDest = i.intValue();
+				int pDest = i;
 				boolean success = moveCoord(P,pOrig,pDest);
 				if (success) {
-					end = true;
 					return true;
 				}
 			}
 		}
-		return end;
+		return false;
 	}
 	/**
 	 * Organize the turn of the PLAYER
@@ -562,18 +576,14 @@ public class ChessGame implements SpecialMoveObserver
 		}
 		
 		Boolean result = false;
-		if ((!oneMoveFound) && (check)) {
-			result = true;
-		}else if ((!oneMoveFound) && (!check)) {
-			result = null;
+		if (!oneMoveFound) {
+			if (check) result = true;
+			else result = null;
 		}
 		return result;
 	}
 	@Override
-	/**
-	 * 
-	 */
-	public void bigLeapSpawnSpotted(Piece P,boolean W) {
+    public void bigLeapSpawnSpotted(Piece P,boolean W) {
 		if (W) {
 			pawnW = P;
 		} else {

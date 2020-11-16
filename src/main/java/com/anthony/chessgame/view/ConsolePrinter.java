@@ -1,6 +1,5 @@
 package com.anthony.chessgame.view;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -38,14 +37,14 @@ public class ConsolePrinter implements IPrint{
 	 * Transforms COORDINATES into CHAR
 	 */
 	public void setDest(String L){
-		destx = (int)((int)(L.charAt(0))-(int)'a');
-		desty = (int)((int)(L.charAt(1))-(int)'1');
+		destx = ((int)(L.charAt(0))-(int)'a');
+		desty = ((int)(L.charAt(1))-(int)'1');
 	}
 	/**
 	 * Asks and Returns a name for the PLAYER of COLOR W
 	 */
 	public String askName(boolean W,ChessGame G){
-		String pname=null;
+		String pname;
 		if (W)
 		{
 			System.out.println("Player 1 will play white.");
@@ -55,7 +54,7 @@ public class ConsolePrinter implements IPrint{
 		}
 		else
 		{
-			System.out.println("");	 
+			System.out.println();
 			System.out.println("Player 2 will play black.");
 			System.out.println("Enter your name...");
 			pname = sc.nextLine();
@@ -76,9 +75,9 @@ public class ConsolePrinter implements IPrint{
 	 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 	 */
 	public Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G){
-		String L = null;
+		String L;
 		boolean moveisok = false;
-		boolean pieceisok = false;
+		boolean pieceisok;
 		while (!moveisok) 
 		{
 			//Partie 1 : Origin	
@@ -121,7 +120,7 @@ public class ConsolePrinter implements IPrint{
 	 * @return
 	 */
 	public Piece.TypePiece askPromotion(ChessGame G){
-		String L = null;
+		String L;
 		Piece.TypePiece type = Piece.TypePiece.P;
 		System.out.println("Write the piece you want(one character) :");
 		System.out.println("\"P\" : Pawn");
@@ -188,15 +187,11 @@ public class ConsolePrinter implements IPrint{
 		for (Player p : P) {
 			System.out.print("Player "+p.getNumber()+" pieces : ");
 			List<Piece> pieces = p.getPieces();
-			Collections.sort(pieces,new Comparator<Piece>() {
-			      public int compare(Piece p1, Piece p2) {
-			          return new Integer(p1.getType().getPower()).compareTo(p2.getType().getPower());
-			        }
-			      });
+			pieces.sort(Comparator.comparingInt(p2 -> p2.getType().getPower()));
 			for (Piece pc : pieces) {
 				System.out.print(pc.getName()+" ");
 			}
-			System.out.println("");
+			System.out.println();
 		}
 	}	
 	/**
@@ -246,7 +241,7 @@ public class ConsolePrinter implements IPrint{
 	 * Prints the actual BOARD state
 	 */
 	public void printBoard(Piece[] B){
-		System.out.println("");	
+		System.out.println();
 		System.out.println("      a    b    c    d    e    f    g    h   ");	
 		System.out.println("   +----+----+----+----+----+----+----+----+");
 		System.out.print(" 8 | "+Utils.getPieceN(B,56)+" | ");

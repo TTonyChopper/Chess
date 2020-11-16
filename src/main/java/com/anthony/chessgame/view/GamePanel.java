@@ -85,11 +85,6 @@ public class GamePanel extends JPanel {
 		return board;
 	}
 	public void printText(String s) {
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				statusPanel.appendTextln(s);
-			}
-		});
+		SwingUtilities.invokeLater(() -> statusPanel.appendTextln(s));
 	}
 }

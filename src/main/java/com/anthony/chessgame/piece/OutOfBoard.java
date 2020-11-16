@@ -5,7 +5,7 @@ import com.anthony.chessgame.game.Player;
 public class OutOfBoard extends Piece{
 
 	/**
-	 * CONSTRUCTOR : create a PIECE of COLOR C=0[NEUTRAL] at POSITION 64, and his NAME becomes "XX" 
+	 * CONSTRUCTOR : create a PIECE of COLOR C=0[NEUTRAL] at POSITION 64, and its NAME becomes "XX"
 	 */
 	public OutOfBoard()
 	{
@@ -14,17 +14,11 @@ public class OutOfBoard extends Piece{
 	}
 
 	@Override
-	/**
-	 * 
-	 */
 	public boolean checkMove(int Px, int Py, Player J, Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;
 	}	
 	@Override
-	/**
-	 * 
-	 */
 	public boolean setThreats(Piece[] B) {
 		// TODO Auto-generated method stub
 		return false;

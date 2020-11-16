@@ -19,7 +19,7 @@ public class Player{
 	//COLOR of the PIECE the PLAYER plays
 	private boolean white;
 	//playing pieces
-	List<Piece> pieces = new ArrayList<Piece>();
+	List<Piece> pieces = new ArrayList<>();
 	private Piece movingPiece;
 
 	/**
