@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.anthony.chessgame.game.ChessGame;
+import com.anthony.chessgame.game.MovingPiece;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
 import com.anthony.chessgame.util.IPrint;
@@ -74,7 +75,7 @@ public class ConsolePrinter implements IPrint{
 	/**
 	 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 	 */
-	public Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G){
+	public Piece askMove(Player J, Piece[] Board, MovingPiece movingPiece, ChessGame G){
 		String L;
 		boolean moveisok = false;
 		boolean pieceisok;
@@ -94,9 +95,9 @@ public class ConsolePrinter implements IPrint{
 				if (!isValid(x,y)) {
 					pieceisok = false;
 				} else {
-					mW[0] = Piece.BOARD_SIZE*y+x; 
-					mW[1] = 0;
-					pieceisok=Utils.comparePieceC(Board,mW[0],J.isWhite());
+					movingPiece.orig = Piece.BOARD_SIZE*y+x;
+					movingPiece.dest = 0;
+					pieceisok=Utils.comparePieceC(Board, movingPiece.orig,J.isWhite());
 				}
 				if (!pieceisok) System.out.println("Invalid piece.");
 			}
@@ -106,14 +107,14 @@ public class ConsolePrinter implements IPrint{
 			System.out.println("Where to move it ?");
 			if ((L=sc.nextLine()).length()==2)
 			{
-				setDest(L.toLowerCase());	
-				mW[1] = Utils.getPos(destx, desty);
-				moveisok = Utils.getPiece(Board,mW[0]).checkMove(destx,desty,J,Board);
+				setDest(L.toLowerCase());
+				movingPiece.dest = Utils.getPos(destx, desty);
+				moveisok = Utils.getPiece(Board, movingPiece.orig).checkMove(destx,desty,J,Board);
 				if (!moveisok) System.out.println("Coup non valide.");
 			}
 			else System.out.println("Erreur.");
 		}
-		return Utils.getPiece(Board,mW[0]);
+		return Utils.getPiece(Board, movingPiece.orig);
 	}
 	/**
 	 * 

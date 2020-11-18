@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import com.anthony.chessgame.game.ChessGame;
+import com.anthony.chessgame.game.MovingPiece;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
 import com.anthony.chessgame.view.ChessFrame;
@@ -41,7 +42,7 @@ public class BoardPanel extends JPanel implements MouseListener{
 	private static final String KINGB_PATH = "KingB.png";
 	private PLabel[] labels;
 	private Piece[] board;
-	private int[] mW;
+	private MovingPiece movingPiece;
 	private Player waitingPlayer;
 	private PLabel lastPieceLabel;
 	
@@ -142,16 +143,15 @@ public class BoardPanel extends JPanel implements MouseListener{
 		return result;
 	}
 	/**
-	 * 
 	 * @param parent
 	 * @param M
 	 * @param Board
-	 * @param mW
+	 * @param movingPiece
 	 * @param G
 	 */
-	public void readyForMove(ChessFrame parent,Player M,Piece[] Board,int[] mW,ChessGame G) {
+	public void readyForMove(ChessFrame parent, Player M, Piece[] Board, MovingPiece movingPiece, ChessGame G) {
 		waitingPlayer = M;
-		this.mW = mW;
+		this.movingPiece = movingPiece;
 	}
 
 	@Override
@@ -177,8 +177,8 @@ public class BoardPanel extends JPanel implements MouseListener{
 				int posy = pos/8;
 				boolean moveok = lastPieceSelected.checkMove(posx,posy,waitingPlayer,board);
 				if (moveok) {
-					mW[0] = lastPieceLabel.getPos();
-					mW[1] = pos;
+					movingPiece.orig = lastPieceLabel.getPos();
+					movingPiece.dest = pos;
 					lastPieceLabel = null;
 					synchronized(waitingPlayer) {
 						waitingPlayer.setMovingPiece(lastPieceSelected);

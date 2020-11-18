@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.anthony.chessgame.game.ChessGame;
+import com.anthony.chessgame.game.MovingPiece;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
 import com.anthony.chessgame.piece.Piece.TypePiece;
@@ -139,8 +140,8 @@ public class ChessFrame extends JFrame implements IPrint{
 		return  result; 
 	}
 	@Override
-	public Piece askMove(final Player J,final Piece[] Board,final int[] mW,final ChessGame G) {
-		SwingUtilities.invokeLater(() -> bP.readyForMove(ChessFrame.this,J,Board,mW,G));
+	public Piece askMove(final Player J, final Piece[] Board, final MovingPiece movingPiece, final ChessGame G) {
+		SwingUtilities.invokeLater(() -> bP.readyForMove(ChessFrame.this,J,Board,movingPiece,G));
 		synchronized(J) {
 			try {
 				J.wait();

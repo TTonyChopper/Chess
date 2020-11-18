@@ -21,7 +21,12 @@ public class ChessGame implements SpecialMoveObserver
 {
 	final static int BOARD_WIDTH = 8;
 	final static int BOARD_HEIGHT = 8;
+	final static int BOARD_SIZE = BOARD_WIDTH * BOARD_HEIGHT;
 	final static int PIECES_PER_PLAYER = 16;
+
+	final static int STANDARD_FIRST_KING_INDEX = 4;
+	final static int STANDARD_SECOND_KING_INDEX = 60;
+
 	final static int[] PIECES ={
 	        4,2,3,5,6,3,2,4,
             1,1,1,1,1,1,1,1,
@@ -51,8 +56,7 @@ public class ChessGame implements SpecialMoveObserver
 	//Not null if a pawn of the corresponding player did a 2 case move last turn 
 	private Piece pawnW;
 	private Piece pawnB;
-	//POSITIONS of a PIECE which is being played
-	private int[] mW;
+	private MovingPiece movingPiece;
 	private IPrint printer;
 	//Object transmitted between threads
 	private Object holder;
@@ -67,11 +71,11 @@ public class ChessGame implements SpecialMoveObserver
 		checkmate2 = false;
 		wcaptures = new ArrayList<>();
 		bcaptures = new ArrayList<>();
-		posK1= 4;
-		posK1bu= 4;
-		posK2= 60;
-		posK2bu= 60;
-		mW= new int[2];
+		posK1 = STANDARD_FIRST_KING_INDEX;
+		posK1bu = STANDARD_FIRST_KING_INDEX;
+		posK2 = STANDARD_SECOND_KING_INDEX;
+		posK2bu = STANDARD_SECOND_KING_INDEX;
+		movingPiece = new MovingPiece();
 	}
 	/**
 	 * CONSTRUCTOR
@@ -84,11 +88,11 @@ public class ChessGame implements SpecialMoveObserver
 		checkmate2 = false;
 		wcaptures = new ArrayList<>();
 		bcaptures = new ArrayList<>();
-		posK1= 4;
-		posK1bu= 4;
-		posK2= 60;
-		posK2bu= 60;
-		mW= new int[2];
+		posK1= STANDARD_FIRST_KING_INDEX;
+		posK1bu= STANDARD_FIRST_KING_INDEX;
+		posK2= STANDARD_SECOND_KING_INDEX;
+		posK2bu= STANDARD_SECOND_KING_INDEX;
+		movingPiece = new MovingPiece();
 		printer = p;
 	}
 	/**
@@ -116,7 +120,7 @@ public class ChessGame implements SpecialMoveObserver
 			checkmate2 = playTurn(P2,P1);
 		}
 		
-		//TODO
+		//TODO end game details
 		if ((checkmate==null) && (checkmate2==null)) {
 //			printer.printPat(P1,P2);
 		} else if (checkmate) {
@@ -178,13 +182,13 @@ public class ChessGame implements SpecialMoveObserver
 	 */
 	private void createBoard()
 	{
-		for (int i=0;i<64;i++) 
+		for (int i=0;i<BOARD_SIZE;i++)
 		{
 			if (i/PIECES_PER_PLAYER==0) putPiece(i,colorPiece.WHITE);
 			else if (i/PIECES_PER_PLAYER==3) putPiece(i,colorPiece.BLACK);
 			else putPiece(i,colorPiece.NONE); 	  
 		}	  
-		B[BOARD_WIDTH*BOARD_HEIGHT] = new OutOfBoard();
+		B[BOARD_SIZE] = new OutOfBoard();
 	}
 	/**
 	 * Constructs the BOARD one PIECE at a time
@@ -240,7 +244,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @param P
 	 */
 	private void tryMoveBack(Player P,Piece captured){
-		moveBackTo(P,Bfuture,mW[1],mW[0],captured);
+		moveBackTo(P,Bfuture,movingPiece.dest,movingPiece.orig,captured);
 	}
 	/**
 	 * 
@@ -263,7 +267,7 @@ public class ChessGame implements SpecialMoveObserver
 	 * @return
 	 */
 	private Piece tryMove(Player P){
-		return tryMove(P,mW[0],mW[1]);
+		return tryMove(P,movingPiece.orig,movingPiece.dest);
 	}
 	/**
 	 * Try current move
@@ -294,7 +298,7 @@ public class ChessGame implements SpecialMoveObserver
 		B=null;
 		B=Bfuture;
 		//Lose special moves opportunity
-		if(Utils.isKing(B,mW[1])||Utils.isRook(B,mW[1])) B[mW[1]].loseSpecialMove();
+		if(Utils.isKing(B,movingPiece.dest)||Utils.isRook(B,movingPiece.dest)) B[movingPiece.dest].loseSpecialMove();
 		//reset other player passable pawn
 		resetMovePawn(!P.isWhite());
 		
@@ -378,7 +382,7 @@ public class ChessGame implements SpecialMoveObserver
 			//Ask coordinates
 			Bfuture = null;
 			Bfuture = Utils.cloneAL(B);
-			moving=printer.askMove(P,Bfuture,mW,this);
+			moving=printer.askMove(P,Bfuture,movingPiece, this);
 			//Test the move 
 			captured = tryMove(P);
 			//Verify if Player playing turn if is check

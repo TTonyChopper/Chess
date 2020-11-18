@@ -3,6 +3,7 @@ package com.anthony.chessgame.util;
 import java.util.ArrayList;
 
 import com.anthony.chessgame.game.ChessGame;
+import com.anthony.chessgame.game.MovingPiece;
 import com.anthony.chessgame.game.Player;
 import com.anthony.chessgame.piece.Piece;
 
@@ -27,10 +28,10 @@ public interface IPrint {
 		 * Asks move proposed by PLAYER, modifying parameters destx,desty,pinit,pfinal
 		 * @param J
 		 * @param Board
-		 * @param mW
+		 * @param movingPiece
 		 * @return
 		 */
-		Piece askMove(Player J,Piece[] Board,int[] mW,ChessGame G);
+		Piece askMove(Player J, Piece[] Board, MovingPiece movingPiece, ChessGame G);
 		/**askMove
 		 * 
 		 * @return
