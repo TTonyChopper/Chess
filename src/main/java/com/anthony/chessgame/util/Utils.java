@@ -244,4 +244,19 @@ public class Utils {
 		else if (!(J.isWhite())) king=getPiece(B,posK2);
 		return isThreaten(king);
 	}
+
+	public static int FromNotToPos(String column, String row) {
+		int a = column.charAt(0) - 'a';
+		int b = row.charAt(0) - '0';
+		return (8-b)*8 + a;
+	}
+
+	public static int[] FromNot(String column,String row) {
+		int a = column.charAt(0) - 'a';
+		int b = row.charAt(0) - '0';
+		int[]r = new int[2];
+		r[0] = a;
+		r[1] = (8-b);
+		return r;
+	}
 }
