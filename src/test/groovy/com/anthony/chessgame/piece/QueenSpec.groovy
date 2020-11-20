@@ -26,7 +26,8 @@ class QueenSpec extends PieceSpec {
         p.setThreats(B)
 
         expect:
-        p.checkMove(FromNot(a, b)[0], FromNot(a, b)[1], P, B)==c
+        p.checkMove(FromNot(a, b)[0], FromNot(a, b)[1], P, B) == c
+        p.threatening.size() == 8
         p.threatening.contains(B[FromNotToPos(a, b)]) == d
 
         where:
