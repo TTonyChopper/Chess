@@ -82,8 +82,10 @@ class PieceSpec extends Specification {
         FromNot(a,b)[1]==d
 
         where:
-        a | b | c | d
+         a | b | c | d
         'c'|'3'| 2 | 5
         'e'|'8'| 4 | 0
+        'h'|'5'| 7 | 3
+        'f'|'1'| 5 | 7
     }
 }
