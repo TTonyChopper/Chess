@@ -248,7 +248,7 @@ public class Utils {
 	public static int FromNotToPos(String column, String row) {
 		int a = column.charAt(0) - 'a';
 		int b = row.charAt(0) - '0';
-		return (8-b)*8 + a;
+		return b == 9 ? 64 : (8-b)*8 + a;
 	}
 
 	public static int[] FromNot(String column,String row) {

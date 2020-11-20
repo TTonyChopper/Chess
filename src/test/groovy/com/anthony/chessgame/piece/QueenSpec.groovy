@@ -6,50 +6,54 @@ import static com.anthony.chessgame.util.Utils.FromNot
 import static com.anthony.chessgame.util.Utils.FromNotToPos
 
 class QueenSpec extends PieceSpec {
-    Player p = new Player(1,true,'test')
+    Player P = new Player(1,true,'test')
 
     def "check moves from D4 to #a#b"() {
         int pos = FromNotToPos('d', '4')
-        Piece k = new Queen(pos, Piece.colorPiece.WHITE)
+        Piece p = new Queen(pos, Piece.colorPiece.WHITE)
 
         given:
         B = init(new String[]
                 /*8*/{"  ","  ","  ","  ","  ","  ","  ","  ",
-                /*7*/"  ","  ","  ","Rb","  ","  ","  ","  ",
-                /*6*/"  ","  ","  ","  ","  ","  ","  ","  ",
-                /*5*/"  ","Bb","  ","  ","  ","  ","  ","  ",
-                /*4*/"  ","Rw","  ","Qw","  ","  ","  ","Rb",
-                /*3*/"  ","  ","Bw","  ","  ","  ","  ","  ",
-                /*2*/"  ","  ","Rb","  ","  ","  ","  ","  ",
-                /*1*/"Bb","  ","  ","  ","  ","  ","Bb","  ",})
-                    // a    b    c    d    e    f    g    h
+                /*7*/ "  ","  ","  ","Rb","  ","  ","  ","  ",
+                /*6*/ "  ","  ","  ","  ","  ","  ","  ","  ",
+                /*5*/ "  ","Bb","  ","  ","  ","  ","  ","  ",
+                /*4*/ "  ","Rw","  ","Qw","  ","  ","  ","Rb",
+                /*3*/ "  ","  ","Bw","  ","  ","  ","  ","  ",
+                /*2*/ "  ","  ","Rb","  ","  ","  ","  ","  ",
+                /*1*/ "Bb","  ","  ","  ","  ","  ","Bb","  ",})
+                     // a    b    c    d    e    f    g    h
+        p.setThreats(B)
 
         expect:
-        k.checkMove(FromNot(a, b)[0], FromNot(a, b)[1], p, B)==c
+        p.checkMove(FromNot(a, b)[0], FromNot(a, b)[1], P, B)==c
+        p.threatening.contains(B[FromNotToPos(a, b)]) == d
 
         where:
-        a   |  b  | c
+        a   |  b  |   c   |  d
         //from bishop
-        'b' | '6' | true
-        'e' | '5' | true
-        'h' | '8' | true
-        'e' | '3' | true
-        'g' | '1' | true
-        'c' | '3' | false
-        'b' | '2' | false
-        'a' | '1' | false
-        'g' | '8' | false
-        'd' | '8' | false
+        'b' | '6' | true  | false
+        'e' | '5' | true  | false
+        'h' | '8' | true  | false
+        'e' | '3' | true  | false
+        'g' | '1' | true  | true
+        'c' | '3' | false | true
+        'b' | '2' | false | false
+        'a' | '1' | false | false
+        'g' | '8' | false | false
+        'd' | '8' | false | false
         //from rook
-        'c' | '4' | true
-        'b' | '4' | false
-        'a' | '4' | false
-        'd' | '8' | false
-        'd' | '7' | true
-        'f' | '4' | true
-        'd' | '1' | true
-        'b' | '4' | false
-        'c' | '2' | false
-        'd' | '8' | false
+        'c' | '4' | true  | false
+        'b' | '4' | false | true
+        'a' | '4' | false | false
+        'd' | '8' | false | false
+        'f' | '4' | true  | false
+        'd' | '1' | true  | false
+        'b' | '4' | false | true
+        'g' | '1' | true  | true
+        'd' | '7' | true  | true
+        'c' | '2' | false | false
+        'd' | '8' | false | false
+        'a' | '9' | false | true
     }
 }
